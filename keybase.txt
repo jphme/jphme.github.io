@@ -1,0 +1,67 @@
+==================================================================
+https://keybase.io/jp1
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://jph.me
+  * I am jp1 (https://keybase.io/jp1) on keybase.
+  * I have a public key with fingerprint 8A44 FB5E 1B45 DB11 7C7C  ABD2 FC1E 49B4 76E1 EC77
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "fingerprint": "8a44fb5e1b45db117c7cabd2fc1e49b476e1ec77",
+            "host": "keybase.io",
+            "key_id": "fc1e49b476e1ec77",
+            "kid": "0101b6802058ce7fd8765541068cf54c2cd00fdbe5d8969089ce4b55833b5d40ec5d0a",
+            "uid": "b6e38c6f08b0169cdf4f84183afa9019",
+            "username": "jp1"
+        },
+        "service": {
+            "hostname": "jph.me",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1437150758,
+    "expire_in": 157680000,
+    "prev": "d0c3bff3ef7da6733160d43ab1f58fe5233fcd7937e16317a5c006ad2c7d5883",
+    "seqno": 5,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.20
+Comment: https://keybase.io/crypto
+
+yMIVAnicbVJ9aI1RHL5j87HCSli+vWnENefc9z3vOfe20WZlSEpIwu09X9trc9+7
+e+++2paZUb4tNSQjiYQIyfyBjY0yNaylLK3mI8p8LvtgnHfhL+efc37P73mec55z
+zv0xwz2JcQ/ePBxcOOno9rhHDajQs/Z8akqZRh1eqgXKtDwxNEk7lCMi4YgdimkB
+jViGISkSkBqIUwgxw8yi3CcZFIafGtgUUDCMNa+W60RdhbKhVlSk2o7CVBG0uUL/
+w88bagAIIDUJ8AFEmMCSE2wiZEBgEiaRwXyMAyA5FYgTv+kHxM+EQREiuk4RN4Bg
+iANL2RUO2VFT6ISZEhAKoOlnXBqSGJDolrT8APpdYlREQtZWodhbwlCr8GoKKLKZ
+cNO7If41c1PVwquFI07MYU6+wnJjsXDAlcRKwy6nWNDgH3WQ2iGu7k4JikQkajsh
+LQAVk8Vs1w4aOoYIYES8migJ2xERtF0Gwiq8Gu42okhZcsB0KqUuJOaWiXUdmoAb
+ukWhREQK5NN1yTj261hAU4fYQgwA0+I+hjkiRNfcPAUhRwsgdUwrR1lG7ZyQFSuM
+CK2i8e7GeE9comdEwjD39T2Jo5P+/omk0yN/FfN3uln97PKO5JWh5Mf5134ONqet
+6xxMoxlPLvXM3lZSdidrdfapCbtGpd5bl1Q/d0X2sn17zn7re+i5emLw4MuCtmYc
+bJ183/m6Xuu/4B3f87x+Xk1/VWHH9AU3qrr3FqQ/SozPuNnb1HCv5tjEp5V18we+
+ZO1MqEsY1bu+YfmpYefoVN4amHhlc9M0z1K7rX/mhJlvFxzadL1pVXV5+8pJLRdr
+4c/a7OYpclyX0ZdwpSTDSWmHuH5GZedn76aTs5YsvJTVNPDjVvmBcRt2twyM2dt9
+Jm3s+7KlpDQbrPrecbDxIxzRmXZ114fjrxZ/yuzqnYNfpEeWJQWOvMbJ/PDtzDWL
+zuz/DfP+Jow=
+=Afy7
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/jp1
+
+==================================================================
