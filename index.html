@@ -46,6 +46,35 @@
                 width: 30%;
             }
         }
+        
+        /* Thumbnail Grid Styles */
+        .thumbnail-grid {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .thumbnail {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+            border-radius: 8px;
+        }
+        
+        .thumbnail:hover {
+            transform: scale(1.05);
+        }
+        
+        .thumbnail-container {
+            padding: 5px;
+        }
+        
+        /* Override the general img style for thumbnails */
+        .thumbnail-grid img.thumbnail {
+            width: 100%;
+            height: 180px;
+        }
     </style>
 </head>
 
@@ -74,6 +103,43 @@
             </p>
 
         </div>
+        
+        <section id="talks" class="body content-padding">
+            <h2>Talks & Presentations</h2>
+            <p>Some impressions from recent talks and presentations:</p>
+            <div class="thumbnail-grid">
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 thumbnail-container">
+                        <img src="thumbnails/PXL_20241127_114100821.jpg" alt="Conference presentation" class="thumbnail">
+                    </div>
+                    <div class="col-md-4 col-sm-6 thumbnail-container">
+                        <img src="thumbnails/PXL_20240118_194732235.jpg" alt="AI workshop" class="thumbnail">
+                    </div>
+                    <div class="col-md-4 col-sm-6 thumbnail-container">
+                        <img src="thumbnails/PXL_20250206_175248596.jpg" alt="Tech conference" class="thumbnail">
+                    </div>
+                    <div class="col-md-4 col-sm-6 thumbnail-container">
+                        <img src="thumbnails/WhatsApp Image 2025-01-24 at 11.33.16.jpeg" alt="Panel discussion" class="thumbnail">
+                    </div>
+                    <div class="col-md-4 col-sm-6 thumbnail-container">
+                        <img src="thumbnails/WhatsApp Image 2025-01-24 at 11.33.15.jpeg" alt="Industry event" class="thumbnail">
+                    </div>
+                    <div class="col-md-4 col-sm-6 thumbnail-container">
+                        <img src="thumbnails/1737722969861.jpeg" alt="AI presentation" class="thumbnail">
+                    </div>
+                    <div class="col-md-4 col-sm-6 thumbnail-container">
+                        <img src="thumbnails/ai_in_action.jpeg" alt="AI in Action event" class="thumbnail">
+                    </div>
+                    <div class="col-md-4 col-sm-6 thumbnail-container">
+                        <img src="thumbnails/Monsters of Media_250723_aischool_-43.jpg" alt="Monsters of Media event" class="thumbnail">
+                    </div>
+                    <div class="col-md-4 col-sm-6 thumbnail-container">
+                        <img src="thumbnails/Screenshot_20230512-215239.jpg" alt="Tech meetup" class="thumbnail">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
         <section id="extras" class="body content-padding">
             <h2>Social</h2>
             <ul class="list-unstyled">
