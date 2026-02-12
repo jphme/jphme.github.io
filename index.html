@@ -1,175 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jan Philipp Harries</title>
+    <meta name="description" content="Personal website of Jan Philipp Harries. Co-Founder of ellamind, AI researcher, and angel investor.">
+    <link rel="canonical" href="https://jph.me/">
     <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
-    <meta name="description" content="Jan Philipp Harries - Personal Website">
-    <title>Jan Philipp Harries - About Me</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Jan Philipp Harries">
+    <meta property="og:description" content="Personal website of Jan Philipp Harries. Co-Founder of ellamind, AI researcher, and angel investor.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jph.me/">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: 'Raleway', sans-serif;
+            background-color: #F7F4EE;
+            color: #1C1917;
+            font-family: 'Source Serif 4', Georgia, serif;
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        .content-padding {
-            padding: 15px;
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 80px 24px 60px;
         }
 
-        .img-padding {
-            padding: 10px;
-        }
-
-        .rounded-corners {
-            border-radius: 10px;
-        }
-
-        .title-font {
-            font-size: 1.5rem;
-        }
-
-        h2 {
-            padding-bottom: 20px;
-        }
-
-        .social-icons {
-            font-size: 1.2rem;
-            color: white;
-        }
-
-        @media (min-width: 768px) {
-            img {
-                height: 30%;
-                width: 30%;
+        @media (max-width: 600px) {
+            .container {
+                padding: 48px 20px 40px;
+            }
+            body {
+                font-size: 17px;
             }
         }
-        
-        /* Thumbnail Grid Styles */
-        .thumbnail-grid {
-            margin-top: 20px;
-            margin-bottom: 20px;
+
+        /* Header */
+        header {
+            margin-bottom: 48px;
         }
-        
-        .thumbnail {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            margin-bottom: 15px;
-            transition: transform 0.3s ease;
-            border-radius: 8px;
+
+        header h1 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-weight: 400;
+            font-size: 42px;
+            line-height: 1.2;
+            color: #1C1917;
         }
-        
-        .thumbnail:hover {
-            transform: scale(1.05);
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 34px;
+            }
         }
-        
-        .thumbnail-container {
-            padding: 5px;
+
+        /* Sections */
+        section {
+            margin-bottom: 48px;
         }
-        
-        /* Override the general img style for thumbnails */
-        .thumbnail-grid img.thumbnail {
-            width: 100%;
-            height: 180px;
+
+        section h2 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-weight: 400;
+            font-size: 26px;
+            line-height: 1.3;
+            color: #1E3A5F;
+            margin-bottom: 16px;
+        }
+
+        /* About */
+        .about p {
+            margin-bottom: 16px;
+        }
+
+        .about p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Links */
+        a {
+            color: #B45309;
+            text-decoration: none;
+            transition: text-decoration-color 0.15s ease;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Essay & link lists */
+        .item-list {
+            list-style: disc;
+            padding-left: 24px;
+        }
+
+        .item-list li {
+            margin-bottom: 8px;
+        }
+
+        .item-list li .subtitle {
+            color: #5E6673;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid #CDD2DA;
+            padding-top: 24px;
+            margin-top: 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #5E6673;
         }
     </style>
 </head>
-
-<body class="bg-dark text-white">
-    <main class="container text-white">
-        <header class="body content-padding mb-2">
-            <h1 class="title-font"><a href="https://jph.me/" class="text-white">Jan Philipp Harries</a></h1>
+<body>
+    <div class="container">
+        <header>
+            <h1>Jan Philipp Harries</h1>
         </header>
-        <div class="content-padding">
-            <p class="img-padding">
-                <img alt="Picture of Jan Philipp Harries" height="50%" src="bild4.jpg" width="50%"
-                    class="rounded-corners">
-            </p>
-            <h2>About Me</h2>
-            <p>Hi, I am Jan.</p>
-            <p>I am a Co-Founder of <a href="https://ellamind.com">ellamind</a>, a startup helping companies using AI and building an AI evaluation and optimization platform. 
-            Amongst other things, I like tinkering with the newest AI models and tools, working with strong teams, figuring out complex systems and analyzing data.</p>
-            <p>I have contributed to multiple well-known software projects and released some popular local LLMs. My original background is in banking and quantitative finance, I hold a PhD in financial economics. Formerly I worked as Assistant to the CEO of a large energy company, at the <a href="https://crasselt.wiwi.uni-wuppertal.de/de/team/dr-jan-philipp-harries/">University of Wuppertal</a> and co-founded <a href="https://codigy.de">Codigy</a> (formerly QuantAI). At QuantAI, we focused on empowering Small and Medium-sized Enterprises and larger corporations with Data Science and Machine Learning solutions. I'm also part of the adivsory board of <a href="https://neural-search.ai/">Neural Search Labs</a>. I'm interested in the startup scene and always excited try out new technologies.</p>
-            <p>I do selective Angel Investments via <a href="https://www.anegada.eu">Anegada UG</a>.</p>
-            <p>I live near Bremen and after work, you will often find me playing card/board/strategy games, hanging out with friends and enjoying time with my family.</p>
-            <p>The best way to reach me is via <a href="https://www.linkedin.com/in/jphme/">LinkedIn</a> or 
-                <script
-                    language="javascript">document.write(unescape('%3C%61%20%68%72%65%66%3D%22%6D%61%69%6C%74%6F%3A%6A%61%6E%40%6A%70%68%2E%6D%65%22%3E%65%6D%61%69%6C%3C%2F%61%3E'));</script>
-                .
-            </p>
 
-        </div>
-        
-        <section id="talks" class="body content-padding">
-            <h2>Talks & Presentations</h2>
-            <p>Some impressions from recent talks and presentations:</p>
-            <div class="thumbnail-grid">
-                <div class="row">
-                    <div class="col-md-4 col-sm-6 thumbnail-container">
-                        <img src="thumbnails/PXL_20241127_114100821.jpg" alt="Conference presentation" class="thumbnail">
-                    </div>
-                    <div class="col-md-4 col-sm-6 thumbnail-container">
-                        <img src="thumbnails/PXL_20240118_194732235.jpg" alt="AI workshop" class="thumbnail">
-                    </div>
-                    <div class="col-md-4 col-sm-6 thumbnail-container">
-                        <img src="thumbnails/PXL_20250206_175248596.jpg" alt="Tech conference" class="thumbnail">
-                    </div>
-                    <div class="col-md-4 col-sm-6 thumbnail-container">
-                        <img src="thumbnails/WhatsApp Image 2025-01-24 at 11.33.16.jpeg" alt="Panel discussion" class="thumbnail">
-                    </div>
-                    <div class="col-md-4 col-sm-6 thumbnail-container">
-                        <img src="thumbnails/WhatsApp Image 2025-01-24 at 11.33.15.jpeg" alt="Industry event" class="thumbnail">
-                    </div>
-                    <div class="col-md-4 col-sm-6 thumbnail-container">
-                        <img src="thumbnails/1737722969861.jpeg" alt="AI presentation" class="thumbnail">
-                    </div>
-                    <div class="col-md-4 col-sm-6 thumbnail-container">
-                        <img src="thumbnails/ai_in_action.jpeg" alt="AI in Action event" class="thumbnail">
-                    </div>
-                    <div class="col-md-4 col-sm-6 thumbnail-container">
-                        <img src="thumbnails/Monsters of Media_250723_aischool_-43.jpg" alt="Monsters of Media event" class="thumbnail">
-                    </div>
-                    <div class="col-md-4 col-sm-6 thumbnail-container">
-                        <img src="thumbnails/Screenshot_20230512-215239.jpg" alt="Tech meetup" class="thumbnail">
-                    </div>
-                </div>
-            </div>
+        <section class="about">
+            <p>I am a Co-Founder of <a href="https://ellamind.com" target="_blank" rel="noopener">ellamind</a>, a startup helping companies use AI, and building an AI evaluation and optimization platform. I like tinkering with the newest AI models and tools, working with strong teams, figuring out complex systems and analyzing data.</p>
+            <p>I have contributed to multiple well-known software projects and released some popular local LLMs. My background is in banking and quantitative finance; I hold a PhD in financial economics. Previously, I worked as Assistant to the CEO of a large energy company, at the University of Wuppertal, and co-founded <a href="https://codigy.de" target="_blank" rel="noopener">Codigy</a> (formerly QuantAI). I am also part of the advisory board of <a href="https://neural-search.ai/" target="_blank" rel="noopener">Neural Search Labs</a> and do selective angel investments.</p>
         </section>
-        
-        <section id="extras" class="body content-padding">
-            <h2>Social</h2>
-            <ul class="list-unstyled">
-                <li>
-                    <a href="https://www.linkedin.com/in/jphme/" class="text-white">
-                        <i class="fa fa-linkedin-square social-icons" aria-hidden="true"></i> Linkedin
-                    </a>
-                </li>
-                <li>
-                    <a href="https://twitter.com/jphme" class="text-white">
-                        <i class="fa fa-twitter-square social-icons" aria-hidden="true"></i> Twitter
-                    </a>
-                </li>
-                <li>
-                    <a href="https://github.com/jphme" class="text-white">
-                        <i class="fa fa-github-square social-icons" aria-hidden="true"></i> Github
-                    </a>
-                </li>
-                <li>
-                    <a href="https://huggingface.co/jphme" class="text-white">
-                        <i class="fa fa-users social-icons" aria-hidden="true"></i> Huggingface
-                    </a>
-                </li>
+
+        <section>
+            <h2>Essays</h2>
+            <ul class="item-list">
+                <li><a href="essays/a-country-full-of-geniuses/">A Country Full of Geniuses</a> <span class="subtitle">(February 2026)</span></li>
             </ul>
         </section>
-    
-    <footer class="body content-padding">
-        &copy; 2025 Jan Philipp Harries
-    </footer>
-    </main>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-</body>
 
+        <section>
+            <h2>Links</h2>
+            <ul class="item-list">
+                <li><a href="https://www.linkedin.com/in/jphme/" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/jphme" target="_blank" rel="noopener">GitHub</a></li>
+                <li><a href="https://huggingface.co/jphme" target="_blank" rel="noopener">HuggingFace</a></li>
+                <li><a href="https://x.com/jphme" target="_blank" rel="noopener">Twitter/X</a></li>
+
+            </ul>
+        </section>
+
+        <footer>
+            &copy; 2026 Jan Philipp Harries
+        </footer>
+    </div>
+</body>
 </html>
