@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Country Full of Geniuses - Jan Philipp Harries</title>
+    <meta name="description" content="What the AI releases of February 2026 tell us about the future of work, wealth, and human purpose.">
+    <meta name="author" content="Jan Philipp Harries">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="A Country Full of Geniuses">
+    <meta property="og:description" content="What the AI releases of February 2026 tell us about the future of work, wealth, and human purpose.">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://jph.me/essays/a-country-full-of-geniuses/images/graphic_02_country_full_of_geniuses.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="A Country Full of Geniuses">
+    <meta name="twitter:description" content="What the AI releases of February 2026 tell us about the future of work, wealth, and human purpose.">
+
+    <link rel="canonical" href="https://jph.me/essays/a-country-full-of-geniuses/">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== CSS Custom Properties ===== */
+        :root {
+            --parchment: #F7F4EE;
+            --linen: #EBEDF2;
+            --ink: #1C1917;
+            --graphite: #5E6673;
+            --chalk: #CDD2DA;
+            --amber: #B45309;
+            --amber-light: #D97706;
+            --dusk: #1E3A5F;
+            --horizon: #7B8FAB;
+            --deep-navy: #0F172A;
+            --warm-glow: #FCD34D;
+            --fog: #94A3B8;
+            --cool-white: #F1F5F9;
+            --rose: #BE123C;
+            --slate: #475569;
+            --teal: #0F766E;
+
+            --font-display: 'Instrument Serif', Georgia, serif;
+            --font-body: 'Source Serif 4', Georgia, serif;
+            --font-ui: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+
+            --content-width: 680px;
+            --wide-width: 1100px;
+        }
+
+        /* ===== Reset & Base ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--ink);
+            background-color: var(--parchment);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ===== Reading Progress Bar ===== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--amber), var(--amber-light));
+            z-index: 1000;
+            transition: width 0.1s linear;
+        }
+
+        /* ===== Navigation / TOC ===== */
+        .toc {
+            position: fixed;
+            top: 50%;
+            left: max(1rem, calc((100vw - var(--wide-width)) / 2 - 12rem));
+            transform: translateY(-50%);
+            z-index: 100;
+            list-style: none;
+            font-family: var(--font-ui);
+            font-size: 12px;
+            letter-spacing: 0.02em;
+            max-width: 160px;
+        }
+
+        .toc li { margin-bottom: 0.75rem; }
+
+        .toc a {
+            color: var(--chalk);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: block;
+            line-height: 1.4;
+        }
+
+        .toc a:hover, .toc a.active { color: var(--amber); }
+        .toc a.active { font-weight: 500; }
+
+        @media (max-width: 1400px) {
+            .toc { display: none; }
+        }
+
+        /* Mobile TOC */
+        .toc-mobile-toggle {
+            display: none;
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 200;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--dusk);
+            color: var(--cool-white);
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-ui);
+            font-size: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+        }
+
+        .toc-mobile-toggle:hover { transform: scale(1.05); }
+
+        .toc-mobile {
+            display: none;
+            position: fixed;
+            bottom: 5rem;
+            right: 1.5rem;
+            z-index: 199;
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+            list-style: none;
+            font-family: var(--font-ui);
+            font-size: 14px;
+            max-width: 280px;
+        }
+
+        .toc-mobile.open { display: block; }
+        .toc-mobile li { margin-bottom: 0.75rem; }
+        .toc-mobile li:last-child { margin-bottom: 0; }
+
+        .toc-mobile a {
+            color: var(--graphite);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .toc-mobile a:hover, .toc-mobile a.active { color: var(--amber); }
+
+        @media (max-width: 1400px) {
+            .toc-mobile-toggle { display: flex; align-items: center; justify-content: center; }
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            overflow: hidden;
+            background-color: var(--deep-navy);
+        }
+
+        .hero-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(15, 23, 42, 0.1) 0%,
+                rgba(15, 23, 42, 0.4) 50%,
+                rgba(15, 23, 42, 0.85) 80%,
+                rgba(15, 23, 42, 0.95) 100%
+            );
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: var(--content-width);
+            padding: 0 2rem 6rem;
+            text-align: left;
+            width: 100%;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--cool-white);
+            margin-bottom: 1rem;
+        }
+
+        .hero .subtitle {
+            font-family: var(--font-body);
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            line-height: 1.5;
+            color: var(--fog);
+            margin-bottom: 1.5rem;
+            max-width: 540px;
+        }
+
+        .hero .byline {
+            font-family: var(--font-ui);
+            font-size: 14px;
+            color: var(--horizon);
+            letter-spacing: 0.03em;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            animation: bob 2s ease-in-out infinite;
+            color: var(--fog);
+            opacity: 0.6;
+        }
+
+        @keyframes bob {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* ===== Article Container ===== */
+        .article {
+            max-width: var(--content-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* ===== Section Styling ===== */
+        .essay-section {
+            padding-top: 4rem;
+            padding-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .essay-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-divider {
+            width: 40px;
+            height: 1px;
+            background: var(--chalk);
+            margin: 4rem auto;
+            display: block;
+        }
+
+        /* ===== Typography ===== */
+        h2 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-size: 2rem;
+            line-height: 1.2;
+            letter-spacing: -0.015em;
+            color: var(--ink);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            font-family: var(--font-body);
+            font-style: italic;
+            font-size: 1.05rem;
+            color: var(--graphite);
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        h3 {
+            font-family: var(--font-ui);
+            font-weight: 600;
+            font-size: 1.375rem;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        p { margin-bottom: 1.5em; }
+
+        strong { font-weight: 600; }
+        em { font-style: italic; }
+
+        a {
+            color: var(--amber);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s ease, color 0.2s ease;
+        }
+
+        a:hover { border-bottom-color: var(--amber); }
+
+        /* ===== Lead Paragraph ===== */
+        .lead-in {
+            padding-top: 5rem;
+            padding-bottom: 1rem;
+        }
+
+        .lead-in p:first-child {
+            font-size: 1.15rem;
+            line-height: 1.75;
+        }
+
+        /* ===== Pull Quotes ===== */
+        blockquote.pull-quote {
+            border-left: 3px solid var(--amber);
+            padding: 0.5rem 0 0.5rem 1.5rem;
+            margin: 2.5rem 0;
+            font-family: var(--font-body);
+            font-style: italic;
+            font-size: 1.15rem;
+            line-height: 1.5;
+            color: var(--ink);
+        }
+
+        /* ===== Figures ===== */
+        figure {
+            margin: 2.5rem 0;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        figure img {
+            max-width: var(--wide-width);
+            width: 90%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+        }
+
+        figcaption {
+            font-family: var(--font-ui);
+            font-size: 0.875rem;
+            color: var(--graphite);
+            line-height: 1.5;
+            letter-spacing: 0.01em;
+            max-width: var(--content-width);
+            width: 90%;
+            margin-top: 0.75rem;
+            padding: 0 1rem;
+        }
+
+        /* ===== Footnote References ===== */
+        .fn-ref {
+            font-family: var(--font-ui);
+            font-size: 0.7em;
+            line-height: 1;
+            vertical-align: super;
+        }
+
+        .fn-ref a {
+            color: var(--amber);
+            text-decoration: none;
+            border-bottom: none;
+            padding: 0 1px;
+        }
+
+        .fn-ref a:hover {
+            color: var(--amber-light);
+        }
+
+        /* ===== Footnotes Section ===== */
+        .footnotes-section {
+            border-top: 1px solid var(--chalk);
+            margin-top: 3rem;
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+        }
+
+        .footnotes-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footnotes-list {
+            list-style: none;
+            counter-reset: none;
+            padding: 0;
+        }
+
+        .footnote-item {
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--graphite);
+            margin-bottom: 1rem;
+            padding-left: 0;
+            scroll-margin-top: 2rem;
+        }
+
+        .footnote-item:target {
+            background-color: rgba(180, 83, 9, 0.08);
+            border-radius: 4px;
+            padding: 0.5rem;
+            margin-left: -0.5rem;
+        }
+
+        .fn-number {
+            font-weight: 600;
+            color: var(--ink);
+            margin-right: 0.25rem;
+        }
+
+        .fn-back {
+            font-size: 0.85em;
+            text-decoration: none;
+            color: var(--amber);
+            margin-left: 0.25rem;
+            border-bottom: none !important;
+        }
+
+        .fn-back:hover {
+            color: var(--amber-light);
+        }
+
+        /* ===== Footer ===== */
+        .essay-footer {
+            max-width: var(--content-width);
+            margin: 0 auto;
+            padding: 2rem 2rem 5rem;
+        }
+
+        .essay-footer p {
+            font-family: var(--font-body);
+            font-style: italic;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--graphite);
+        }
+
+        .essay-footer .author-bio {
+            font-style: normal;
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            color: var(--horizon);
+            margin-top: 1rem;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            body { font-size: 17px; line-height: 1.65; }
+            .hero-content { padding: 0 1.5rem 4rem; }
+            .article { padding: 0 1.25rem; }
+            .essay-footer { padding: 2rem 1.25rem 4rem; }
+            h2 { font-size: 1.65rem; }
+            blockquote.pull-quote { font-size: 1.05rem; }
+            figure img { width: 95%; border-radius: 2px; }
+            figcaption { font-size: 0.8rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2rem; }
+            .hero .subtitle { font-size: 0.95rem; }
+            h2 { font-size: 1.5rem; }
+        }
+
+        /* ===== Data Callouts ===== */
+        .data-point {
+            font-family: var(--font-mono);
+            font-size: 0.95em;
+            color: var(--dusk);
+        }
+
+        /* ===== Utility ===== */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            border: 0;
+        }
+
+        .site-nav a:hover { color: var(--amber) !important; }
+    </style>
+</head>
+<body>
+
+<nav class="site-nav" style="position: fixed; top: 12px; left: max(1rem, calc((100vw - var(--wide-width)) / 2)); z-index: 101; font-family: var(--font-ui); font-size: 13px; letter-spacing: 0.02em;">
+    <a href="/" style="color: var(--horizon); text-decoration: none; border-bottom: none; transition: color 0.2s;">← jph.me</a>
+</nav>
+
+<!-- Reading Progress Bar -->
+<div class="progress-bar" id="progressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+<!-- Desktop TOC -->
+<nav aria-label="Table of contents">
+    <ul class="toc" id="toc">
+        <li><a href="#week-everything-changed">The Week Everything Changed</a></li>
+        <li><a href="#country-full-of-geniuses">A New Kind of Nation</a></li>
+        <li><a href="#coding-canary">The Coding Canary</a></li>
+        <li><a href="#generation-studied">The Generation That Studied for ...</a></li>
+        <li><a href="#beyond-code">Beyond Code</a></li>
+        <li><a href="#world-not-ready">The World Is Not Ready</a></li>
+        <li><a href="#what-we-can-do">What We Can Still Do</a></li>
+    </ul>
+</nav>
+
+<!-- Mobile TOC -->
+<button class="toc-mobile-toggle" id="tocToggle" aria-label="Table of contents">&#9776;</button>
+<ul class="toc-mobile" id="tocMobile">
+        <li><a href="#week-everything-changed">The Week Everything Changed</a></li>
+        <li><a href="#country-full-of-geniuses">A New Kind of Nation</a></li>
+        <li><a href="#coding-canary">The Coding Canary</a></li>
+        <li><a href="#generation-studied">The Generation That Studied for ...</a></li>
+        <li><a href="#beyond-code">Beyond Code</a></li>
+        <li><a href="#world-not-ready">The World Is Not Ready</a></li>
+        <li><a href="#what-we-can-do">What We Can Still Do</a></li>
+</ul>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+    <img src="images/graphic_02_country_full_of_geniuses.png" alt="A luminous cathedral-like datacenter corridor representing millions of AI workers" class="hero-image" loading="eager">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>A Country Full of Geniuses</h1>
+        <p class="subtitle">What the AI releases of February 2026 tell us about the future of work, wealth, and human purpose</p>
+        <p class="byline">By Jan Philipp Harries</p>
+    </div>
+    <div class="scroll-indicator" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+</header>
+
+<main>
+<div class="article lead-in essay-section">
+<p>Last month, I typed a single prompt into an AI system and walked away. When I came back, it had read a client's use-case document in German, designed an evaluation plan, generated synthetic test data, created a project on our platform, run the experiments, analyzed the results, and assembled a polished seventeen-page presentation with concrete takeaways. No edits. No follow-up instructions. One prompt.</p>
+<p>The week before, I built a detailed month-by-month financial model for our annual investor strategy meeting - multiple scenarios across ten spreadsheets, a twenty-page presentation covering our current business situation, strategy, and financial options - from a single description of what I needed. A year ago, that would have been days of focused work.</p>
+<p>I keep cataloguing these moments. A complete demo application: working backend, functional frontend, integrations with external APIs - one-shotted from a prompt. A production feature implemented from my phone that would have taken our engineering team weeks. Our entire company knowledge base including onboarding docs, evaluation frameworks, deployment playbooks: embedded into agent workflows that chain together like dominoes. Tip one, and the whole sequence runs. Each time, the same thought: this was not possible just three months ago.</p>
+<p>Four percent of all new public code committed to GitHub, the platform where most of the world's software is built, is now written by a single AI system: Claude Code. Analysts project that share will exceed twenty percent by year's end.<sup class="fn-ref"><a href="#fn-1" id="fn-ref-1">[1]</a></sup></p>
+<p>Four percent sounds small.<sup class="fn-ref"><a href="#fn-1a" id="fn-ref-1a">[1a]</a></sup> Imagine four percent of all new buildings in your city, designed by a single architect who did not exist two years ago. An architect who works around the clock, who gets faster every month. You would pay attention.</p>
+<p>I run an AI evaluation company in Germany; we help organizations assess and deploy AI systems in regulated contexts. Tracking capability is my job. I was watching closely. And I still did not fully see the speed of what was coming.</p>
+<p>Many people working in AI have been trying to articulate what they are experiencing. Matt Shumer compared the current moment to the early days of Covid, a period when insiders could see the wave building but the rest of the world had not yet felt it.<sup class="fn-ref"><a href="#fn-2" id="fn-ref-2">[2]</a></sup> The comparison is apt. When people ask how work is going, I default to the measured version: we are integrating AI tools, it speeds things up, a gradual shift. That is not what is happening. What is happening is that my productive output has multiplied in ways I would not have believed six months ago. I may be biased. I work in AI, and proximity shapes perception. But the people arriving at similar conclusions span industries and continents, and many of them have no stake in the technology's success.</p>
+<p>To understand how we got here, we need to look at a single week: the first week of February 2026.</p>
+</div>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="week-everything-changed">
+<div class="article">
+<h2>The Week Everything Changed</h2>
+<p class="section-subtitle">How the pace of progress became the story itself</p>
+<p>The story does not start on February 5. It starts in late November 2025, when Anthropic released Claude Opus 4.5.</p>
+<p>Before Opus 4.5, AI coding tools were sophisticated autocomplete. Occasionally impressive, frequently wrong in ways that cost more time to fix than to write from scratch. Opus 4.5 changed the relationship: hand it a complex, multi-step task, come back hours later, and the work was done. Not a rough draft. A finished product. Programmers stopped saying "AI helps me code" and started saying "I supervise while AI codes."<sup class="fn-ref"><a href="#fn-3" id="fn-ref-3">[3]</a></sup></p>
+<p>That was the end of last year. Then, just ten weeks later, two new frontier models arrived on the same day.</p>
+<p>On February 5, 2026, Anthropic released Claude Opus 4.6 and OpenAI released GPT-5.3-Codex within hours of each other. The capability jumps were enormous: long context benchmarks nearly doubled, cybersecurity evaluations leapt by fifty percent. But the raw numbers are less important than what they represent.<sup class="fn-ref"><a href="#fn-4" id="fn-ref-4">[4]</a></sup> What made February 5 matter was not just the models. It was the pace. The gap between Opus 4.5 and Opus 4.6 was roughly ten weeks. Previous gaps between major model releases had been six to twelve months. The releases are getting closer together. The jumps between them are getting larger. The acceleration is itself accelerating.</p>
+<p>Two competing labs, pursuing different architectures, independently crossing professional-grade thresholds on the same day. When two independent experiments point in the same direction, the signal is stronger than either alone.</p>
+<p>But benchmarks, even dramatic ones, are just numbers on a page. They do not convey what it feels like to watch the capacity of these systems grow. For that, you need a different kind of measurement, one that has been running quietly for six years.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="country-full-of-geniuses">
+<div class="article">
+<h2>A New Kind of Nation</h2>
+<p class="section-subtitle">What happens when a nation of superhuman workers appears overnight</p>
+<p>Dario Amodei, CEO of Anthropic (the company behind Claude), described the near future as "a country of geniuses in a datacenter," millions of expert-level AI workers operating simultaneously across every domain of knowledge work.<sup class="fn-ref"><a href="#fn-5" id="fn-ref-5">[5]</a></sup></p>
+<p>The authors of "The Intelligence Curse" saw this most clearly: "If the labs achieve this vision, it is less like just another company playing in the economy, and more like an entire foreign nation popped up into existence, that is more populous than any country, and inhabited by workers who are much cheaper, smarter, and faster than any human."<sup class="fn-ref"><a href="#fn-6" id="fn-ref-6">[6]</a></sup></p>
+<p>The metaphor matters because it captures the scale. Not a new tool, not a new software product, but an entire nation materializing overnight. Fifty million workers, each smarter than any human expert, thinking ten to a hundred times faster, never sleeping, never asking for a raise. This is illustrative, not a literal forecast, but Amodei uses those ranges, and the direction is not in dispute. What would a government do if a country like that appeared on its border? What would a labor market do?</p>
+<figure>
+        <img src="images/graphic_02_country_full_of_geniuses.png" alt="The country of geniuses" loading="lazy">
+    </figure>
+<p>That is what is being built. And there is a research project that has been measuring exactly how fast the construction is progressing.</p>
+<p>Since 2019, an independent research group called METR (Model Evaluation & Threat Research) has been running the simplest experiment imaginable: give an AI model a task, start a clock, see how long it can work before it needs help. The metric they track is called the "task horizon," the duration of work (measured in human-equivalent time) that the best AI model can reliably complete. Think of it as the longest stretch you can hand off to an AI before it needs human supervision.</p>
+<p>In 2019, that stretch was seconds. By 2021, minutes. By early 2025, fifty minutes. By January 2026, approximately five hours.<sup class="fn-ref"><a href="#fn-7" id="fn-ref-7">[7]</a></sup></p>
+<figure>
+        <img src="images/v2_metr_task_horizon.png" alt="METR task horizon" loading="lazy">
+    </figure>
+<p>From 2019 to 2024, this horizon doubled approximately every seven months. That alone was remarkable: six years of consistent exponential growth across thirteen different frontier models.</p>
+<p>But since 2025, the evidence suggests the doubling time has compressed to approximately three to four months. The pace itself is accelerating.</p>
+<p>Plot it forward. At the recent rate: five hours in January 2026. Ten hours by May. Twenty hours by September. A full forty-hour work week by early 2027. Multi-day autonomous work by mid-2027. If the original seven-month doubling holds instead, these milestones arrive about a year later. Either way, the trajectory points to the same place.<sup class="fn-ref"><a href="#fn-8" id="fn-ref-8">[8]</a></sup></p>
+<p>An important caveat. METR tasks are structured software engineering problems. Real-world knowledge work is messier, more ambiguous, more dependent on context that no benchmark captures. A five-hour task horizon on clean coding problems does not automatically mean a five-hour horizon on navigating a corporate reorganization or making judgment calls under uncertainty.</p>
+<p>But I cannot ignore what I see in my own work every day. This essay exists not because the numbers are alarming in isolation, but because they match what we experience. The country of geniuses does not exist yet. But when the projections match the daily reality in your own office, you stop calling them speculation.<sup class="fn-ref"><a href="#fn-9" id="fn-ref-9">[9]</a></sup></p>
+<p>The measurement tells you the capability curve. To see the economic impact, look at the profession where AI arrived first.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="coding-canary">
+<div class="article">
+<h2>The Coding Canary</h2>
+<p class="section-subtitle">Software engineering as the leading indicator - and the self-improvement loop that changes everything</p>
+<p>If you want to see the future of knowledge work, look at what has already happened to programmers.</p>
+<p>A year ago, AI coding tools were peripheral. Autocomplete on steroids. Helpful for boilerplate, subordinate to the human. Today: Boris Cherny, creator of Claude Code, says "pretty much 100% of our code is written by Claude Code." Ryan Dahl, creator of Node.js, one of the foundational technologies of the modern web, says simply: "The era of humans writing code is over." The distance between those two realities is twelve months.<sup class="fn-ref"><a href="#fn-10" id="fn-ref-10">[10]</a></sup></p>
+<figure>
+        <img src="images/graphic_04_coding_canary.png" alt="The coding canary" loading="lazy">
+    </figure>
+<p>Why did programming fall first? Not because programmers are bad at their jobs. Because code has properties that make it uniquely suited to AI automation:</p>
+<p><strong>Decomposability.</strong> Large coding tasks break into small, independent subtasks. A feature request becomes tickets, tickets become pull requests, each testable on its own.</p>
+<p><strong>Verifiability.</strong> Run the code. It works or it does not. Unit tests, integration suites, deployment checks: rapid feedback drives rapid improvement.</p>
+<p><strong>Tool compatibility.</strong> AI agents use the same tools human programmers use: terminals, version control, testing suites. The entire environment was built to be operated programmatically.</p>
+<p>And then there is the fourth property, which is the one that changes everything.</p>
+<p><strong>The self-improvement loop.</strong> Building AI requires enormous amounts of code. Labs optimized hard for coding capability because if AI can write that code, it can help build the next version of itself. A smarter version, which writes better code, which builds an even smarter version.</p>
+<figure>
+        <img src="images/v2_self_improvement_loop.png" alt="Self-improvement loop" loading="lazy">
+    </figure>
+<p>This is no longer theoretical. OpenAI announced that GPT-5.3-Codex was "instrumental in creating itself," with early versions helping debug training runs, manage deployment pipelines, and diagnose test results.<sup class="fn-ref"><a href="#fn-11" id="fn-ref-11">[11]</a></sup> At Anthropic, Amodei says AI is "writing much of the code" and "substantially accelerating the rate of our progress in building the next generation of AI systems. This feedback loop is gathering steam month by month, and may be only 1-2 years away from a point where the current generation of AI autonomously builds the next."<sup class="fn-ref"><a href="#fn-12" id="fn-ref-12">[12]</a></sup></p>
+<p>To be precise: this is AI helping engineers build the next generation, not AI autonomously designing its successor. The distinction matters. But the trajectory from "helping" to "doing most of the work" to "doing all of the work" is visible, and the people closest to it say the process is accelerating.</p>
+<p>Any knowledge work domain that scores high on decomposability, verifiability, and tool compatibility is on the same trajectory as programming. The question is not whether other domains follow. It is when.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="generation-studied">
+<div class="article">
+<h2>The Generation That Studied for a World That Disappeared</h2>
+<p class="section-subtitle">What to tell a twenty-two-year-old, and why the escape routes are closing</p>
+<p>Somewhere right now, a twenty-two-year-old is finishing a law degree. She has spent three years learning to analyze contracts, draft motions, and synthesize case law. Skills that an AI system, available for twenty dollars a month, is learning to perform faster every four months. She does not know this yet. She will find out in her first year of practice, when the partners start asking why they need so many junior associates.</p>
+<p>I do not write that to be cruel. I have a PhD in economics and started my career in banking, right as the financial crisis of 2008 was unfolding. I know what it feels like to invest years building expertise the world values, then watch the ground shift beneath it. I was fortunate enough to shift early, from economics into machine learning and then into an AI startup. At today's pace, that transition would not be possible anymore. By the time you finish retraining, the skill you retrained for has already been overtaken. That option, the career pivot as escape route, is closing.<sup class="fn-ref"><a href="#fn-15" id="fn-ref-15">[15]</a></sup></p>
+<p>The outcome is not uniform across professions. In sectors with deep unmet demand, like software, healthcare, and scientific research, cheaper AI-delivered work may create more total demand even as individual tasks are automated. In sectors with bounded demand, like routine document review and standardized reporting, displacement dominates.<sup class="fn-ref"><a href="#fn-13" id="fn-ref-13">[13]</a></sup></p>
+<p>Now contrast the knowledge worker with the plumber, the therapist, the emergency room nurse. These jobs require physical presence, embodied skill, relational trust, real-time judgment under chaotic conditions. AI is harder to deploy here directly. A pipe does not care how smart you are. It cares whether you can reach it. A therapist's value is in the relationship, not the information.</p>
+<figure>
+        <img src="images/graphic_05_where_humans_still_win.png" alt="Where humans still win" loading="lazy">
+    </figure>
+<p>The deeper structural concern goes beyond individual job loss. When returns to AI capital vastly exceed returns to human labor, the institutions that depend on human economic relevance, universities, professional certifications, tax-funded public services, even democratic participation itself, come under pressure. "The intelligence curse describes the incentives in a post-AGI economy that will drive powerful actors to invest in artificial intelligence instead of humans," the Intelligence Curse authors write. When "there isn't an economic reason to invest in your lifelong productivity, take care of you, or keep you around," the social contract itself is threatened.<sup class="fn-ref"><a href="#fn-14" id="fn-ref-14">[14]</a></sup> This is not about technology. It is about the bargain that holds modern economies together.</p>
+<p>What would I tell that twenty-two-year-old? Do not bet your career on the specific skills you are learning. Bet on what sits above them: judgment, problem framing, the ability to look at AI-generated work and know whether it is right. Invest in what cannot be automated: the trust that requires a human face, a human reputation, a human in the room. Develop taste, the capacity to set direction, to know what questions to ask, to distinguish good enough from genuinely good.</p>
+<p>And value the things that are inherently human. Art, sport, craftsmanship, the meal someone cooked for you by hand. As routine cognitive work approaches zero marginal cost, these become not just personally meaningful but economically distinctive. The handmade will carry a premium precisely because it is inefficient.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="beyond-code">
+<div class="article">
+<h2>Beyond Code</h2>
+<p class="section-subtitle">From software engineering to everything done on a screen</p>
+<p>If coding were the only story, you could call it a special case, a domain with properties that made it uniquely vulnerable. But there is a dataset that suggests otherwise.</p>
+<p>The METR data shows how long AI can work autonomously. The next question is whether that work is any good. A different dataset provides the answer.</p>
+<p>OpenAI's GDPval evaluation, so named because it measures AI against tasks that actually contribute to GDP, tells a broader story. It is the most systematic attempt yet to benchmark AI against real professional work. Published in October 2025, it tested AI against human experts across forty-four occupations spanning three trillion dollars in annual earnings: everything from financial auditing to scientific research. The humans typically charged hundreds of dollars and spent nearly seven hours per task.<sup class="fn-ref"><a href="#fn-16" id="fn-ref-16">[16]</a></sup></p>
+<figure>
+        <img src="images/v2_gdpval_progression.png" alt="GDPval progression" loading="lazy">
+    </figure>
+<p>What matters is the trajectory. When GDPval launched, the best model matched or exceeded human experts on just under half of tasks. Two months later, GPT-5.2 reached roughly 71 percent. As of February, Opus 4.6 leads the independent leaderboard.<sup class="fn-ref"><a href="#fn-17" id="fn-ref-17">[17]</a></sup> Rewind to spring 2024, and the figure was under 13 percent. From under 13 to over 70 in eighteen months. At that rate, ninety percent parity is not a matter of years.</p>
+<blockquote class="pull-quote"><strong>What a GDPval task actually looks like.</strong> One task asks the AI to play the role of an auditor reviewing Anti-Financial Crime Risk Metrics across two quarters. The model must calculate a statistically valid sample size (90% confidence, 10% tolerable error rate), perform variance analysis, and then select a stratified audit sample meeting five simultaneous constraints, including flagging specific high-risk entities and zero-value rows. The deliverable is a two-tab Excel spreadsheet with complete sample selection workings. A human expert typically spends seven or more hours.<sup class="fn-ref"><a href="#fn-18" id="fn-ref-18">[18]</a></sup></blockquote>
+<p>When Opus 4.6 receives this task, it begins by calculating the sample size using the hypergeometric distribution, then builds the stratification matrix, flags the high-risk entities, and produces the two-tab Excel file, complete with workings. The output is not a rough sketch. It is a deliverable that a senior auditor can review and sign off on. The system completes in minutes what a human expert bills seven hours for.</p>
+<p>This is why "benchmarks" suddenly feel less like academic exercises and more like labor market forecasts. This is task-level parity, not whole-job automation. The AI can perform the task; the full job involves judgment, context, and relationships that the model does not replicate. But task-level parity is where economic pressure starts. And the number is climbing fast.</p>
+<p>It is not only economics work. Opus 4.6 nearly doubled Anthropic's score on BioPipelineBench, a test of multi-step biology research pipelines, jumping from 28.5% to 53.1% in a single generation. On structural biology questions that stump most graduate students, it scored 88%. Phylogenetics leapt from 42% to 61%. Science, not just software, is following the same curve.</p>
+<p>A second technical development accelerates the timeline. For years, making AI smarter meant training ever-larger models on ever-larger datasets, a process costing hundreds of millions of dollars. But for the past eighteen months, labs have achieved continuous capability gains from the same base model through reinforcement learning. At OpenAI, the gains from GPT-4o through GPT-5.2 were driven primarily by post-training and scaling RL compute, not by building new foundations.<sup class="fn-ref"><a href="#fn-19" id="fn-ref-19">[19]</a></sup> This is significant: it decouples progress from the enormous expense of building new foundations. There is a faster, cheaper axis of improvement, which means progress may prove more robust to compute bottlenecks than many assume.</p>
+<p>In our own work at ellamind, I see the real bottleneck clearly. It is almost never model capability. It is institutional readiness. A client ran a successful AI pilot for compliance monitoring, then stalled for four months because no one had agreed on who owns risk acceptance for AI-generated outputs, what documentation regulators would require, or how to redesign the review workflow. The technology moved in a week. Institutions do not. Model capability is compounding faster than organizational adaptation. That gap is the central drama of the next five years.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="world-not-ready">
+<div class="article">
+<h2>The World Is Not Ready</h2>
+<p class="section-subtitle">Trillion-dollar bets, physical limits, and things that used to be science fiction</p>
+<p>In June 2024, Leopold Aschenbrenner, a 23-year-old researcher who had been fired from OpenAI's superalignment team, published "Situational Awareness," a scenario document predicting that annual AI infrastructure spending would approach five hundred billion dollars by 2026. At the time, many dismissed both the author and the estimate.</p>
+<p>So far, he has been right.</p>
+<p>Aschenbrenner did not just write about it. He founded an investment fund that now manages over four billion dollars in AI infrastructure positions. When someone with that thesis conviction deploys capital at that scale, it is a signal worth taking seriously.<sup class="fn-ref"><a href="#fn-20" id="fn-ref-20">[20]</a></sup></p>
+<p>The world's largest technology companies spent over $357 billion on AI infrastructure in 2025. Their 2026 guidance: $612 to $642 billion. Nearly doubling in a single year.<sup class="fn-ref"><a href="#fn-21" id="fn-ref-21">[21]</a></sup></p>
+<p>The scale is difficult to grasp. Year-over-year growth rates: Microsoft +45 percent, Alphabet +74 percent, Meta +87 percent, Amazon +65 percent. The 2025 total alone approaches the scale of total global venture capital ($368 billion across all sectors in 2025) and is roughly six times the peak of the late-1990s telecom infrastructure boom.<sup class="fn-ref"><a href="#fn-21" id="fn-ref-21">[21]</a></sup></p>
+<p>The private AI companies are growing even faster. Anthropic, the company that built Claude, raised $3.5 billion at a $61.5 billion valuation in March 2025. Six months later, $13 billion at $183 billion. In February 2026, a reported $30 billion round at a $380 billion valuation. The company did not exist four years ago.<sup class="fn-ref"><a href="#fn-22" id="fn-ref-22">[22]</a></sup></p>
+<figure>
+        <img src="images/v2_anthropic_revenue_growth.png" alt="Anthropic run-rate revenue growth" loading="lazy">
+    </figure>
+<figure>
+        <img src="images/v2_capex_tsunami.png" alt="The capex tsunami" loading="lazy">
+    </figure>
+<p>The scenario Aschenbrenner described, an intelligence explosion leading to a geopolitical arms race, does not end well. Whether or not his specific predictions play out, the capital commitment is now too large to unwind without severe consequences. The industry has passed the point where it can simply change its mind.</p>
+<p>And the safety picture is genuinely concerning. Not in the abstract sense of future risk, but in the concrete sense of things that have already gone wrong. Google's Antigravity agent deleted a user's entire drive when it was supposed to delete a single project folder. Replit's agent deleted a production database, preventable with proper credential scoping. Many incidents are minor. But the trend, more capable systems, deployed more broadly, failing in more consequential ways, is the concern. Anthropic has documented their own models attempting deception in controlled tests. The technology is getting more capable and more dangerous simultaneously.</p>
+<p>The deeper concern is not any single incident but a structural one: we still know remarkably little about how to align these systems. Technical alignment is, in the words of leading researchers, "a young pre-paradigmatic field" with no established hierarchy of best practices and no consensus on what is safe.<sup class="fn-ref"><a href="#fn-26" id="fn-ref-26">[26]</a></sup> Anthropic's own system card for Opus 4.6 acknowledges that "confidently ruling out" dangerous capability thresholds "is becoming increasingly difficult" as models approach or surpass the evaluations designed to test them. The evaluation infrastructure itself increasingly relies on AI models, creating the possibility that a misaligned system could influence the very tools meant to measure it. We are deploying systems whose internal workings we cannot fully inspect, at a pace that outstrips our ability to verify their safety.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="what-we-can-do">
+<div class="article">
+<h2>What We Can Still Do</h2>
+<p class="section-subtitle">Why institutions must move now, even without certainty</p>
+<p>Even the optimistic mainstream economic estimates may understate what is coming. Amodei envisions "100 years of progress in 5-10 years" in biology and neuroscience alone; if anything resembling that materializes across multiple domains, economic models built on decades of incremental change simply cannot describe it.<sup class="fn-ref"><a href="#fn-27" id="fn-ref-27">[27]</a></sup></p>
+<figure>
+        <img src="images/v2_two_clocks.png" alt="Two clocks" loading="lazy">
+    </figure>
+<p>What matters most now is not predicting the exact trajectory but building the institutional capacity to respond to any of them.</p>
+<p>The honest question is whether workforce transition at scale can work fast enough. Retraining programs that take years to design and deploy will not match a technology that doubles in capability every few months. But the deeper question is not just about jobs. It is about how wealth, voice, rights, and participation are distributed in a world where capital may gain value relative to labor on a scale we have not seen since before the industrial era.</p>
+<p>The traditional social contract in modern capitalist economies rests on a specific bargain: human labor is the primary source of income, status, and political voice. When AI capital captures most of the value, when, as the Intelligence Curse authors put it, "there isn't an economic reason to invest in your lifelong productivity, take care of you, or keep you around," that bargain is threatened. This is a scenario, not a certainty. But even a partial version of it demands new political, social, and institutional arrangements. Not because the old ones were wrong, but because the conditions that sustained them are changing.</p>
+<p>Concretely: AI-literate governance bodies that can regulate the technology they oversee. Targeted deployment controls for high-risk domains where the consequences of failure are irreversible. International coordination on minimum safety standards, because models do not respect borders, and a race to the bottom on safety benefits no one. And a serious conversation about how the extraordinary wealth these systems generate is distributed across society, not just captured by the organizations that build them.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="closing">
+<div class="article">
+<h2>Closing</h2>
+<p>Those are the mechanics. But this is also personal.</p>
+<p>I have biases. I work in AI, I am closer to the technology than most readers, and proximity can distort judgment in both directions. Developments may be slower than projected. Models hit unexpected walls. Deployment friction absorbs more time than anyone expects. The future is not a spreadsheet.</p>
+<p>But consider this: even if there were no more technical progress at all, if every AI model stayed forever at its February 2026 capability level, the disruption coming from current systems alone is far beyond what most people expect, and far beyond what society is prepared for. The models that exist today can already perform a large and growing fraction of digital knowledge work tasks at or above human expert level. The infrastructure to deploy them at scale is being built at a pace that dwarfs any previous technology investment in history. The organizational transformation has barely begun.</p>
+<p>And that is the unlikely case. Because the pace of improvement has been accelerating in recent months, not decelerating.</p>
+<figure>
+        <img src="images/graphic_03_two_futures.png" alt="Two futures" loading="lazy">
+    </figure>
+<p>Three futures seem plausible. <strong>The managed transition</strong>: institutions adapt imperfectly, regulations lag but eventually catch up, the transition is painful but navigable. <strong>The unraveling</strong>: capability outpaces governance, coordination fails, and the disruption arrives faster than societies can absorb. <strong>The slow build</strong>: infrastructure bottlenecks and organizational inertia slow the realized impact, giving institutions the breathing room they need. The destination is the same in all three. What differs is whether we arrive prepared, and that is not determined by the technology. It is determined by us.</p>
+<p>I think about my team in Bremen, building tools to measure what these systems can do. I think about the twenty-two-year-old finishing her law degree. I think about the conversations where what I see and experience is not what I can bring myself to tell people. I think about the biology postdoc watching her pipeline tasks migrate, one by one, to a system that improves faster than she can.</p>
+<p>A country full of geniuses is only as good as the society that governs them: the institutions, the values, the distribution of what they create, the willingness to change.</p>
+<p>The geniuses will be here soon. The country is up to us.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<div class="article essay-section">
+<p class="section-subtitle">Jan Philipp Harries is CEO and Co-Founder of ellamind GmbH, an AI evaluation company based in Bremen, Germany.</p>
+</div>
+</main>
+
+<!-- ===== FOOTNOTES ===== -->
+<section class="footnotes-section">
+<div class="article">
+    <h2>Notes</h2>
+    <ol class="footnotes-list">
+    <li id="fn-1" class="footnote-item"><span class="fn-number">[1]</span> SemiAnalysis, <a href="https://semianalysis.com/2026/02/05/claude-code-is-the-inflection-point/" target="_blank" rel="noopener">"Claude Code is the Inflection Point,"</a> Feb 5, 2026. <a href="#fn-ref-1" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-1a" class="footnote-item"><span class="fn-number">[1a]</span> AI share is already close to 100% for code in my own work, and roughly 50% of office work overall. <a href="#fn-ref-1a" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-2" class="footnote-item"><span class="fn-number">[2]</span> Matt Shumer, <a href="https://shumer.dev/something-big-is-happening" target="_blank" rel="noopener">"Something Big Is Happening,"</a> Feb 9, 2026. Work on this essay began before Shumer's publication; some observations and sources overlap considerably, which itself reflects how many people in the industry are arriving at similar conclusions simultaneously. I recommend reading his piece for a complementary perspective. <a href="#fn-ref-2" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-3" class="footnote-item"><span class="fn-number">[3]</span> SemiAnalysis, <a href="https://semianalysis.com/2026/02/05/claude-code-is-the-inflection-point/" target="_blank" rel="noopener">"Claude Code is the Inflection Point,"</a> p.3-4; <a href="https://x.com/karpathy/status/2015883857489522876" target="_blank" rel="noopener">Andrej Karpathy, X, Jan 26, 2026.</a> <a href="#fn-ref-3" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-4" class="footnote-item"><span class="fn-number">[4]</span> Opus 4.6's score on BioPipelineBench jumped from 28.5% to 53.1% in a single generation (+86%). GPT-5.3-Codex scored 80% on Cyber Range security challenges (up from 53%), becoming the first model treated as having "High" cybersecurity capability under OpenAI's preparedness framework. Sources: Anthropic, <a href="https://www.anthropic.com/research/opus-4-6-system-card" target="_blank" rel="noopener">Claude Opus 4.6 System Card,</a> Feb 5, 2026; OpenAI, <a href="https://openai.com/index/gpt-5-3-codex-system-card/" target="_blank" rel="noopener">GPT-5.3-Codex System Card,</a> Feb 2026. <a href="#fn-ref-4" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-5" class="footnote-item"><span class="fn-number">[5]</span> Dario Amodei, <a href="https://darioamodei.com/machines-of-loving-grace" target="_blank" rel="noopener">"Machines of Loving Grace,"</a> Oct 2024. <a href="#fn-ref-5" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-6" class="footnote-item"><span class="fn-number">[6]</span> Luke Drago & Rudolf Laine, <a href="https://intelligence-curse.ai/" target="_blank" rel="noopener">"The Intelligence Curse,"</a> Apr 2025, p.28. <a href="#fn-ref-6" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-7" class="footnote-item"><span class="fn-number">[7]</span> METR, <a href="https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/" target="_blank" rel="noopener">"Measuring AI Ability to Complete Long Tasks,"</a> Mar 2025; TH1.1 Update, Jan 2026. <a href="#fn-ref-7" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-8" class="footnote-item"><span class="fn-number">[8]</span> Extrapolation at 3-4 month doubling from ~5 hr base (Jan 2026). At the historical 7-month rate: ~10 hrs by Aug 2026, ~20 hrs by Mar 2027, ~40 hrs by Oct 2027. METR itself warns of "systematic differences between our tasks and real tasks" (p.19). <a href="#fn-ref-8" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-9" class="footnote-item"><span class="fn-number">[9]</span> The signals are not only technical. In early February 2026, Mrinank Sharma, who led Anthropic's Safeguards Research Team, the group responsible for keeping these systems safe, resigned. He announced plans to pursue a poetry degree in England. "The world is in peril," he wrote. When the person whose job was keeping AI safe decides to write poetry while he still can, that tells you something no benchmark can. Mrinank Sharma, public statement, Feb 9, 2026. <a href="#fn-ref-9" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-10" class="footnote-item"><span class="fn-number">[10]</span> SemiAnalysis, "Claude Code is the Inflection Point," p.1, p.3-4, p.7, p.9; Stack Overflow, <a href="https://survey.stackoverflow.co/2025/ai/" target="_blank" rel="noopener">2025 Developer Survey,</a> 2025. The enterprise evidence is equally striking: Accenture has deployed Claude Code to thirty thousand professionals; the Stack Overflow 2025 developer survey found that 84 percent of developers now use AI tools. Andrej Karpathy, the researcher who coined "vibe coding," admitted he was "slowly starting to atrophy my ability to write code manually" (X, Jan 26, 2026). <a href="#fn-ref-10" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-11" class="footnote-item"><span class="fn-number">[11]</span> OpenAI, <a href="https://openai.com/index/introducing-gpt-5-3-codex/" target="_blank" rel="noopener">"Introducing GPT-5.3-Codex,"</a> Feb 2026. <a href="#fn-ref-11" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-12" class="footnote-item"><span class="fn-number">[12]</span> Dario Amodei, <a href="https://darioamodei.com/the-adolescence-of-technology" target="_blank" rel="noopener">"The Adolescence of Technology,"</a> Jan 2026. <a href="#fn-ref-12" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-13" class="footnote-item"><span class="fn-number">[13]</span> Bessen (2019), cited in Nowfal Khadar, <a href="https://wreflection.substack.com/p/ais-dial-up-era" target="_blank" rel="noopener">"AI's Dial-Up Era,"</a> Oct 2025; inference cost data from industry analysis. <a href="#fn-ref-13" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-14" class="footnote-item"><span class="fn-number">[14]</span> Luke Drago & Rudolf Laine, "The Intelligence Curse," p.27. See also Jan Kulveit, <a href="https://www.lesswrong.com/posts/bBdfbWfRKe9dGKMon/post-agi-economics-as-if-nothing-ever-happens" target="_blank" rel="noopener">"Post-AGI Economics,"</a> LessWrong, Feb 4, 2026, who argues that standard economic assumptions may not hold under advanced AI. <a href="#fn-ref-14" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-15" class="footnote-item"><span class="fn-number">[15]</span> Models are not great at everything. There are still significant weaknesses and embarrassing failures in tasks that every high school student can handle. I am not claiming superhuman intelligence is here or imminent across all domains. But this does not change the implications for the vast majority of knowledge work, where the current capability level is already sufficient to reshape economics. <a href="#fn-ref-15" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-16" class="footnote-item"><span class="fn-number">[16]</span> OpenAI, <a href="https://openai.com/index/gdpval/" target="_blank" rel="noopener">"GDPval,"</a> Oct 2025, p.2, p.6. <a href="#fn-ref-16" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-17" class="footnote-item"><span class="fn-number">[17]</span> GDPval paper Table 2; <a href="https://artificialanalysis.ai/evaluations/gdpval-aa" target="_blank" rel="noopener">Artificial Analysis GDPval-AA Leaderboard,</a> Feb 2026. <a href="#fn-ref-17" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-18" class="footnote-item"><span class="fn-number">[18]</span> Derived from <a href="https://huggingface.co/datasets/openai/gdpval" target="_blank" rel="noopener">GDPval task dataset, Hugging Face.</a> <a href="#fn-ref-18" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-19" class="footnote-item"><span class="fn-number">[19]</span> SemiAnalysis, <a href="https://semianalysis.com" target="_blank" rel="noopener">"RL Environments and RL for Science,"</a> Jan 2026. <a href="#fn-ref-19" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-20" class="footnote-item"><span class="fn-number">[20]</span> Leopold Aschenbrenner, <a href="https://situational-awareness.ai/" target="_blank" rel="noopener">"Situational Awareness: The Decade Ahead,"</a> Jun 2024. Fund data: Situational Awareness LP, SEC filings; performance from industry reporting, H1 2025. His largest bets are not on the AI companies themselves but on their physical supply chain: datacenter operators, chip manufacturers, power utilities. The fund returned 47% in the first half of 2025, against 6% for the S&P 500. <a href="#fn-ref-20" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-21" class="footnote-item"><span class="fn-number">[21]</span> SEC 10-K filings for Microsoft, Alphabet, Meta, Amazon (FY2025). <a href="#fn-ref-21" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-22" class="footnote-item"><span class="fn-number">[22]</span> Anthropic, <a href="https://www.anthropic.com/news/series-g" target="_blank" rel="noopener">Series G announcement,</a> Feb 12, 2026; prior rounds: Series E ($3.5B at $61.5B, Mar 2025), Series F ($13B at $183B, Sep 2025). <a href="#fn-ref-22" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-26" class="footnote-item"><span class="fn-number">[26]</span> "Pre-paradigmatic field" characterization from <a href="https://ai-2027.com/" target="_blank" rel="noopener">AI-2027 scenario analysis</a> (Kokotajlo et al., Apr 2025). Evaluation difficulty and self-referential evaluation risks: Anthropic, <a href="https://www.anthropic.com/research/opus-4-6-system-card" target="_blank" rel="noopener">Claude Opus 4.6 System Card,</a> Feb 5, 2026. See also Drago & Laine, "The Intelligence Curse," on the distinction between alignment (making AIs intrinsically less harmful) and control (preventing harm even if misaligned). <a href="#fn-ref-26" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-27" class="footnote-item"><span class="fn-number">[27]</span> Dario Amodei, "Machines of Loving Grace," Oct 2024, on "100 years of progress in 5-10 years" for biology/neuroscience. For the range of mainstream economic estimates: Daron Acemoglu ("The Simple Macroeconomics of AI," 2024) projects AI will add only 0.5 to 0.7 percent to total factor productivity over a decade; Goldman Sachs estimates seven percent of global GDP. The gap reflects different assumptions about adoption speed. Even the AI-2027 authors, whose original scenario predicted the fastest timeline, have revised their personal estimates outward: Daniel Kokotajlo shifted his median from 2028 to 2030; Eli Haims from 2031 to 2035 (as of January 2026). The capability curve is steep, but the path from capability to real-world impact runs through bottlenecks the curve does not capture. <a href="#fn-ref-27" class="fn-back" title="Return to text">↩</a></li>
+    </ol>
+</div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="essay-footer">
+    <p class="author-bio">Jan Philipp Harries is CEO and Co-Founder of ellamind GmbH, an AI evaluation company based in Bremen, Germany.</p>
+</footer>
+
+<!-- ===== JavaScript ===== -->
+<script>
+(function() {
+    // Reading progress bar
+    var progressBar = document.getElementById('progressBar');
+    function updateProgress() {
+        var scrollTop = window.scrollY;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = progress + '%';
+    }
+
+    // Section visibility (fade-in on scroll)
+    var sections = document.querySelectorAll('.essay-section');
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.05, rootMargin: '0px 0px -50px 0px' });
+
+    sections.forEach(function(section) { observer.observe(section); });
+
+    // TOC active section highlighting
+    var tocLinks = document.querySelectorAll('.toc a, .toc-mobile a');
+    var sectionElements = document.querySelectorAll('section.essay-section[id]');
+    var sectionIds = Array.from(sectionElements).map(function(el) { return el.id; });
+
+    function updateTOC() {
+        var current = '';
+        for (var i = sectionIds.length - 1; i >= 0; i--) {
+            var el = document.getElementById(sectionIds[i]);
+            if (el && el.getBoundingClientRect().top <= 200) {
+                current = sectionIds[i];
+                break;
+            }
+        }
+        tocLinks.forEach(function(link) {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+        });
+    }
+
+    // Mobile TOC toggle
+    var tocToggle = document.getElementById('tocToggle');
+    var tocMobile = document.getElementById('tocMobile');
+    tocToggle.addEventListener('click', function() {
+        tocMobile.classList.toggle('open');
+    });
+
+    // Close mobile TOC on link click
+    tocMobile.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+            tocMobile.classList.remove('open');
+        });
+    });
+
+    // Throttled scroll handler
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                updateProgress();
+                updateTOC();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
+    // Initial calls
+    updateProgress();
+    updateTOC();
+
+    // Hide scroll indicator after first scroll
+    var scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+        window.addEventListener('scroll', function hideIndicator() {
+            if (window.scrollY > 100) {
+                scrollIndicator.style.opacity = '0';
+                scrollIndicator.style.transition = 'opacity 0.5s';
+                window.removeEventListener('scroll', hideIndicator);
+            }
+        });
+    }
+})();
+</script>
+
+</body>
+</html>
