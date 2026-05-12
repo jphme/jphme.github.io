@@ -40,6 +40,14 @@ These edits are needed because the source HTML doesn't include them. Use the ess
 
 - **OG image** (absolute URL): change `content="images/<hero-image-filename>"` to `content="https://jph.me/essays/<slug>/images/<hero-image-filename>"`. The hero image filename is whatever the source file already sets in `<meta property="og:image">`.
 - **Canonical URL**: add `<link rel="canonical" href="https://jph.me/essays/<slug>/">` immediately before the `<!-- Fonts -->` comment.
+- **Favicon links**: immediately after the canonical line, add (same on every page — the assets live at repo root):
+
+  ```html
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  ```
 - **Back-link CSS**: add `.site-nav a:hover { color: var(--amber) !important; }` immediately before `</style>`.
 - **Back-link nav**: add immediately before the `<div class="progress-bar"` element (this puts the `← jph.me` link in the fixed top bar):
 
