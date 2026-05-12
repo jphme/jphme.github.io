@@ -95,6 +95,8 @@
         }
         .toc a:hover, .toc a.active { color: var(--amber); }
         .toc a.active { font-weight: 500; }
+        .toc.scrolled a { color: var(--slate); }
+        .toc.scrolled a:hover, .toc.scrolled a.active { color: var(--amber); }
         @media (max-width: 1400px) { .toc { display: none; } }
 
         .toc-mobile-toggle {
@@ -641,8 +643,8 @@
 <p><strong>Tool 2: The bottleneck rotation map.</strong> Bottlenecks move. Yesterday it was power, today it is TSMC N3 and CoWoS, tomorrow it might be grid interconnect, verifier headcount, or court calendars. The mistake is fixating on a single constraint and missing the rotation. Practical heuristic: by the time a bottleneck becomes consensus, the binding constraint may have already moved one layer downstream. The discipline applies to physical bottlenecks and equally to institutional ones. When the press finally writes about court backlogs, the binding constraint may have already moved to clerk training capacity.</p>
 <p><strong>Tool 3: Personal positioning.</strong> Invest in <em>verification</em> skills (judgment, taste, accountability, domain ownership) over <em>execution</em> skills (writing, coding, designing, basic analysis). The first set is bottleneck-side and appreciates. The second is the side AI compresses. This is a directional bet, not a recipe; the specific skills depend on the domain. But the direction is clear.</p>
 <h3>Closing</h3>
-<p>I have been in AI deployment for years now, at the frontier of what models can do day to day, and I am still surprised by the speed at which the producer side is improving. If the curve continues as Anthropic and OpenAI are now openly betting it will, with automated AI research arriving within roughly two years, the question that dominates the late-2020s will not be whether the geniuses arrive in the datacenter. It will be how well we manage the bottlenecks they slam into when they do, in the economy, in the courts, in the labs, and inside the companies and ministries trying to use them.</p>
-<p>The slowest clock in any system is not necessarily a problem. It is a place to invest.</p>
+<p>I have been in AI deployment for years now, at the frontier of what models can do day to day, and I am still surprised by the speed at which the producer side is improving. If the curve continues as Anthropic and OpenAI are now openly betting it will, with automated AI research arriving within roughly two years, the question that dominates the late-2020s shifts from whether the geniuses arrive in the datacenter to how well we manage the bottlenecks they slam into when they do, in the economy, in the courts, in the labs, and inside the companies and ministries trying to use them.</p>
+<p>The slowest clock is rarely where the excitement is. It is where the patient work sits, where the next decade's quietest fortunes will be earned, and the loudest institutional failures avoided.</p>
 </div>
 </section>
 </main>
@@ -650,9 +652,18 @@
 <!-- ===== AUTHOR BIO ===== -->
 <aside class="author-bio-block">
     <div class="article">
-        <p class="author-bio">JP Harries is CEO and Co-Founder of ellamind GmbH, an AI evaluation company based in Bremen, Germany.</p>
+        <p class="author-bio">JP Harries is CEO and Co-Founder of ellamind GmbH, a startup building &amp; evaluating AI agents based in Bremen, Germany.</p>
     </div>
 </aside>
+
+<hr class="section-divider">
+<section class="acknowledgements-section">
+    <div class="article">
+        <p>I am always happy to discuss this work and receive feedback. You can find me on <a href="https://www.linkedin.com/in/jphme/" target="_blank" rel="noopener">LinkedIn</a> and <a href="https://x.com/jphme" target="_blank" rel="noopener">X (Twitter)</a>.</p>
+        <h2>Acknowledgements</h2>
+        <p>Many thanks to Christoph Pott for providing feedback on a first draft of this essay.</p>
+    </div>
+</section>
 
 <!-- ===== FOOTNOTES ===== -->
 <section class="footnotes-section">
@@ -692,6 +703,18 @@
     }, { threshold: 0.05, rootMargin: '0px 0px -50px 0px' });
     sections.forEach(function(section) { observer.observe(section); });
 
+    var tocNav = document.getElementById('toc');
+    var heroEl = document.querySelector('.hero');
+    function updateTOCVisibility() {
+        if (!heroEl || !tocNav) return;
+        var heroBottom = heroEl.getBoundingClientRect().bottom;
+        if (heroBottom <= 0) {
+            tocNav.classList.add('scrolled');
+        } else {
+            tocNav.classList.remove('scrolled');
+        }
+    }
+
     var tocLinks = document.querySelectorAll('.toc a, .toc-mobile a');
     var sectionElements = document.querySelectorAll('section.essay-section[id]');
     var sectionIds = Array.from(sectionElements).map(function(el) { return el.id; });
@@ -720,6 +743,7 @@
             window.requestAnimationFrame(function() {
                 updateProgress();
                 updateTOC();
+                updateTOCVisibility();
                 ticking = false;
             });
             ticking = true;
@@ -727,6 +751,7 @@
     });
     updateProgress();
     updateTOC();
+    updateTOCVisibility();
 
     var scrollIndicator = document.querySelector('.scroll-indicator');
     if (scrollIndicator) {
