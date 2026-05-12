@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bottlenecks - JP Harries</title>
+    <meta name="description" content="The slowest clock governs the system. As AI accelerates production, the bottleneck moves to whoever has to verify, decide and take responsibility.">
+    <meta name="author" content="JP Harries">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Bottlenecks: A thinking model for fast AI takeoff">
+    <meta property="og:description" content="The slowest clock governs the system. As AI accelerates production, the bottleneck moves to whoever has to verify, decide and take responsibility.">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://jph.me/essays/bottlenecks/images/hero_v4_cathedral_hourglass.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Bottlenecks: A thinking model for fast AI takeoff">
+    <meta name="twitter:description" content="The slowest clock governs the system. As AI accelerates production, the bottleneck moves to whoever has to verify, decide and take responsibility.">
+
+    <link rel="canonical" href="https://jph.me/essays/bottlenecks/">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --parchment: #F7F4EE;
+            --linen: #EBEDF2;
+            --ink: #1C1917;
+            --graphite: #5E6673;
+            --chalk: #CDD2DA;
+            --amber: #B45309;
+            --amber-light: #D97706;
+            --dusk: #1E3A5F;
+            --horizon: #7B8FAB;
+            --deep-navy: #0F172A;
+            --warm-glow: #FCD34D;
+            --fog: #94A3B8;
+            --cool-white: #F1F5F9;
+            --rose: #BE123C;
+            --slate: #475569;
+            --teal: #0F766E;
+
+            --font-display: 'Instrument Serif', Georgia, serif;
+            --font-body: 'Source Serif 4', Georgia, serif;
+            --font-ui: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+
+            --content-width: 680px;
+            --wide-width: 1100px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+        body {
+            font-family: var(--font-body);
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--ink);
+            background-color: var(--parchment);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .progress-bar {
+            position: fixed; top: 0; left: 0;
+            width: 0%; height: 3px;
+            background: linear-gradient(90deg, var(--amber), var(--amber-light));
+            z-index: 1000;
+            transition: width 0.1s linear;
+        }
+
+        .toc {
+            position: fixed;
+            top: 50%;
+            left: max(1rem, calc((100vw - var(--wide-width)) / 2 - 12rem));
+            transform: translateY(-50%);
+            z-index: 100;
+            list-style: none;
+            font-family: var(--font-ui);
+            font-size: 12px;
+            letter-spacing: 0.02em;
+            max-width: 160px;
+        }
+        .toc li { margin-bottom: 0.75rem; }
+        .toc a {
+            color: var(--chalk);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: block;
+            line-height: 1.4;
+        }
+        .toc a:hover, .toc a.active { color: var(--amber); }
+        .toc a.active { font-weight: 500; }
+        @media (max-width: 1400px) { .toc { display: none; } }
+
+        .toc-mobile-toggle {
+            display: none;
+            position: fixed; bottom: 1.5rem; right: 1.5rem;
+            z-index: 200;
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: var(--dusk);
+            color: var(--cool-white);
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-ui);
+            font-size: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+        }
+        .toc-mobile-toggle:hover { transform: scale(1.05); }
+        .toc-mobile {
+            display: none;
+            position: fixed; bottom: 5rem; right: 1.5rem;
+            z-index: 199;
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+            list-style: none;
+            font-family: var(--font-ui);
+            font-size: 14px;
+            max-width: 280px;
+        }
+        .toc-mobile.open { display: block; }
+        .toc-mobile li { margin-bottom: 0.75rem; }
+        .toc-mobile li:last-child { margin-bottom: 0; }
+        .toc-mobile a {
+            color: var(--graphite);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .toc-mobile a:hover, .toc-mobile a.active { color: var(--amber); }
+        @media (max-width: 1400px) {
+            .toc-mobile-toggle { display: flex; align-items: center; justify-content: center; }
+        }
+
+        .hero {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 21 / 9;
+            max-height: 78vh;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            overflow: hidden;
+            background-color: var(--deep-navy);
+        }
+        .hero-image {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(15, 23, 42, 0.1) 0%,
+                rgba(15, 23, 42, 0.4) 50%,
+                rgba(15, 23, 42, 0.85) 80%,
+                rgba(15, 23, 42, 0.95) 100%
+            );
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: var(--content-width);
+            padding: 0 2rem 3rem;
+            text-align: left;
+            width: 100%;
+        }
+        .hero h1 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--cool-white);
+            margin-bottom: 1rem;
+        }
+        .hero .subtitle {
+            font-family: var(--font-body);
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            line-height: 1.5;
+            color: var(--fog);
+            margin-bottom: 1.5rem;
+            max-width: 540px;
+        }
+        .hero .byline {
+            font-family: var(--font-ui);
+            font-size: 14px;
+            color: var(--horizon);
+            letter-spacing: 0.03em;
+        }
+        .hero .dateline {
+            font-family: var(--font-ui);
+            font-size: 13px;
+            color: var(--horizon);
+            letter-spacing: 0.03em;
+            margin-top: 0.25rem;
+        }
+        .scroll-indicator {
+            position: absolute; bottom: 2rem;
+            left: 50%; transform: translateX(-50%);
+            z-index: 2;
+            animation: bob 2s ease-in-out infinite;
+            color: var(--fog);
+            opacity: 0.6;
+        }
+        @keyframes bob {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        .article {
+            max-width: var(--content-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .essay-section {
+            padding-top: 1.5rem;
+            padding-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .essay-section.visible { opacity: 1; transform: translateY(0); }
+        .section-divider {
+            width: 40px; height: 1px;
+            background: var(--chalk);
+            margin: 2rem auto;
+            display: block;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-size: 2rem;
+            line-height: 1.2;
+            letter-spacing: -0.015em;
+            color: var(--ink);
+            margin-bottom: 0.5rem;
+        }
+        .section-subtitle {
+            font-family: var(--font-body);
+            font-style: italic;
+            font-size: 1.05rem;
+            color: var(--graphite);
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+        h3 {
+            font-family: var(--font-ui);
+            font-weight: 600;
+            font-size: 1.375rem;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        p { margin-bottom: 1.5em; }
+        strong { font-weight: 600; }
+        em { font-style: italic; }
+
+        ol.numbered-list {
+            list-style: decimal;
+            padding-left: 1.5em;
+            margin: 0 0 1.5em;
+        }
+        ol.numbered-list li {
+            margin-bottom: 0.5em;
+            padding-left: 0.25em;
+            line-height: 1.6;
+        }
+        a {
+            color: var(--amber);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s ease, color 0.2s ease;
+        }
+        a:hover { border-bottom-color: var(--amber); }
+
+        .lead-in { padding-top: 3rem; padding-bottom: 0.5rem; }
+        .lead-in p:first-child { font-size: 1.15rem; line-height: 1.75; }
+
+        blockquote.pull-quote {
+            border-left: 3px solid var(--amber);
+            padding: 0.5rem 0 0.5rem 1.5rem;
+            margin: 2.5rem 0;
+            font-family: var(--font-body);
+            font-style: italic;
+            font-size: 1.15rem;
+            line-height: 1.5;
+            color: var(--ink);
+        }
+
+        figure {
+            margin: 2.5rem 0;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        figure img {
+            max-width: var(--wide-width);
+            width: 90%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+        }
+        figure.fig-narrow img {
+            max-width: 760px;
+            width: 78%;
+        }
+        figcaption {
+            font-family: var(--font-ui);
+            font-size: 0.875rem;
+            color: var(--graphite);
+            line-height: 1.5;
+            letter-spacing: 0.01em;
+            max-width: var(--content-width);
+            width: 90%;
+            margin-top: 0.75rem;
+            padding: 0 1rem;
+            text-align: center;
+        }
+
+        .fn-ref {
+            font-family: var(--font-ui);
+            font-size: 0.7em;
+            line-height: 1;
+            vertical-align: super;
+        }
+        .fn-ref a {
+            color: var(--amber);
+            text-decoration: none;
+            border-bottom: none;
+            padding: 0 1px;
+        }
+        .fn-ref a:hover { color: var(--amber-light); }
+
+        .footnotes-section {
+            border-top: 1px solid var(--chalk);
+            margin-top: 3rem;
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+        }
+        .footnotes-section h2 { font-size: 1.5rem; margin-bottom: 1.5rem; }
+        .footnotes-list {
+            list-style: none;
+            counter-reset: none;
+            padding: 0;
+        }
+        .footnote-item {
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--graphite);
+            margin-bottom: 1rem;
+            padding-left: 0;
+            scroll-margin-top: 2rem;
+        }
+        .footnote-item:target {
+            background-color: rgba(180, 83, 9, 0.08);
+            border-radius: 4px;
+            padding: 0.5rem;
+            margin-left: -0.5rem;
+        }
+        .fn-number {
+            font-weight: 600;
+            color: var(--ink);
+            margin-right: 0.25rem;
+        }
+        .fn-back {
+            font-size: 0.85em;
+            text-decoration: none;
+            color: var(--amber);
+            margin-left: 0.25rem;
+            border-bottom: none !important;
+        }
+        .fn-back:hover { color: var(--amber-light); }
+
+        .author-bio-block {
+            padding: 1.5rem 0 1rem;
+        }
+        .author-bio {
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--horizon);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            body { font-size: 17px; line-height: 1.65; }
+            .hero { aspect-ratio: auto; min-height: 60vh; }
+            .hero-image { object-position: center 30%; }
+            .hero-content { padding: 0 1.5rem 2.5rem; }
+            .article { padding: 0 1.25rem; }
+            .author-bio-block { padding: 1rem 0 0.5rem; }
+            h2 { font-size: 1.65rem; }
+            blockquote.pull-quote { font-size: 1.05rem; }
+            figure img { width: 95%; border-radius: 2px; }
+            figure.fig-narrow img { width: 95%; max-width: 100%; }
+            figcaption { font-size: 0.8rem; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2rem; }
+            .hero .subtitle { font-size: 0.95rem; }
+            h2 { font-size: 1.5rem; }
+        }
+
+        .data-point {
+            font-family: var(--font-mono);
+            font-size: 0.95em;
+            color: var(--dusk);
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px; height: 1px;
+            padding: 0; margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            border: 0;
+        }
+        .site-nav a:hover { color: var(--amber) !important; }
+    </style>
+</head>
+<body>
+
+<nav class="site-nav" style="position: fixed; top: 12px; left: max(1rem, calc((100vw - var(--wide-width)) / 2)); z-index: 101; font-family: var(--font-ui); font-size: 13px; letter-spacing: 0.02em;">
+    <a href="/" style="color: var(--horizon); text-decoration: none; border-bottom: none; transition: color 0.2s;">&#8592; jph.me</a>
+</nav>
+
+<!-- Reading Progress Bar -->
+<div class="progress-bar" id="progressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+<!-- Desktop TOC -->
+<nav aria-label="Table of contents">
+    <ul class="toc" id="toc">
+        <li><a href="#two-scenes">Two scenes</a></li>
+        <li><a href="#slowest-clock">The slowest clock</a></li>
+        <li><a href="#supply-shortage">The supply-shortage era</a></li>
+        <li><a href="#interface-tax">The interface tax</a></li>
+        <li><a href="#institutional-clocks">The institutional clocks</a></li>
+        <li><a href="#what-this-means">What this means</a></li>
+    </ul>
+</nav>
+
+<!-- Mobile TOC -->
+<button class="toc-mobile-toggle" id="tocToggle" aria-label="Table of contents">&#9776;</button>
+<ul class="toc-mobile" id="tocMobile">
+        <li><a href="#two-scenes">Two scenes</a></li>
+        <li><a href="#slowest-clock">The slowest clock</a></li>
+        <li><a href="#supply-shortage">The supply-shortage era</a></li>
+        <li><a href="#interface-tax">The interface tax</a></li>
+        <li><a href="#institutional-clocks">The institutional clocks</a></li>
+        <li><a href="#what-this-means">What this means</a></li>
+</ul>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+    <img src="images/hero_v4_cathedral_hourglass.png?v=1778571592" alt="A cathedral-scale hourglass corridor: an amber-lit wall of glowing documents narrowing through a single archway into a cool grey institutional hall." class="hero-image" loading="eager">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>Bottlenecks</h1>
+        <p class="subtitle">A thinking model for fast AI takeoff</p>
+        <p class="byline">By JP Harries</p>
+        <p class="dateline">May 8, 2026</p>
+    </div>
+    <div class="scroll-indicator" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+</header>
+
+<main>
+<div class="article lead-in essay-section">
+<p>Three things that look unrelated: a German appellate court drowning in AI-generated complaints, Korean memory chip prices up over 500% from a year ago in some categories, and a code-review queue inside our own AI startup where review has become the main bottleneck in our engineering work. They are different shapes of the same problem. This essay is a framework for thinking about bottlenecks created by rapid AI progress. Where do they form? Why do they bind? How do we spot the next one before it binds?</p>
+</div>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="two-scenes">
+<div class="article">
+<h2>Two scenes</h2>
+<h3>Scene A: A press conference in Essen</h3>
+<p>At its April 2026 annual press conference, the appellate court overseeing Germany's social-welfare cases in the state of North Rhine-Westphalia reported 7,615 emergency proceedings filed across its eight regional trial courts in 2025, a 55% jump in a single year. Standard cases now wait 15.6 months.<sup class="fn-ref"><a href="#fn-1" id="fn-ref-1">[1]</a></sup></p>
+<figure class="fig-narrow">
+        <img src="images/fig_1_1_lsg_caseload.png?v=1778601700" alt="Regional social court emergency-proceedings caseload in NRW, +55% YoY in 2025" loading="lazy">
+        <figcaption>Source: LSG NRW press conference, April 2026.</figcaption>
+    </figure>
+<p>The court leadership named the cause: AI-generated complaints. The court president described the filings as "often very long, [containing] a multitude of often non-targeted motions and references to case law that sometimes does not exist." And this is just the first wave: today's filings come from non-experts using ChatGPT one prompt at a time, before agentic tools have meaningfully reached the broader public. Judges are being buried by text that costs almost nothing to produce but still has to be read line by line, and the curve has barely begun.</p>
+<h3>Scene B: A Monday morning in Bremen</h3>
+<p>Inside our own company, a smaller version of the same story. <a href="https://ellamind.com" target="_blank" rel="noopener">ellamind</a> builds and evaluates enterprise AI agents, mostly in Germany. After Anthropic shipped Claude Opus 4.5 in late 2025, our engineers' raw output stepped up sharply. Within weeks, the team had over 50 finished pull requests waiting to be merged, roughly five times what we normally carry in the queue, and not enough humans to review them.</p>
+<figure class="fig-narrow">
+        <img src="images/fig_1_2_pr_queue.png?v=1778601700" alt="Stylized PR queue depth at ellamind, before vs after Opus 4.5" loading="lazy">
+        <figcaption>Illustrative; internal data, anonymized.</figcaption>
+    </figure>
+<p>Reviewing a non-trivial pull request does not parallelize. You have to load the change into your head, walk it against the system you already understand, judge whether the test coverage is real or theatre, and accept liability for what ships. None of that compresses when the writing side gets faster. Our reviewers are good and few; the depth of review is contractually fixed; the queue grew.</p>
+<p>The constraint did not vanish when the AI got better at writing code, it moved one step. The bottleneck went from "writing code" to "trusting code", and the people on the trusting side started to feel it.</p>
+<h3>The same shape</h3>
+<p>A German social court judge in Essen and a code reviewer in Bremen sit on the same side of the same problem. A new tool has dropped the cost of producing one kind of document close to zero, while the cost of reading, evaluating, and signing off on those documents has barely moved. The people on the second side now sit underneath a queue that did not exist eighteen months ago, growing faster than they can hire.</p>
+<p>The faster AI gets at producing, the more pain flows to whoever has to check. That pattern is everywhere once you look for it, and it is the natural sequel to the picture I drew in <a href="https://jph.me/essays/a-country-full-of-geniuses/" target="_blank" rel="noopener"><em>A Country Full of Geniuses</em></a> two months ago: when the geniuses arrive in the datacenter, the binding constraints in the rest of the economy are what we have to think about next.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="slowest-clock">
+<div class="article">
+<h2>The slowest clock</h2>
+<p>It helps to put a frame around the shape from Section 1, because there is already a dominant frame in circulation and it points the other way.</p>
+<p>The most influential image of what powerful AI does is Dario Amodei's "compressed 21st century" from <a href="https://www.darioamodei.com/essay/machines-of-loving-grace" target="_blank" rel="noopener"><em>Machines of Loving Grace</em></a> (Oct 2024). Intelligence is <em>initially</em> heavily bottlenecked by the other factors of production, but over time intelligence itself routes around those factors. Compute, capital, talent, lab space, regulation; in the long run, a sufficiently capable system finds a way through each of them. A hundred years of biological progress in five to ten. A country full of geniuses in a datacenter.</p>
+<p>Read that frame carefully and the load-bearing words are "over time." Fast takeoff is exactly the case where time is not there.<sup class="fn-ref"><a href="#fn-2" id="fn-ref-2">[2]</a></sup> If the model side doubles every four months and the rest of the world does not, the routing-around argument runs out of runway before it runs out of intelligence.</p>
+<p>Even Amodei concedes this when pressed. To Dwarkesh Patel in February 2026, he put it plainly: <em>"I can't buy $1 trillion a year of compute in 2027."</em><sup class="fn-ref"><a href="#fn-3" id="fn-ref-3">[3]</a></sup> In the same interview he pointed to enterprise change management, clinical trials, and the life cycle of legislation. Each is a clock that intelligence cannot speed up by getting smarter.<sup class="fn-ref"><a href="#fn-4" id="fn-ref-4">[4]</a></sup></p>
+<p>Engineers will recognize the underlying structure: <a href="https://en.wikipedia.org/wiki/Amdahl%27s_law" target="_blank" rel="noopener">Amdahl's law</a>, applied to the economy. If you speed up one part of a process and another part stays the same, the maximum speedup of the whole is set by the slow part, not the fast one. Make the AI side 100x faster at the parallelizable work, and if 10% of the process remains serial and human, the maximum speedup of the whole process is roughly 9x. No matter how good the model gets, the slow 10% sets the ceiling.</p>
+<p>That is the working principle of this essay, and I want to state it once, plainly, so it can do its work in the rest of the piece. <strong>The slowest clock governs the system.</strong> Every bottleneck I discuss is a clock running at human, institutional, or physical speed. The fast clock is the model. The system can only run as fast as its slowest clock.</p>
+<figure>
+        <img src="images/fig_2_1_clock_speeds.png?v=1778601700" alt="Clock speeds across the AI stack and its institutional context" loading="lazy">
+        <figcaption>Approximate cycle times by domain. Sources: METR (AI task-horizon doubling), Epoch.ai datacenter buildout tracker, FDA approval data, German judicial caseload reports. The gap between the top bar and the rest is the structural problem.</figcaption>
+    </figure>
+<p>The slowest clock changes from layer to layer, and the rest of this essay walks three of them: silicon, the human in the loop, and the institutional clocks above both. Start with the first and most concrete.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="supply-shortage">
+<div class="article">
+<h2>The supply-shortage era</h2>
+<p>Silicon is the cleanest case for the slowest-clock principle and the first layer of the analysis, because every clock in the stack is measured in wafers per month and the slowest one is visible on a public price chart.</p>
+<p>The frame has flipped fast. In early 2025 the dominant question about AI was "is demand real?" By April 2026 Derek Thompson could write that we have moved "from a period of demand scarcity (not enough customers) to supply scarcity (not enough compute)."<sup class="fn-ref"><a href="#fn-5" id="fn-ref-5">[5]</a></sup> Markets have stopped pricing whether AI gets used. They are pricing who owns the capacity.</p>
+<p>The simplest layer is the chip itself. Every leading AI accelerator in 2026 is fabricated on the same advanced manufacturing node at TSMC, and AI alone is projected to claim the majority of that node's output by 2027 — pushing smartphones and ordinary CPUs aside.<sup class="fn-ref"><a href="#fn-6" id="fn-ref-6">[6]</a></sup></p>
+<figure>
+        <img src="images/fig_3_1_tsmc_n3.png?v=1778601700" alt="TSMC N3 wafer allocation, AI vs phones vs CPU vs other, 2024-2027" loading="lazy">
+        <figcaption>N3 wafer allocation by end-application, 2024-2027. AI demand expands from a minority share to the dominant claim on the node.</figcaption>
+    </figure>
+<p>Memory and packaging show the same pattern in sharper form. The high-bandwidth memory that every AI accelerator needs has eaten an outsized share of total DRAM capacity, and Korean export prices for memory have lifted near-vertically — some categories now trade at several times last year's price.<sup class="fn-ref"><a href="#fn-7" id="fn-ref-7">[7]</a></sup> The advanced packaging that fuses logic and memory is the single most rationed item in the stack. And the geopolitical chokepoint is structural: Taiwan for logic, Korea for memory, two countries deep.</p>
+<figure>
+        <img src="images/memory_prices_korea.jpeg?v=1778490177" alt="Korean DRAM, flash and SSD export unit prices, May 2020 to May 2026" loading="lazy">
+        <figcaption>Korea memory export unit price trends ($/kg), six-year monthly series. Source: Korea International Trade Association (KITA), processed from Korea Customs Service export data. The near-vertical lift in spring 2026 is the AI memory shortage in one panel of charts.</figcaption>
+    </figure>
+<p>A new wrinkle has appeared in 2026: agents need their own compute. Each autonomous agent loop is, in effect, a small server doing CPU-side orchestration around model calls, and the CPU sleeve of the supply chain has woken up. AMD is up 343% on the year, Intel up 483%. Wall Street has rotated from "Nvidia or nothing" to "anyone with capacity."<sup class="fn-ref"><a href="#fn-8" id="fn-ref-8">[8]</a></sup></p>
+<p>The demand side has already started buying optionality rather than capacity. In April 2026, two large AWS customers asked to buy <em>all</em> of AWS's 2026 capacity for Graviton CPUs. AWS declined. Trainium2 is largely sold out, Trainium3 nearly fully subscribed, and Trainium4 (eighteen months out) already has significant pre-bookings. Microsoft's CFO Amy Hood told the Q1 2026 earnings call that capacity shortages would extend through the fiscal year.<sup class="fn-ref"><a href="#fn-9" id="fn-ref-9">[9]</a></sup></p>
+<p>When intelligence becomes abundant, scarcity rents accumulate at every layer that cannot scale linearly. Public markets have priced this faster than public discourse, and the surprises sit well below the obvious anchors of NVDA, TSM, and ASML.</p>
+<figure class="fig-narrow">
+        <img src="images/fig_3_3_valuations.png?v=1778601700" alt="Bottleneck-rent valuations, total return May 2025 to May 2026" loading="lazy">
+        <figcaption>Source: Interactive Brokers daily close bars, May 8, 2025 to May 8, 2026. Anchors (NVDA/AVGO/TSM/ASML) in slate; bottleneck-rent picks in amber. Illustrative selection, not investment advice.</figcaption>
+    </figure>
+<p>The bottleneck rent is the most consequential capital reallocation of this cycle, and it sits with whoever owns the constraint that intelligence cannot route around in time.</p>
+<figure>
+        <img src="images/fig_3_4_rotation.png?v=1778601701" alt="Constraint rotation across the AI infrastructure stack, 2023-2027" loading="lazy">
+        <figcaption>Binding constraint by year, 2023-2027: power, then logic, then packaging, then optics, memory and cooling. The constraint rotates as each layer is built out, and the rent rotates with it.</figcaption>
+    </figure>
+<p>And it keeps rotating: yesterday's binding constraint was power, today's is logic and packaging, tomorrow's will likely be something else entirely. The rent moves with the bottleneck, and whoever sees the next rotation first captures it.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="interface-tax">
+<div class="article">
+<h2>The interface tax</h2>
+<p>Silicon is priced in a public market. The second layer, the cost of being the human in the loop, is priced indirectly, through queues and review hours and signatures. No less real, just harder to see on a chart.</p>
+<p>The cleanest formalisation comes from a recent paper by Christian Catalini and co-authors at MIT, <a href="https://arxiv.org/abs/2602.20946" target="_blank" rel="noopener"><em>Some Simple Economics of AGI</em></a> (Feb 2026). The argument fits on an envelope. Two cost curves matter: the cost to automate a task (cA) which falls roughly exponentially as models improve, and the cost to verify the result (cH) which is biologically capped by human time, attention, and embodied judgment. cA crashes; cH barely moves. Catalini calls the widening space between them the <strong>Measurability Gap</strong>, and his framing of the consequence is the thesis of this section: <em>"the binding constraint on growth is no longer intelligence. It is human verification bandwidth."</em></p>
+<figure class="fig-narrow">
+        <img src="images/fig_4_1_measurability_gap.png?v=1778601701" alt="Cost-to-automate vs cost-to-verify, with the widening gap" loading="lazy">
+        <figcaption>Source: Catalini, Hui & Wu, "Some Simple Economics of AGI", arXiv:2602.20946, Feb 2026.</figcaption>
+    </figure>
+<p>The most underreported number of 2026 lives in OpenAI's GDPval study. Naively, GPT-5 completes the benchmark's expert tasks roughly 90x faster than a human professional. Once you account for the human time still required to review the output ("try once, fix it"), GPT-5 ends up only about 1.18x cheaper than the human working alone. Almost all of the headline speed evaporates at the verification step.<sup class="fn-ref"><a href="#fn-10" id="fn-ref-10">[10]</a></sup></p>
+<figure class="fig-narrow">
+        <img src="images/fig_4_2_gdpval.png?v=1778601701" alt="GPT-5 speedup before and after human review (GDPval)" loading="lazy">
+        <figcaption>Source: OpenAI GDPval study, October 2025.</figcaption>
+    </figure>
+<p>This is the same shape as the ellamind code review story from Section 1. Code review is a verification gate that does not scale automatically when the AI side scales. The model writes faster; the reviewer's working memory does not. Once you see the pattern, you see it everywhere a regulated process touches an AI output.</p>
+<figure>
+        <img src="images/fig_4_3_verification_queue.png?v=1778273802" alt="A single inspector at an amber-lit desk, dwarfed by stacks of unread paper as a fast conveyor belt of documents streams in from the right" loading="lazy">
+        <figcaption>The interface tax, in one image: cheap to produce, slow to verify.</figcaption>
+    </figure>
+<p>The pattern shows up wherever a regulated process terminates in a human signature. In banking, the four-eyes principle mandates two licensed humans on every critical action; equivalent rules bind pharma manufacturing, energy trading, public procurement, and parts of public-sector decision-making across most developed economies. Pharma runs batch records, lab notebooks, and clinical-trial source-data verification through human signatures under FDA Part 11 and EU GMP. Whether it is a credit decision, a clinical batch release, a board-approved trade, a contract review, a patent prosecution, or a deployed-model release, the gate is the same: signed off by a person who carries personal liability. ellamind's customers operate inside these gates, and our work is, in plain terms, building infrastructure for the verification side. Verification economics has gone from paper to product category.</p>
+<p>Catalini gives this its sharpest name: the <strong>Trojan Horse externality</strong>. Unverified AI output consumes real resources downstream: filing fees, court time, reviewer attention, errors that propagate into real harm. The German social-courts story from Section 1 is the canonical instance, cheap to produce and expensive to absorb. The cost of generation sits with the producer; the cost of verification is socialised onto judges, regulators, and reviewers. Inside one company the cost shows up as a queue; one level up, the same dynamic decides whether an entire institution can keep pace with the technology in front of it.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="institutional-clocks">
+<div class="article">
+<h2>The institutional clocks</h2>
+<p>The interface tax explains why individual reviewers and approvers are getting buried. The same arithmetic, one level higher, explains why the institutions they belong to are too. Take drug development as the cleanest case. Anthropic's own writing on the topic, picked up and sharpened by Tyler Cowen, gives the formulation almost too neatly: if AI increases the rate of pharma ideas by 10x, the relevant constraint becomes the rate of drug approval rather than the rate of drug discovery. The FDA pipeline does not move on a four-month doubling; Phase I to approval still runs roughly a decade. Most of the discoveries an accelerated discovery layer produces will queue. This is the deepest expression of the working frame: the slowest clock governs the system.</p>
+<p>The same shape shows up in courts. The German social-court story from Section 1 is not a regional curiosity, it is the general case. AI lowers the marginal cost of producing legal text, complaints, briefs, appeals, toward zero. Courts do not scale: judges, hearing officers, and clerks are human-bandwidth-bound, and adding capacity requires legislation, training, and physical rooms. The result is queue length, which is its own kind of failure: justice delayed is justice denied. And remember, today's filings are still mostly the work of citizens running ChatGPT one prompt at a time. Agents capable of preparing dozens of complaints in a single session have not meaningfully reached the broader public yet. When they do, expect another order of magnitude of throughput on the producer side, against the same number of judges.</p>
+<figure>
+        <img src="images/fig_5_2_court_national.png?v=1778601701" alt="German social court caseload growth, 2022-2026, expanded national view" loading="lazy">
+        <figcaption>The widening gap between intake and disposition.</figcaption>
+    </figure>
+<p>This is the same disease as the code-review collapse from Section 1, in a different organ. Code review is what happens when verification capacity inside one team falls behind generation. The court backlog is what happens when verification capacity inside one society does. The arithmetic is identical.</p>
+<p>Regulatory and standards bodies sit in the same trap. EU AI Act enforcement is staged across 2025-2027; BaFin, Germany's financial supervisor, runs consultations on yearly cycles; the FDA and SEC operate on similar legislative timescales. The slow cycle is what these institutions are <em>for</em>; they are designed to be deliberate. But under a four-month capability doubling, deliberate is indistinguishable from absent. The design point produces a permanent regulatory lag, which in turn pushes activity into either grey markets or non-compliant deployment.</p>
+<p>Add it together. Institutions are designed for the slowest, most deliberate human pace. AI does not slow down to match. So institutions either get faster, or they get bypassed, or they collapse under queue pressure.<sup class="fn-ref"><a href="#fn-11" id="fn-ref-11">[11]</a></sup></p>
+<p>Worth being concrete about what those last two mean, because neither requires an institution to formally stop operating. Push the social-court wait to three years (a realistic destination if intake continues at +55% year-over-year against a hiring cycle measured in years) and the institution exists on paper while its function migrates to mediation, insurance, and informal channels. The same is true elsewhere: an FDA whose approval pipeline runs a decade is, for the operational window where it matters, not approving treatments at the rate of biological discovery; a regulator whose consultation cycles trail the technology by two years is, for that window, absent. Below some throughput floor, an adjudicative body stops adjudicating, and that is what collapse under queue pressure actually looks like. The choice between speeding up, being bypassed, and collapsing is now an active political question, and the cost of getting it wrong is that the institution stops doing what citizens, patients, and markets need it to do.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="what-this-means">
+<div class="article">
+<h2>What this means</h2>
+<p>Three layers, one shape. Now the practical question: what do you do with this lens?</p>
+<h3>Disruption is asymmetric</h3>
+<p>The standard "AI takes jobs" framing predicts pain inside AI-native workflows. Bottleneck thinking predicts pain at the <em>interfaces</em>. The doctor signing off on the radiology AI. The judge reading AI-generated complaints. The compliance officer reviewing AI-drafted contracts. The manager evaluating AI-written performance reports. The code reviewer trusting AI-written PRs. These roles intensify rather than vanish; the people in them feel overworked, not redundant. That is a different policy problem from the one most public debate is set up to solve.</p>
+<p>Ethan Mollick has been making a related point: as he put it in <a href="https://www.oneusefulthing.org/p/the-shape-of-ai-jaggedness-bottlenecks" target="_blank" rel="noopener"><em>The Shape of AI: Jaggedness, Bottlenecks and Salients</em></a> (Dec 2025), AI capability advances along a jagged frontier, and when one bottleneck breaks, "everything behind it comes flooding through." The visible change is uneven precisely because of the bottleneck mechanic. The capability was already there. What moves is the constraint.</p>
+<h3>What this means for politics and non-tech people</h3>
+<p>Three concrete claims, framed for the reader who is not in tech:</p>
+<p>First, regulatory speed and adaptability becomes a strategic national asset. A country with fast courts, smart and fast regulators, abundant fab capacity, and a reliable grid <em>may capture</em> AI value better than one with abundant talent alone. This inverts decades of policy intuition. Investment in administrative throughput, judicial capacity, permitting reform, and electrical grid capacity is now AI-economic policy, even when no one labels it that way. The German social-court story from Section 1, read in this light, is an industrial-policy story.</p>
+<p>But there is a harder corollary, and it cuts especially close to home in Europe: institutions themselves have to adopt AI internally if they want to survive their own queues. The way out of the social-court backlog is not just hiring more clerks. It is having low-stakes, high-volume cases triaged or pre-decided by AI, with human judges focused on the harder ones. We do something analogous inside ellamind: smaller, low-risk pull requests are reviewed end-to-end by an automated reviewer, and humans only enter when the stakes or the change surface justify it. The guardrails matter enormously, the design has to fail safe, and the categories of "low-stakes" must be drawn carefully. But the alternative, keeping verification entirely human as the producer side scales 100x, is not a recoverable position. Institutions that do not build their own verification layer will lose the ability to govern the producers.</p>
+<p>Second, political fights move from "AI safety" to "who gets the slot." Whoever owns a constrained layer collects the rent. FDA approval throughput, court time, TSMC N3 wafer capacity, electrical permits, construction labor. The next decade's political front lines are permitting reform, judicial budgets, regulatory headcount, and grid interconnect queues. These are technical-sounding fights with very large distributive consequences, and the AWS sold-out story from Section 3 is what they look like before they reach the public domain. They are AI fights even when no one calls them that.</p>
+<p>Third, for non-tech people the question is not "will AI take my job?" but "am I the verifier in my workflow?" If yes (doctor, judge, manager, reviewer, compliance officer, certain teaching and operations roles), expect intensification, not redundancy. The role shifts toward judgment and accountability, exactly the verification economics from Section 4. Train for that. If you produce text, code, designs, analysis, and someone else signs off, expect commoditisation. The value flows to whoever takes responsibility for the output. The professions most under-discussed in current AI-and-jobs coverage are middle management and operations, which exist precisely because they are the verifier layer for everyone below them. They are about to become much more important and much harder.</p>
+<figure class="fig-narrow">
+        <img src="images/fig_6_1_quadrants.png?v=1778601701" alt="Where will you feel it first? Producer/verifier roles by AI-exposure" loading="lazy">
+        <figcaption>A 2x2 matrix. Verifier roles in AI-exposed fields are the intensification quadrant.</figcaption>
+    </figure>
+<h3>Tools for applying the bottleneck lens</h3>
+<p>A practical toolkit, deliberately small.</p>
+<p><strong>Tool 1: The three-question test.</strong> For any workflow, process, or sector you care about, ask:</p>
+<ol class="numbered-list">
+    <li>What does AI 10x here?</li>
+    <li>What step does it not 10x?</li>
+    <li>Is the un-10x'd step a human, an institution, or a physical resource?</li>
+</ol>
+<p>The answer to question (3) tells you whether you are looking at an interface, institutional, or physical bottleneck. That, in turn, tells you how the disruption will feel and where the rent will accrue. The hospital and the chip fab give different answers; both are diagnostic.</p>
+<p><strong>Tool 2: The bottleneck rotation map.</strong> Bottlenecks move. Yesterday it was power, today it is TSMC N3 and CoWoS, tomorrow it might be grid interconnect, verifier headcount, or court calendars. The mistake is fixating on a single constraint and missing the rotation. Practical heuristic: by the time a bottleneck becomes consensus, the binding constraint may have already moved one layer downstream. The discipline applies to physical bottlenecks and equally to institutional ones. When the press finally writes about court backlogs, the binding constraint may have already moved to clerk training capacity.</p>
+<p><strong>Tool 3: Personal positioning.</strong> Invest in <em>verification</em> skills (judgment, taste, accountability, domain ownership) over <em>execution</em> skills (writing, coding, designing, basic analysis). The first set is bottleneck-side and appreciates. The second is the side AI compresses. This is a directional bet, not a recipe; the specific skills depend on the domain. But the direction is clear.</p>
+<h3>Closing</h3>
+<p>I have been in AI deployment for years now, at the frontier of what models can do day to day, and I am still surprised by the speed at which the producer side is improving. If the curve continues as Anthropic and OpenAI are now openly betting it will, with automated AI research arriving within roughly two years, the question that dominates the late-2020s will not be whether the geniuses arrive in the datacenter. It will be how well we manage the bottlenecks they slam into when they do, in the economy, in the courts, in the labs, and inside the companies and ministries trying to use them.</p>
+<p>The slowest clock in any system is not necessarily a problem. It is a place to invest.</p>
+</div>
+</section>
+</main>
+
+<!-- ===== AUTHOR BIO ===== -->
+<aside class="author-bio-block">
+    <div class="article">
+        <p class="author-bio">JP Harries is CEO and Co-Founder of ellamind GmbH, an AI evaluation company based in Bremen, Germany.</p>
+    </div>
+</aside>
+
+<!-- ===== FOOTNOTES ===== -->
+<section class="footnotes-section">
+<div class="article">
+    <h2>Notes</h2>
+    <ol class="footnotes-list">
+    <li id="fn-1" class="footnote-item"><span class="fn-number">[1]</span> <a href="https://www.lto.de/recht/justiz/j/lsg-nrw-jahres-pressekonferenz-2026-ki-klagen-ueberlastung-sozialgerichte" target="_blank" rel="noopener">Legal Tribune Online, April 24, 2026</a>: Press conference of the regional social court of North Rhine-Westphalia. <a href="#fn-ref-1" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-2" class="footnote-item"><span class="fn-number">[2]</span> The probability of a faster takeoff has risen sharply over the last few months. OpenAI's Sam Altman publicly committed in October 2025 to "an automated AI research intern by September 2026" and "a true automated AI researcher by March 2028" (<a href="https://x.com/sama/status/1983584366547829073" target="_blank" rel="noopener">X, Oct 28, 2025</a>); Anthropic's leadership has voiced similar timelines for in-house automated research. If those targets land within a year of where they are aimed, the "over time" buffer in <em>Machines of Loving Grace</em> effectively disappears. <a href="#fn-ref-2" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-3" class="footnote-item"><span class="fn-number">[3]</span> Dario Amodei interviewed by Dwarkesh Patel, <a href="https://www.dwarkesh.com/p/dario-amodei-2" target="_blank" rel="noopener">Dwarkesh Podcast, Feb 2026</a>. <a href="#fn-ref-3" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-4" class="footnote-item"><span class="fn-number">[4]</span> <a href="https://www.darioamodei.com/essay/machines-of-loving-grace" target="_blank" rel="noopener"><em>Machines of Loving Grace</em></a> organises this into five categories of complementary constraint: serial dependencies (clinical trials), data availability, infrastructure and physical limits (substations, switchgear, fab lithography), human and regulatory constraints, and physical laws. Sections 3, 4, and 5 of this essay map roughly onto the third, fourth, and fifth of those. <a href="#fn-ref-4" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-5" class="footnote-item"><span class="fn-number">[5]</span> Derek Thompson, <a href="https://www.derekthompson.org/p/the-ai-vibe-shift-is-here" target="_blank" rel="noopener"><em>The AI Vibe Shift Is Here</em>, April 16, 2026</a>. <a href="#fn-ref-5" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-6" class="footnote-item"><span class="fn-number">[6]</span> On TSMC N3: every major 2026 AI accelerator family (NVIDIA Rubin, Google TPUv7-v8, AWS Trainium3, AMD MI350X) lands on this node. AI demand is projected to consume roughly 60% of N3 output in 2026 and 86% in 2027, with utilization projected to exceed 100% in H2 2026. On HBM: share of total DRAM wafer capacity has gone from under 5% in 2022 to a projected 35% by end-2027, with Korea (SK Hynix plus Samsung) controlling roughly 90% of next-generation HBM4 supply. On CoWoS advanced packaging: 2026 demand projects to ~240,000 wafers per month against ~75,000 of supply. Power, the binding constraint of 2024, has fallen to fourth in priority — not because the grid grew, but because fabs fell behind. Construction labor and EPC costs are the next clock down: Northern Virginia electricians run $80 to $130 per hour, and gas-plant EPC capital costs have gone from $750 per kW in 2018 to over $2,000 per kW in 2026. <a href="#fn-ref-6" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-7" class="footnote-item"><span class="fn-number">[7]</span> In the four weeks ending May 10, 2026, average export prices by weight jumped 18% for DRAM modules, 35% for raw DRAM, 47% for NAND flash, and 140% for SSDs. These are real shipped goods, not spot quotes. Source: <a href="https://www.kita.org/kStat/byCount_AllCount.do" target="_blank" rel="noopener">Korea Customs Service / KITA export trend dataset, May 11, 2026</a>. <a href="#fn-ref-7" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-8" class="footnote-item"><span class="fn-number">[8]</span> <a href="https://www.cnbc.com/2026/05/08/wall-street-ai-chip-love-moves-from-nvidia-to-intel-amd-and-micron.html" target="_blank" rel="noopener">CNBC, May 8, 2026</a>: Wall Street rotates from Nvidia to Intel, AMD and Micron. <a href="#fn-ref-8" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-9" class="footnote-item"><span class="fn-number">[9]</span> <a href="https://www.networkworld.com/article/4157477/ai-demand-is-so-high-aws-customers-are-trying-to-buy-out-its-entire-capacity.html" target="_blank" rel="noopener">NetworkWorld, April 2026</a>: AI demand is so high that AWS customers are trying to buy out its entire capacity. <a href="#fn-ref-9" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-10" class="footnote-item"><span class="fn-number">[10]</span> <a href="https://openai.com/index/gdpval/" target="_blank" rel="noopener">OpenAI GDPval study, October 2025</a>. <a href="#fn-ref-10" class="fn-back" title="Return to text">↩</a></li>
+    <li id="fn-11" class="footnote-item"><span class="fn-number">[11]</span> A further structural pressure compounds the institutional ones over a longer horizon: routine entry-level work has historically been the training pipeline that turns junior workers into senior verifiers. Anthropic's <a href="https://www.anthropic.com/research/labor-market-impacts" target="_blank" rel="noopener">Labor Market Impacts of AI</a> (Mar 2026) finds a 14% drop in the job-finding rate for AI-exposed occupations relative to a less-exposed control, and cites Brynjolfsson, Chandar & Chen 2025 estimating a 6-16% fall in employment for workers aged 22-25 in those occupations. The pipeline that produces tomorrow's verifiers is being thinned by the same dynamic that makes verifiers more valuable today. How sharply this bites depends on the speed of the takeoff: a faster transition compounds the problem before the labor market and training systems can adapt. <a href="#fn-ref-11" class="fn-back" title="Return to text">↩</a></li>
+    </ol>
+</div>
+</section>
+
+<script>
+(function() {
+    var progressBar = document.getElementById('progressBar');
+    function updateProgress() {
+        var scrollTop = window.scrollY;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = progress + '%';
+    }
+
+    var sections = document.querySelectorAll('.essay-section');
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+    }, { threshold: 0.05, rootMargin: '0px 0px -50px 0px' });
+    sections.forEach(function(section) { observer.observe(section); });
+
+    var tocLinks = document.querySelectorAll('.toc a, .toc-mobile a');
+    var sectionElements = document.querySelectorAll('section.essay-section[id]');
+    var sectionIds = Array.from(sectionElements).map(function(el) { return el.id; });
+
+    function updateTOC() {
+        var current = '';
+        for (var i = sectionIds.length - 1; i >= 0; i--) {
+            var el = document.getElementById(sectionIds[i]);
+            if (el && el.getBoundingClientRect().top <= 200) { current = sectionIds[i]; break; }
+        }
+        tocLinks.forEach(function(link) {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+        });
+    }
+
+    var tocToggle = document.getElementById('tocToggle');
+    var tocMobile = document.getElementById('tocMobile');
+    tocToggle.addEventListener('click', function() { tocMobile.classList.toggle('open'); });
+    tocMobile.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() { tocMobile.classList.remove('open'); });
+    });
+
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                updateProgress();
+                updateTOC();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+    updateProgress();
+    updateTOC();
+
+    var scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+        window.addEventListener('scroll', function hideIndicator() {
+            if (window.scrollY > 100) {
+                scrollIndicator.style.opacity = '0';
+                scrollIndicator.style.transition = 'opacity 0.5s';
+                window.removeEventListener('scroll', hideIndicator);
+            }
+        });
+    }
+})();
+</script>
+
+</body>
+</html>
