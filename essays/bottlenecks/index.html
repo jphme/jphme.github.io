@@ -454,29 +454,29 @@
 <!-- Desktop TOC -->
 <nav aria-label="Table of contents">
     <ul class="toc" id="toc">
-        <li><a href="#two-scenes">Two scenes</a></li>
-        <li><a href="#slowest-clock">The slowest clock</a></li>
-        <li><a href="#supply-shortage">The supply-shortage era</a></li>
-        <li><a href="#interface-tax">The interface tax</a></li>
-        <li><a href="#institutional-clocks">The institutional clocks</a></li>
-        <li><a href="#what-this-means">What this means</a></li>
+        <li><a href="#two-scenes">1. Two Scenes</a></li>
+        <li><a href="#slowest-clock">2. The Slowest Clock</a></li>
+        <li><a href="#supply-shortage">3. The Supply-Shortage Era</a></li>
+        <li><a href="#interface-tax">4. The Interface Tax</a></li>
+        <li><a href="#institutional-clocks">5. The Institutional Clocks</a></li>
+        <li><a href="#what-this-means">6. What This Means</a></li>
     </ul>
 </nav>
 
 <!-- Mobile TOC -->
 <button class="toc-mobile-toggle" id="tocToggle" aria-label="Table of contents">&#9776;</button>
 <ul class="toc-mobile" id="tocMobile">
-        <li><a href="#two-scenes">Two scenes</a></li>
-        <li><a href="#slowest-clock">The slowest clock</a></li>
-        <li><a href="#supply-shortage">The supply-shortage era</a></li>
-        <li><a href="#interface-tax">The interface tax</a></li>
-        <li><a href="#institutional-clocks">The institutional clocks</a></li>
-        <li><a href="#what-this-means">What this means</a></li>
+        <li><a href="#two-scenes">1. Two Scenes</a></li>
+        <li><a href="#slowest-clock">2. The Slowest Clock</a></li>
+        <li><a href="#supply-shortage">3. The Supply-Shortage Era</a></li>
+        <li><a href="#interface-tax">4. The Interface Tax</a></li>
+        <li><a href="#institutional-clocks">5. The Institutional Clocks</a></li>
+        <li><a href="#what-this-means">6. What This Means</a></li>
 </ul>
 
 <!-- ===== HERO ===== -->
 <header class="hero">
-    <img src="images/hero_v4_cathedral_hourglass.png?v=1778571592" alt="A cathedral-scale hourglass corridor: an amber-lit wall of glowing documents narrowing through a single archway into a cool grey institutional hall." class="hero-image" loading="eager">
+    <img src="images/hero_v4_cathedral_hourglass.png" alt="A cathedral-scale hourglass corridor: an amber-lit wall of glowing documents narrowing through a single archway into a cool grey institutional hall." class="hero-image" loading="eager">
     <div class="hero-overlay"></div>
     <div class="hero-content">
         <h1>Bottlenecks</h1>
@@ -498,23 +498,23 @@
 
 <section class="essay-section" id="two-scenes">
 <div class="article">
-<h2>Two scenes</h2>
-<h3>Scene A: A press conference in Essen</h3>
+<h2>1. Two Scenes</h2>
+<h3>Scene A: A Press Conference in Essen</h3>
 <p>At its April 2026 annual press conference, the appellate court overseeing Germany's social-welfare cases in the state of North Rhine-Westphalia reported 7,615 emergency proceedings filed across its eight regional trial courts in 2025, a 55% jump in a single year. Standard cases now wait 15.6 months.<sup class="fn-ref"><a href="#fn-1" id="fn-ref-1">[1]</a></sup></p>
 <figure class="fig-narrow">
-        <img src="images/fig_1_1_lsg_caseload.png?v=1778601700" alt="Regional social court emergency-proceedings caseload in NRW, +55% YoY in 2025" loading="lazy">
+        <img src="images/fig_1_1_lsg_caseload.png" alt="Regional social court emergency-proceedings caseload in NRW, +55% YoY in 2025" loading="lazy">
         <figcaption>Source: LSG NRW press conference, April 2026.</figcaption>
     </figure>
 <p>The court leadership named the cause: AI-generated complaints. The court president described the filings as "often very long, [containing] a multitude of often non-targeted motions and references to case law that sometimes does not exist." And this is just the first wave: today's filings come from non-experts using ChatGPT one prompt at a time, before agentic tools have meaningfully reached the broader public. Judges are being buried by text that costs almost nothing to produce but still has to be read line by line, and the curve has barely begun.</p>
-<h3>Scene B: A Monday morning in Bremen</h3>
+<h3>Scene B: A Monday Morning in Bremen</h3>
 <p>Inside our own company, a smaller version of the same story. <a href="https://ellamind.com" target="_blank" rel="noopener">ellamind</a> builds and evaluates enterprise AI agents, mostly in Germany. After Anthropic shipped Claude Opus 4.5 in late 2025, our engineers' raw output stepped up sharply. Within weeks, the team had over 50 finished pull requests waiting to be merged, roughly five times what we normally carry in the queue, and not enough humans to review them.</p>
 <figure class="fig-narrow">
-        <img src="images/fig_1_2_pr_queue.png?v=1778601700" alt="Stylized PR queue depth at ellamind, before vs after Opus 4.5" loading="lazy">
+        <img src="images/fig_1_2_pr_queue.png" alt="Stylized PR queue depth at ellamind, before vs after Opus 4.5" loading="lazy">
         <figcaption>Illustrative; internal data, anonymized.</figcaption>
     </figure>
 <p>Reviewing a non-trivial pull request does not parallelize. You have to load the change into your head, walk it against the system you already understand, judge whether the test coverage is real or theatre, and accept liability for what ships. None of that compresses when the writing side gets faster. Our reviewers are good and few; the depth of review is contractually fixed; the queue grew.</p>
 <p>The constraint did not vanish when the AI got better at writing code, it moved one step. The bottleneck went from "writing code" to "trusting code", and the people on the trusting side started to feel it.</p>
-<h3>The same shape</h3>
+<h3>The Same Shape</h3>
 <p>A German social court judge in Essen and a code reviewer in Bremen sit on the same side of the same problem. A new tool has dropped the cost of producing one kind of document close to zero, while the cost of reading, evaluating, and signing off on those documents has barely moved. The people on the second side now sit underneath a queue that did not exist eighteen months ago, growing faster than they can hire.</p>
 <p>The faster AI gets at producing, the more pain flows to whoever has to check. That pattern is everywhere once you look for it, and it is the natural sequel to the picture I drew in <a href="https://jph.me/essays/a-country-full-of-geniuses/" target="_blank" rel="noopener"><em>A Country Full of Geniuses</em></a> two months ago: when the geniuses arrive in the datacenter, the binding constraints in the rest of the economy are what we have to think about next.</p>
 </div>
@@ -524,15 +524,15 @@
 
 <section class="essay-section" id="slowest-clock">
 <div class="article">
-<h2>The slowest clock</h2>
+<h2>2. The Slowest Clock</h2>
 <p>It helps to put a frame around the shape from Section 1, because there is already a dominant frame in circulation and it points the other way.</p>
 <p>The most influential image of what powerful AI does is Dario Amodei's "compressed 21st century" from <a href="https://www.darioamodei.com/essay/machines-of-loving-grace" target="_blank" rel="noopener"><em>Machines of Loving Grace</em></a> (Oct 2024). Intelligence is <em>initially</em> heavily bottlenecked by the other factors of production, but over time intelligence itself routes around those factors. Compute, capital, talent, lab space, regulation; in the long run, a sufficiently capable system finds a way through each of them. A hundred years of biological progress in five to ten. A country full of geniuses in a datacenter.</p>
 <p>Read that frame carefully and the load-bearing words are "over time." Fast takeoff is exactly the case where time is not there.<sup class="fn-ref"><a href="#fn-2" id="fn-ref-2">[2]</a></sup> If the model side doubles every four months and the rest of the world does not, the routing-around argument runs out of runway before it runs out of intelligence.</p>
 <p>Even Amodei concedes this when pressed. To Dwarkesh Patel in February 2026, he put it plainly: <em>"I can't buy $1 trillion a year of compute in 2027."</em><sup class="fn-ref"><a href="#fn-3" id="fn-ref-3">[3]</a></sup> In the same interview he pointed to enterprise change management, clinical trials, and the life cycle of legislation. Each is a clock that intelligence cannot speed up by getting smarter.<sup class="fn-ref"><a href="#fn-4" id="fn-ref-4">[4]</a></sup></p>
 <p>Engineers will recognize the underlying structure: <a href="https://en.wikipedia.org/wiki/Amdahl%27s_law" target="_blank" rel="noopener">Amdahl's law</a>, applied to the economy. If you speed up one part of a process and another part stays the same, the maximum speedup of the whole is set by the slow part, not the fast one. Make the AI side 100x faster at the parallelizable work, and if 10% of the process remains serial and human, the maximum speedup of the whole process is roughly 9x. No matter how good the model gets, the slow 10% sets the ceiling.</p>
-<p>That is the working principle of this essay, and I want to state it once, plainly, so it can do its work in the rest of the piece. <strong>The slowest clock governs the system.</strong> Every bottleneck I discuss is a clock running at human, institutional, or physical speed. The fast clock is the model. The system can only run as fast as its slowest clock.</p>
+<p>That is the working principle of this essay, and I want to state it once, plainly, so it can do its work in the rest of the piece. <strong>The slowest clock governs the system.</strong> Every bottleneck I discuss is a clock running at human, institutional, or physical speed. The fastest clock is the model. The system can only run as fast as its slowest clock.</p>
 <figure>
-        <img src="images/fig_2_1_clock_speeds.png?v=1778601700" alt="Clock speeds across the AI stack and its institutional context" loading="lazy">
+        <img src="images/fig_2_1_clock_speeds.png" alt="Clock speeds across the AI stack and its institutional context" loading="lazy">
         <figcaption>Approximate cycle times by domain. Sources: METR (AI task-horizon doubling), Epoch.ai datacenter buildout tracker, FDA approval data, German judicial caseload reports. The gap between the top bar and the rest is the structural problem.</figcaption>
     </figure>
 <p>The slowest clock changes from layer to layer, and the rest of this essay walks three of them: silicon, the human in the loop, and the institutional clocks above both. Start with the first and most concrete.</p>
@@ -543,30 +543,30 @@
 
 <section class="essay-section" id="supply-shortage">
 <div class="article">
-<h2>The supply-shortage era</h2>
+<h2>3. The Supply-Shortage Era</h2>
 <p>Silicon is the cleanest case for the slowest-clock principle and the first layer of the analysis, because every clock in the stack is measured in wafers per month and the slowest one is visible on a public price chart.</p>
 <p>The frame has flipped fast. In early 2025 the dominant question about AI was "is demand real?" By April 2026 Derek Thompson could write that we have moved "from a period of demand scarcity (not enough customers) to supply scarcity (not enough compute)."<sup class="fn-ref"><a href="#fn-5" id="fn-ref-5">[5]</a></sup> Markets have stopped pricing whether AI gets used. They are pricing who owns the capacity.</p>
 <p>The simplest layer is the chip itself. Every leading AI accelerator in 2026 is fabricated on the same advanced manufacturing node at TSMC, and AI alone is projected to claim the majority of that node's output by 2027 — pushing smartphones and ordinary CPUs aside.<sup class="fn-ref"><a href="#fn-6" id="fn-ref-6">[6]</a></sup></p>
 <figure>
-        <img src="images/fig_3_1_tsmc_n3.png?v=1778601700" alt="TSMC N3 wafer allocation, AI vs phones vs CPU vs other, 2024-2027" loading="lazy">
+        <img src="images/fig_3_1_tsmc_n3.png" alt="TSMC N3 wafer allocation, AI vs phones vs CPU vs other, 2024-2027" loading="lazy">
         <figcaption>N3 wafer allocation by end-application, 2024-2027. AI demand expands from a minority share to the dominant claim on the node.</figcaption>
     </figure>
 <p>Memory and packaging show the same pattern in sharper form. The high-bandwidth memory that every AI accelerator needs has eaten an outsized share of total DRAM capacity, and Korean export prices for memory have lifted near-vertically — some categories now trade at several times last year's price.<sup class="fn-ref"><a href="#fn-7" id="fn-ref-7">[7]</a></sup> The advanced packaging that fuses logic and memory is the single most rationed item in the stack. And the geopolitical chokepoint is structural: Taiwan for logic, Korea for memory, two countries deep.</p>
 <figure>
-        <img src="images/memory_prices_korea.jpeg?v=1778490177" alt="Korean DRAM, flash and SSD export unit prices, May 2020 to May 2026" loading="lazy">
+        <img src="images/memory_prices_korea.jpeg" alt="Korean DRAM, flash and SSD export unit prices, May 2020 to May 2026" loading="lazy">
         <figcaption>Korea memory export unit price trends ($/kg), six-year monthly series. Source: Korea International Trade Association (KITA), processed from Korea Customs Service export data. The near-vertical lift in spring 2026 is the AI memory shortage in one panel of charts.</figcaption>
     </figure>
 <p>A new wrinkle has appeared in 2026: agents need their own compute. Each autonomous agent loop is, in effect, a small server doing CPU-side orchestration around model calls, and the CPU sleeve of the supply chain has woken up. AMD is up 343% on the year, Intel up 483%. Wall Street has rotated from "Nvidia or nothing" to "anyone with capacity."<sup class="fn-ref"><a href="#fn-8" id="fn-ref-8">[8]</a></sup></p>
-<p>The demand side has already started buying optionality rather than capacity. In April 2026, two large AWS customers asked to buy <em>all</em> of AWS's 2026 capacity for Graviton CPUs. AWS declined. Trainium2 is largely sold out, Trainium3 nearly fully subscribed, and Trainium4 (eighteen months out) already has significant pre-bookings. Microsoft's CFO Amy Hood told the Q1 2026 earnings call that capacity shortages would extend through the fiscal year.<sup class="fn-ref"><a href="#fn-9" id="fn-ref-9">[9]</a></sup></p>
+<p>The demand side has already started buying optionality rather than capacity. In April 2026, two large AWS customers asked to buy <em>all</em> of AWS's 2026 capacity for Graviton CPUs. AWS declined. Trainium (AWS's in-house chip family for AI training and inference, the alternative to renting NVIDIA capacity) shows the same pattern: Trainium2 is largely sold out, Trainium3 nearly fully subscribed, and Trainium4 (eighteen months out) already has significant pre-bookings. Microsoft's CFO Amy Hood told the Q1 2026 earnings call that capacity shortages would extend through the fiscal year.<sup class="fn-ref"><a href="#fn-9" id="fn-ref-9">[9]</a></sup></p>
 <p>When intelligence becomes abundant, scarcity rents accumulate at every layer that cannot scale linearly. Public markets have priced this faster than public discourse, and the surprises sit well below the obvious anchors of NVDA, TSM, and ASML.</p>
 <figure class="fig-narrow">
-        <img src="images/fig_3_3_valuations.png?v=1778601700" alt="Bottleneck-rent valuations, total return May 2025 to May 2026" loading="lazy">
+        <img src="images/fig_3_3_valuations.png" alt="Bottleneck-rent valuations, total return May 2025 to May 2026" loading="lazy">
         <figcaption>Source: Interactive Brokers daily close bars, May 8, 2025 to May 8, 2026. Anchors (NVDA/AVGO/TSM/ASML) in slate; bottleneck-rent picks in amber. Illustrative selection, not investment advice.</figcaption>
     </figure>
 <p>The bottleneck rent is the most consequential capital reallocation of this cycle, and it sits with whoever owns the constraint that intelligence cannot route around in time.</p>
 <figure>
-        <img src="images/fig_3_4_rotation.png?v=1778601701" alt="Constraint rotation across the AI infrastructure stack, 2023-2027" loading="lazy">
-        <figcaption>Binding constraint by year, 2023-2027: power, then logic, then packaging, then optics, memory and cooling. The constraint rotates as each layer is built out, and the rent rotates with it.</figcaption>
+        <img src="images/fig_3_4_rotation.png" alt="Constraint rotation across the AI infrastructure stack, 2023-2027" loading="lazy">
+        <figcaption>Binding constraint by year, 2023-2027: power, then logic, then packaging, then optics, memory and cooling. The constraint rotates as each layer is built out, and the rent rotates with it. Author's visualization, synthesized from SemiAnalysis coverage and adjacent supply-chain research.</figcaption>
     </figure>
 <p>And it keeps rotating: yesterday's binding constraint was power, today's is logic and packaging, tomorrow's will likely be something else entirely. The rent moves with the bottleneck, and whoever sees the next rotation first captures it.</p>
 </div>
@@ -576,21 +576,21 @@
 
 <section class="essay-section" id="interface-tax">
 <div class="article">
-<h2>The interface tax</h2>
+<h2>4. The Interface Tax</h2>
 <p>Silicon is priced in a public market. The second layer, the cost of being the human in the loop, is priced indirectly, through queues and review hours and signatures. No less real, just harder to see on a chart.</p>
 <p>The cleanest formalisation comes from a recent paper by Christian Catalini and co-authors at MIT, <a href="https://arxiv.org/abs/2602.20946" target="_blank" rel="noopener"><em>Some Simple Economics of AGI</em></a> (Feb 2026). The argument fits on an envelope. Two cost curves matter: the cost to automate a task (cA) which falls roughly exponentially as models improve, and the cost to verify the result (cH) which is biologically capped by human time, attention, and embodied judgment. cA crashes; cH barely moves. Catalini calls the widening space between them the <strong>Measurability Gap</strong>, and his framing of the consequence is the thesis of this section: <em>"the binding constraint on growth is no longer intelligence. It is human verification bandwidth."</em></p>
 <figure class="fig-narrow">
-        <img src="images/fig_4_1_measurability_gap.png?v=1778601701" alt="Cost-to-automate vs cost-to-verify, with the widening gap" loading="lazy">
+        <img src="images/fig_4_1_measurability_gap.png" alt="Cost-to-automate vs cost-to-verify, with the widening gap" loading="lazy">
         <figcaption>Source: Catalini, Hui & Wu, "Some Simple Economics of AGI", arXiv:2602.20946, Feb 2026.</figcaption>
     </figure>
 <p>The most underreported number of 2026 lives in OpenAI's GDPval study. Naively, GPT-5 completes the benchmark's expert tasks roughly 90x faster than a human professional. Once you account for the human time still required to review the output ("try once, fix it"), GPT-5 ends up only about 1.18x cheaper than the human working alone. Almost all of the headline speed evaporates at the verification step.<sup class="fn-ref"><a href="#fn-10" id="fn-ref-10">[10]</a></sup></p>
 <figure class="fig-narrow">
-        <img src="images/fig_4_2_gdpval.png?v=1778601701" alt="GPT-5 speedup before and after human review (GDPval)" loading="lazy">
+        <img src="images/fig_4_2_gdpval.png" alt="GPT-5 speedup before and after human review (GDPval)" loading="lazy">
         <figcaption>Source: OpenAI GDPval study, October 2025.</figcaption>
     </figure>
 <p>This is the same shape as the ellamind code review story from Section 1. Code review is a verification gate that does not scale automatically when the AI side scales. The model writes faster; the reviewer's working memory does not. Once you see the pattern, you see it everywhere a regulated process touches an AI output.</p>
 <figure>
-        <img src="images/fig_4_3_verification_queue.png?v=1778273802" alt="A single inspector at an amber-lit desk, dwarfed by stacks of unread paper as a fast conveyor belt of documents streams in from the right" loading="lazy">
+        <img src="images/fig_4_3_verification_queue.png" alt="A single inspector at an amber-lit desk, dwarfed by stacks of unread paper as a fast conveyor belt of documents streams in from the right" loading="lazy">
         <figcaption>The interface tax, in one image: cheap to produce, slow to verify.</figcaption>
     </figure>
 <p>The pattern shows up wherever a regulated process terminates in a human signature. In banking, the four-eyes principle mandates two licensed humans on every critical action; equivalent rules bind pharma manufacturing, energy trading, public procurement, and parts of public-sector decision-making across most developed economies. Pharma runs batch records, lab notebooks, and clinical-trial source-data verification through human signatures under FDA Part 11 and EU GMP. Whether it is a credit decision, a clinical batch release, a board-approved trade, a contract review, a patent prosecution, or a deployed-model release, the gate is the same: signed off by a person who carries personal liability. ellamind's customers operate inside these gates, and our work is, in plain terms, building infrastructure for the verification side. Verification economics has gone from paper to product category.</p>
@@ -602,11 +602,11 @@
 
 <section class="essay-section" id="institutional-clocks">
 <div class="article">
-<h2>The institutional clocks</h2>
+<h2>5. The Institutional Clocks</h2>
 <p>The interface tax explains why individual reviewers and approvers are getting buried. The same arithmetic, one level higher, explains why the institutions they belong to are too. Take drug development as the cleanest case. Anthropic's own writing on the topic, picked up and sharpened by Tyler Cowen, gives the formulation almost too neatly: if AI increases the rate of pharma ideas by 10x, the relevant constraint becomes the rate of drug approval rather than the rate of drug discovery. The FDA pipeline does not move on a four-month doubling; Phase I to approval still runs roughly a decade. Most of the discoveries an accelerated discovery layer produces will queue. This is the deepest expression of the working frame: the slowest clock governs the system.</p>
 <p>The same shape shows up in courts. The German social-court story from Section 1 is not a regional curiosity, it is the general case. AI lowers the marginal cost of producing legal text, complaints, briefs, appeals, toward zero. Courts do not scale: judges, hearing officers, and clerks are human-bandwidth-bound, and adding capacity requires legislation, training, and physical rooms. The result is queue length, which is its own kind of failure: justice delayed is justice denied. And remember, today's filings are still mostly the work of citizens running ChatGPT one prompt at a time. Agents capable of preparing dozens of complaints in a single session have not meaningfully reached the broader public yet. When they do, expect another order of magnitude of throughput on the producer side, against the same number of judges.</p>
 <figure>
-        <img src="images/fig_5_2_court_national.png?v=1778601701" alt="German social court caseload growth, 2022-2026, expanded national view" loading="lazy">
+        <img src="images/fig_5_2_court_national.png" alt="German social court caseload growth, 2022-2026, expanded national view" loading="lazy">
         <figcaption>The widening gap between intake and disposition.</figcaption>
     </figure>
 <p>This is the same disease as the code-review collapse from Section 1, in a different organ. Code review is what happens when verification capacity inside one team falls behind generation. The court backlog is what happens when verification capacity inside one society does. The arithmetic is identical.</p>
@@ -620,22 +620,22 @@
 
 <section class="essay-section" id="what-this-means">
 <div class="article">
-<h2>What this means</h2>
+<h2>6. What This Means</h2>
 <p>Three layers, one shape. Now the practical question: what do you do with this lens?</p>
-<h3>Disruption is asymmetric</h3>
+<h3>6.1 Disruption Is Asymmetric</h3>
 <p>The standard "AI takes jobs" framing predicts pain inside AI-native workflows. Bottleneck thinking predicts pain at the <em>interfaces</em>. The doctor signing off on the radiology AI. The judge reading AI-generated complaints. The compliance officer reviewing AI-drafted contracts. The manager evaluating AI-written performance reports. The code reviewer trusting AI-written PRs. These roles intensify rather than vanish; the people in them feel overworked, not redundant. That is a different policy problem from the one most public debate is set up to solve.</p>
 <p>Ethan Mollick has been making a related point: as he put it in <a href="https://www.oneusefulthing.org/p/the-shape-of-ai-jaggedness-bottlenecks" target="_blank" rel="noopener"><em>The Shape of AI: Jaggedness, Bottlenecks and Salients</em></a> (Dec 2025), AI capability advances along a jagged frontier, and when one bottleneck breaks, "everything behind it comes flooding through." The visible change is uneven precisely because of the bottleneck mechanic. The capability was already there. What moves is the constraint.</p>
-<h3>What this means for politics and non-tech people</h3>
+<h3>6.2 What This Means for Politics and Non-Tech People</h3>
 <p>Three concrete claims, framed for the reader who is not in tech:</p>
 <p>First, regulatory speed and adaptability becomes a strategic national asset. A country with fast courts, smart and fast regulators, abundant fab capacity, and a reliable grid <em>may capture</em> AI value better than one with abundant talent alone. This inverts decades of policy intuition. Investment in administrative throughput, judicial capacity, permitting reform, and electrical grid capacity is now AI-economic policy, even when no one labels it that way. The German social-court story from Section 1, read in this light, is an industrial-policy story.</p>
 <p>But there is a harder corollary, and it cuts especially close to home in Europe: institutions themselves have to adopt AI internally if they want to survive their own queues. The way out of the social-court backlog is not just hiring more clerks. It is having low-stakes, high-volume cases triaged or pre-decided by AI, with human judges focused on the harder ones. We do something analogous inside ellamind: smaller, low-risk pull requests are reviewed end-to-end by an automated reviewer, and humans only enter when the stakes or the change surface justify it. The guardrails matter enormously, the design has to fail safe, and the categories of "low-stakes" must be drawn carefully. But the alternative, keeping verification entirely human as the producer side scales 100x, is not a recoverable position. Institutions that do not build their own verification layer will lose the ability to govern the producers.</p>
 <p>Second, political fights move from "AI safety" to "who gets the slot." Whoever owns a constrained layer collects the rent. FDA approval throughput, court time, TSMC N3 wafer capacity, electrical permits, construction labor. The next decade's political front lines are permitting reform, judicial budgets, regulatory headcount, and grid interconnect queues. These are technical-sounding fights with very large distributive consequences, and the AWS sold-out story from Section 3 is what they look like before they reach the public domain. They are AI fights even when no one calls them that.</p>
 <p>Third, for non-tech people the question is not "will AI take my job?" but "am I the verifier in my workflow?" If yes (doctor, judge, manager, reviewer, compliance officer, certain teaching and operations roles), expect intensification, not redundancy. The role shifts toward judgment and accountability, exactly the verification economics from Section 4. Train for that. If you produce text, code, designs, analysis, and someone else signs off, expect commoditisation. The value flows to whoever takes responsibility for the output. The professions most under-discussed in current AI-and-jobs coverage are middle management and operations, which exist precisely because they are the verifier layer for everyone below them. They are about to become much more important and much harder.</p>
 <figure class="fig-narrow">
-        <img src="images/fig_6_1_quadrants.png?v=1778601701" alt="Where will you feel it first? Producer/verifier roles by AI-exposure" loading="lazy">
+        <img src="images/fig_6_1_quadrants.png" alt="Where will you feel it first? Producer/verifier roles by AI-exposure" loading="lazy">
         <figcaption>A 2x2 matrix. Verifier roles in AI-exposed fields are the intensification quadrant.</figcaption>
     </figure>
-<h3>Tools for applying the bottleneck lens</h3>
+<h3>6.3 Tools for Applying the Bottleneck Lens</h3>
 <p>A practical toolkit, deliberately small.</p>
 <p><strong>Tool 1: The three-question test.</strong> For any workflow, process, or sector you care about, ask:</p>
 <ol class="numbered-list">
