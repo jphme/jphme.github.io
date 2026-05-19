@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bottlenecks - JP Harries</title>
+    <meta name="description" content="Die langsamste Uhr gibt den Takt des Systems vor. Während KI die Produktion beschleunigt, wandert der Engpass zu denjenigen, die verifizieren, entscheiden und Verantwortung tragen müssen.">
+    <meta name="author" content="JP Harries">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Bottlenecks: Ein Denkmodell für die Folgen der KI-Disruption in einem Fast-Takeoff">
+    <meta property="og:description" content="Die langsamste Uhr gibt den Takt des Systems vor. Während KI die Produktion beschleunigt, wandert der Engpass zu denjenigen, die verifizieren, entscheiden und Verantwortung tragen müssen.">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://jph.me/essays/bottlenecks/images/hero_v4_cathedral_hourglass.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Bottlenecks: Ein Denkmodell für die Folgen der KI-Disruption in einem Fast-Takeoff">
+    <meta name="twitter:description" content="Die langsamste Uhr gibt den Takt des Systems vor. Während KI die Produktion beschleunigt, wandert der Engpass zu denjenigen, die verifizieren, entscheiden und Verantwortung tragen müssen.">
+
+    <link rel="canonical" href="https://jph.me/essays/bottlenecks/de/">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --parchment: #F7F4EE;
+            --linen: #EBEDF2;
+            --ink: #1C1917;
+            --graphite: #5E6673;
+            --chalk: #CDD2DA;
+            --amber: #B45309;
+            --amber-light: #D97706;
+            --dusk: #1E3A5F;
+            --horizon: #7B8FAB;
+            --deep-navy: #0F172A;
+            --warm-glow: #FCD34D;
+            --fog: #94A3B8;
+            --cool-white: #F1F5F9;
+            --rose: #BE123C;
+            --slate: #475569;
+            --teal: #0F766E;
+
+            --font-display: 'Instrument Serif', Georgia, serif;
+            --font-body: 'Source Serif 4', Georgia, serif;
+            --font-ui: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+
+            --content-width: 680px;
+            --wide-width: 1100px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+        body {
+            font-family: var(--font-body);
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--ink);
+            background-color: var(--parchment);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .progress-bar {
+            position: fixed; top: 0; left: 0;
+            width: 0%; height: 3px;
+            background: linear-gradient(90deg, var(--amber), var(--amber-light));
+            z-index: 1000;
+            transition: width 0.1s linear;
+        }
+
+        .toc {
+            position: fixed;
+            top: 50%;
+            left: max(1rem, calc((100vw - var(--wide-width)) / 2 - 12rem));
+            transform: translateY(-50%);
+            z-index: 100;
+            list-style: none;
+            font-family: var(--font-ui);
+            font-size: 12px;
+            letter-spacing: 0.02em;
+            max-width: 160px;
+        }
+        .toc li { margin-bottom: 0.75rem; }
+        .toc a {
+            color: var(--chalk);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: block;
+            line-height: 1.4;
+        }
+        .toc a:hover, .toc a.active { color: var(--amber); }
+        .toc a.active { font-weight: 500; }
+        .toc.scrolled a { color: var(--slate); }
+        .toc.scrolled a:hover, .toc.scrolled a.active { color: var(--amber); }
+        @media (max-width: 1400px) { .toc { display: none; } }
+
+        .toc-mobile-toggle {
+            display: none;
+            position: fixed; bottom: 1.5rem; right: 1.5rem;
+            z-index: 200;
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: var(--dusk);
+            color: var(--cool-white);
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-ui);
+            font-size: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+        }
+        .toc-mobile-toggle:hover { transform: scale(1.05); }
+        .toc-mobile {
+            display: none;
+            position: fixed; bottom: 5rem; right: 1.5rem;
+            z-index: 199;
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+            list-style: none;
+            font-family: var(--font-ui);
+            font-size: 14px;
+            max-width: 280px;
+        }
+        .toc-mobile.open { display: block; }
+        .toc-mobile li { margin-bottom: 0.75rem; }
+        .toc-mobile li:last-child { margin-bottom: 0; }
+        .toc-mobile a {
+            color: var(--graphite);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .toc-mobile a:hover, .toc-mobile a.active { color: var(--amber); }
+        @media (max-width: 1400px) {
+            .toc-mobile-toggle { display: flex; align-items: center; justify-content: center; }
+        }
+
+        .hero {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 21 / 9;
+            max-height: 78vh;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            overflow: hidden;
+            background-color: var(--deep-navy);
+        }
+        .hero-image {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(15, 23, 42, 0.1) 0%,
+                rgba(15, 23, 42, 0.4) 50%,
+                rgba(15, 23, 42, 0.85) 80%,
+                rgba(15, 23, 42, 0.95) 100%
+            );
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: var(--content-width);
+            padding: 0 2rem 3rem;
+            text-align: left;
+            width: 100%;
+        }
+        .hero h1 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--cool-white);
+            margin-bottom: 1rem;
+        }
+        .hero .subtitle {
+            font-family: var(--font-body);
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            line-height: 1.5;
+            color: var(--fog);
+            margin-bottom: 1.5rem;
+            max-width: 540px;
+        }
+        .hero .byline {
+            font-family: var(--font-ui);
+            font-size: 14px;
+            color: var(--horizon);
+            letter-spacing: 0.03em;
+        }
+        .hero .dateline {
+            font-family: var(--font-ui);
+            font-size: 13px;
+            color: var(--horizon);
+            letter-spacing: 0.03em;
+            margin-top: 0.25rem;
+        }
+        .scroll-indicator {
+            position: absolute; bottom: 2rem;
+            left: 50%; transform: translateX(-50%);
+            z-index: 2;
+            animation: bob 2s ease-in-out infinite;
+            color: var(--fog);
+            opacity: 0.6;
+        }
+        @keyframes bob {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        .article {
+            max-width: var(--content-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .essay-section {
+            padding-top: 1.5rem;
+            padding-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .essay-section.visible { opacity: 1; transform: translateY(0); }
+        .section-divider {
+            width: 40px; height: 1px;
+            background: var(--chalk);
+            margin: 2rem auto;
+            display: block;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-size: 2rem;
+            line-height: 1.2;
+            letter-spacing: -0.015em;
+            color: var(--ink);
+            margin-bottom: 0.5rem;
+        }
+        .section-subtitle {
+            font-family: var(--font-body);
+            font-style: italic;
+            font-size: 1.05rem;
+            color: var(--graphite);
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+        h3 {
+            font-family: var(--font-ui);
+            font-weight: 600;
+            font-size: 1.375rem;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        p { margin-bottom: 1.5em; }
+        strong { font-weight: 600; }
+        em { font-style: italic; }
+
+        ol.numbered-list {
+            list-style: decimal;
+            padding-left: 1.5em;
+            margin: 0 0 1.5em;
+        }
+        ol.numbered-list li {
+            margin-bottom: 0.5em;
+            padding-left: 0.25em;
+            line-height: 1.6;
+        }
+        a {
+            color: var(--amber);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s ease, color 0.2s ease;
+        }
+        a:hover { border-bottom-color: var(--amber); }
+
+        .lead-in { padding-top: 3rem; padding-bottom: 0.5rem; }
+        .lead-in p:first-child { font-size: 1.15rem; line-height: 1.75; }
+
+        blockquote.pull-quote {
+            border-left: 3px solid var(--amber);
+            padding: 0.5rem 0 0.5rem 1.5rem;
+            margin: 2.5rem 0;
+            font-family: var(--font-body);
+            font-style: italic;
+            font-size: 1.15rem;
+            line-height: 1.5;
+            color: var(--ink);
+        }
+
+        figure {
+            margin: 2.5rem 0;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        figure img {
+            max-width: var(--wide-width);
+            width: 90%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+        }
+        figure.fig-narrow img {
+            max-width: 760px;
+            width: 78%;
+        }
+        figcaption {
+            font-family: var(--font-ui);
+            font-size: 0.875rem;
+            color: var(--graphite);
+            line-height: 1.5;
+            letter-spacing: 0.01em;
+            max-width: var(--content-width);
+            width: 90%;
+            margin-top: 0.75rem;
+            padding: 0 1rem;
+            text-align: center;
+        }
+
+        .fn-ref {
+            font-family: var(--font-ui);
+            font-size: 0.7em;
+            line-height: 1;
+            vertical-align: super;
+        }
+        .fn-ref a {
+            color: var(--amber);
+            text-decoration: none;
+            border-bottom: none;
+            padding: 0 1px;
+        }
+        .fn-ref a:hover { color: var(--amber-light); }
+
+        .footnotes-section {
+            border-top: 1px solid var(--chalk);
+            margin-top: 3rem;
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+        }
+        .footnotes-section h2 { font-size: 1.5rem; margin-bottom: 1.5rem; }
+        .footnotes-list {
+            list-style: none;
+            counter-reset: none;
+            padding: 0;
+        }
+        .footnote-item {
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--graphite);
+            margin-bottom: 1rem;
+            padding-left: 0;
+            scroll-margin-top: 2rem;
+        }
+        .footnote-item:target {
+            background-color: rgba(180, 83, 9, 0.08);
+            border-radius: 4px;
+            padding: 0.5rem;
+            margin-left: -0.5rem;
+        }
+        .fn-number {
+            font-weight: 600;
+            color: var(--ink);
+            margin-right: 0.25rem;
+        }
+        .fn-back {
+            font-size: 0.85em;
+            text-decoration: none;
+            color: var(--amber);
+            margin-left: 0.25rem;
+            border-bottom: none !important;
+        }
+        .fn-back:hover { color: var(--amber-light); }
+
+        .author-bio-block {
+            padding: 1.5rem 0 1rem;
+        }
+        .author-bio {
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--horizon);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            body { font-size: 17px; line-height: 1.65; }
+            .hero { aspect-ratio: auto; min-height: 60vh; }
+            .hero-image { object-position: center 30%; }
+            .hero-content { padding: 0 1.5rem 2.5rem; }
+            .article { padding: 0 1.25rem; }
+            .author-bio-block { padding: 1rem 0 0.5rem; }
+            h2 { font-size: 1.65rem; }
+            blockquote.pull-quote { font-size: 1.05rem; }
+            figure img { width: 95%; border-radius: 2px; }
+            figure.fig-narrow img { width: 95%; max-width: 100%; }
+            figcaption { font-size: 0.8rem; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2rem; }
+            .hero .subtitle { font-size: 0.95rem; }
+            h2 { font-size: 1.5rem; }
+        }
+
+        .data-point {
+            font-family: var(--font-mono);
+            font-size: 0.95em;
+            color: var(--dusk);
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px; height: 1px;
+            padding: 0; margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            border: 0;
+        }
+        .site-nav a:hover { color: var(--amber) !important; }
+    </style>
+</head>
+<body>
+
+<nav class="site-nav" style="position: fixed; top: 12px; left: max(1rem, calc((100vw - var(--wide-width)) / 2)); z-index: 101; font-family: var(--font-ui); font-size: 13px; letter-spacing: 0.02em;">
+    <a href="/" style="color: var(--horizon); text-decoration: none; border-bottom: none; transition: color 0.2s;">&#8592; jph.me</a>
+</nav>
+
+<!-- Reading Progress Bar -->
+<div class="progress-bar" id="progressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+<!-- Desktop TOC -->
+<nav aria-label="Inhaltsverzeichnis">
+    <ul class="toc" id="toc">
+        <li><a href="#two-scenes">1. Zwei Szenen</a></li>
+        <li><a href="#slowest-clock">2. Die langsamste Uhr</a></li>
+        <li><a href="#supply-shortage">3. Die Ära der Knappheit</a></li>
+        <li><a href="#interface-tax">4. Die „Interface Tax&ldquo;</a></li>
+        <li><a href="#institutional-clocks">5. Die institutionellen Uhren</a></li>
+        <li><a href="#what-this-means">6. Was das bedeutet</a></li>
+    </ul>
+</nav>
+
+<!-- Mobile TOC -->
+<button class="toc-mobile-toggle" id="tocToggle" aria-label="Inhaltsverzeichnis">&#9776;</button>
+<ul class="toc-mobile" id="tocMobile">
+        <li><a href="#two-scenes">1. Zwei Szenen</a></li>
+        <li><a href="#slowest-clock">2. Die langsamste Uhr</a></li>
+        <li><a href="#supply-shortage">3. Die Ära der Knappheit</a></li>
+        <li><a href="#interface-tax">4. Die „Interface Tax&ldquo;</a></li>
+        <li><a href="#institutional-clocks">5. Die institutionellen Uhren</a></li>
+        <li><a href="#what-this-means">6. Was das bedeutet</a></li>
+</ul>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+    <img src="../images/hero_v4_cathedral_hourglass.png" alt="Ein Sanduhr-Korridor in Kathedralengröße: eine bernsteinfarben leuchtende Wand aus Dokumenten verengt sich durch einen einzelnen Torbogen zu einer kühlen, grauen institutionellen Halle." class="hero-image" loading="eager">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>Bottlenecks</h1>
+        <p class="subtitle">Ein Denkmodell für die Folgen der KI-Disruption in einem Fast-Takeoff</p>
+        <p class="byline">Von JP Harries</p>
+        <p class="dateline">8. Mai 2026</p>
+    </div>
+    <div class="scroll-indicator" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+</header>
+
+<main>
+<div class="article" style="padding-top: 2.5rem;">
+<p style="font-style: italic; color: var(--graphite); font-size: 0.95rem; margin: 0;">Übersetzt aus dem <a href="/essays/bottlenecks/">englischen Original</a>.</p>
+</div>
+<div class="article lead-in essay-section">
+<p>Drei Szenen, die scheinbar zunächst nichts miteinander zu tun haben: Ein deutsches Landessozialgericht erstickt unter KI-generierten Klageschriften. Die koreanischen Exportpreise für Speicherchips haben sich gegenüber dem Vorjahr in einzelnen Kategorien mehr als verfünffacht. Und in unserem KI-Startup ist das Code-Review zum eigentlichen Engpass der Softwareentwicklung geworden. Drei Erscheinungsformen desselben Problems. Dieser Artikel stellt ein Framework vor, mit dem sich die Bottlenecks antizipieren lassen, die der rasante KI-Fortschritt erzeugt. Wo entstehen sie? Warum tauchen sie auf? Und wie erkennt man die nächsten Bottlenecks rechtzeitig?</p>
+</div>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="two-scenes">
+<div class="article">
+<h2>1. Zwei Szenen</h2>
+<h3>Szene A: Eine Pressekonferenz in Essen</h3>
+<p>Auf seiner Jahrespressekonferenz im April 2026 vermeldete das Landessozialgericht Nordrhein-Westfalen für seine acht Sozialgerichte 7.615 Eilverfahren im Jahr 2025, ein Sprung um 55 Prozent binnen eines Jahres. Reguläre Verfahren warten inzwischen 15,6 Monate auf eine Entscheidung.<sup class="fn-ref"><a href="#fn-1" id="fn-ref-1">[1]</a></sup></p>
+<figure class="fig-narrow">
+        <img src="../images/fig_1_1_lsg_caseload.png" alt="Eilverfahren der Sozialgerichte in NRW, plus 55 Prozent gegenüber dem Vorjahr 2025" loading="lazy">
+        <figcaption>Quelle: Jahrespressekonferenz LSG NRW, April 2026.</figcaption>
+    </figure>
+<p>Das Gericht benannte die Ursache offen: KI-generierte Klageschriften. Die Schriftsätze, so die Gerichtspräsidentin, seien „oft sehr lang, mit einer Vielzahl von oft nicht zielgerichteten Anträgen und Verweisen auf Rechtsprechung, die es teilweise gar nicht gibt&ldquo;. Und das ist erst der Beginn. Heute kommen die Eingaben überwiegend von juristischen Laien, die ChatGPT mit einem einfachen Prompt gefragt haben. Die Entwicklung ist jetzt schon dramatisch, lange bevor KI-Agenten die breite Öffentlichkeit erreicht haben. Die Richter ertrinken in Texten, deren Produktion fast nichts kostet und die dennoch Zeile für Zeile gelesen werden müssen. Und die Kurve der Anzahl der Klageeingänge hat gerade erst angefangen, noch steiler zu werden.</p>
+<h3>Szene B: Ein Montagmorgen in Bremen</h3>
+<p>Eine kleinere Version derselben Geschichte spielt sich in unserem eigenen Unternehmen ab. <a href="https://ellamind.com" target="_blank" rel="noopener">ellamind</a> baut und evaluiert KI-Agenten für Unternehmenskunden. Nachdem Anthropic Ende 2025 Claude Opus 4.5 veröffentlicht hatte, sprang die Fähigkeit unserer Entwickler, neuen Code zu schreiben, dramatisch an. Binnen weniger Wochen lagen mehr als 50 fertige Code-Beiträge im Review-Stau, etwa das Fünffache dessen, was wir vor Opus 4.5 kannten. Und nicht genug Senior-Entwickler, um alle zeitnah zu prüfen …</p>
+<figure class="fig-narrow">
+        <img src="../images/fig_1_2_pr_queue.png" alt="Stilisierte Anzahl der PRs bei ellamind in der Review-Schlange, vor und nach Opus 4.5" loading="lazy">
+        <figcaption>Illustrativ; interne Daten, anonymisiert.</figcaption>
+    </figure>
+<p>Das Review eines nicht-trivialen Code-Beitrags lässt sich nicht parallelisieren. Ein Reviewer muss die bestehende Codebasis kennen, das Ziel und die technischen Methoden der Änderung verstehen und unbedachte Nebeneffekte erkennen. Er muss beurteilen, ob die Testabdeckung ausreichend und die Tests zielführend sind. Und er muss die Verantwortung für Code tragen, der in Produktion geht. Nichts davon geht schneller, wenn die Code-Erstellung schneller wird und die Anzahl der Code-Reviewer lässt sich nicht auf Knopfdruck skalieren.</p>
+<p>Das Bottleneck verschwand nicht, als die KI besser darin wurde, Code zu schreiben. Es wanderte einen Schritt weiter und verlagerte sich vom „Code schreiben&ldquo; zum „Code überprüfen&ldquo;.</p>
+<h3>Dasselbe Muster</h3>
+<p>Ein Sozialrichter in Essen und ein Code-Reviewer in Bremen sind zwei Seiten derselben Medaille. Ein neues Tool hat die Kosten für die Produktion einer bestimmten Art von Dokument nahe an null gedrückt, während die Kosten für das Lesen, Bewerten und Verifizieren dieser Dokumente kaum gesunken sind. Menschen, deren Arbeit hauptsächlich aus letzterem besteht, erleben hautnah (aber in unterschiedlicher Geschwindigkeit), wie sich durch KI gigantische Bottlenecks in verschiedensten Prozessen bilden.</p>
+<p>Je schneller die KI im Produzieren von Outputs wird, desto härter wird es für diejenigen, die diese Outputs prüfen müssen. Das Muster ist überall sichtbar, sobald man es einmal gesehen hat. Und es ist die natürliche Fortsetzung des Bildes, das ich vor zwei Monaten in <a href="https://jph.me/essays/a-country-full-of-geniuses/" target="_blank" rel="noopener"><em>A Country Full of Geniuses</em></a> gezeichnet habe: Sobald das „Country Full of Geniuses in a Datacenter&ldquo; absehbar ist, sind die Bottlenecks im Rest der Gesellschaft und Wirtschaft das, worüber wir als Nächstes nachdenken müssen.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="slowest-clock">
+<div class="article">
+<h2>2. Die langsamste Uhr</h2>
+<p>Das einflussreichste Bild davon, was mächtige KI leistet, stammt von Dario Amodei: das „komprimierte 21. Jahrhundert&ldquo; aus <a href="https://www.darioamodei.com/essay/machines-of-loving-grace" target="_blank" rel="noopener"><em>Machines of Loving Grace</em></a> (Oktober 2024). Intelligenz, so das Bild, sei <em>zunächst</em> stark durch die anderen Produktionsfaktoren gebremst, finde mit der Zeit aber Wege um sie herum. Compute, Kapital, Talent, Research, Regulierung: Auf lange Sicht findet ein hinreichend fähiges System einen Pfad durch jede dieser Bottlenecks. Hundert Jahre biologischer Fortschritt in fünf bis zehn Jahren. Ein Land voller Genies in einem Rechenzentrum.</p>
+<p>Denkt man genauer darüber nach, dann sind „mit der Zeit&ldquo; die entscheidenden Worte. Der Fast-Takeoff ist genau jener Fall, in dem die Zeit, alternative Wege zu finden, fehlt.<sup class="fn-ref"><a href="#fn-2" id="fn-ref-2">[2]</a></sup> Wenn sich die Modellfähigkeiten alle vier Monate verdoppeln und der Rest der Welt sich nicht darauf einstellt, prallt die massive Intelligenz mit voller Wucht auf eine Wand.</p>
+<p>Selbst Amodei räumt das Problem ein, wenn man ihn drängt. Gegenüber Dwarkesh Patel sagte er im Februar 2026: <em>„Ich kann 2027 nicht einfach eine Billion Dollar Compute im selben Jahr einkaufen.&ldquo;</em><sup class="fn-ref"><a href="#fn-3" id="fn-ref-3">[3]</a></sup> Im selben Gespräch verwies er auf Change-Management in Unternehmen, klinische Studien und die Dauer von Gesetzgebungsverfahren. Jeder dieser Vorgänge ist eine Uhr, die KI nicht beschleunigen kann, nur weil sie klüger wird.<sup class="fn-ref"><a href="#fn-4" id="fn-ref-4">[4]</a></sup></p>
+<p>Ingenieure werden das fundamentale Problem sofort erkennen: <a href="https://en.wikipedia.org/wiki/Amdahl%27s_law" target="_blank" rel="noopener">Amdahls Gesetz</a>, angewandt auf die Volkswirtschaft. Wenn man einen Teil eines Prozesses beschleunigt und der andere Teil gleich bleibt, wird der maximale Speedup des gesamten Prozesses vom langsamsten Teil bestimmt, nicht vom schnellsten oder dem Durchschnitt. Parallelisiert man die KI-Parts in einem Prozess und macht sie 100-mal schneller, während 10% weiterhin manuell &amp; seriell in alter Geschwindigkeit bearbeitet werden können, liegt der maximale Speedup des Gesamtprozesses ungefähr bei Faktor 9. Egal wie gut das Modell ist: Die langsamsten 10 Prozent bestimmen das Potential.</p>
+<p><strong>Die langsamste Uhr gibt den Takt des Systems vor.</strong> Das ist das Arbeitsprinzip dieses Artikels. Jedes Bottleneck, das ich beispielhaft anführe, ist wie eine Uhr, die in menschlichem, institutionellem oder physischem Tempo läuft. Die schnellste Uhr ist das KI-Modell. Aber das Gesamtsystem kann nur so schnell laufen wie seine langsamste Uhr.</p>
+<figure>
+        <img src="../images/fig_2_1_clock_speeds.png" alt="Taktraten im KI-Stack und in seinem institutionellen Umfeld" loading="lazy">
+        <figcaption>Ungefähre Verdoppelungszeit für unterschiedliche Ereignisse. Quellen: METR (Verdopplung der KI-Aufgabenhorizonte), Epoch.ai Datacenter-Buildout-Tracker, FDA-Zulassungsdaten, deutsche Justizstatistiken. Die Lücke zwischen dem obersten Balken und dem Rest ist das strukturelle Problem.</figcaption>
+    </figure>
+<p>Was die langsamste Uhr ist, wechselt von Bereich zu Bereich. Der Rest dieses Artikels nennt beispielhaft drei davon: Chips auf der physischen Ebene, den Menschen als „Verifizierer&ldquo; und Institutionen und Gesetze, die große Auswirkungen auf alle anderen Bereiche haben und oftmals (aus gutem Grund) die langsamsten von allen sind. Beginnen wir mit der ersten und einfachsten:</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="supply-shortage">
+<div class="article">
+<h2>3. Die Ära der Knappheit</h2>
+<p>Die Semiconductor-Supply Chain ist der sauberste Fall für das Prinzip der langsamsten Uhr und die physische Ebene von KI-induzierten Bottlenecks.</p>
+<p>Die Wahrnehmung hat sich rasch gedreht. Anfang 2025 lautete die dominante (ökonomische) Frage zur Entwicklung von KI noch: „Ist die Nachfrage echt?&ldquo; Im April 2026 schrieb Derek Thompson dann, wir hätten uns „von einer Periode der Nachfrageknappheit (zu wenig Kunden) zu einer Periode der Angebotsknappheit (zu wenig Compute)&ldquo; hinbewegt.<sup class="fn-ref"><a href="#fn-5" id="fn-ref-5">[5]</a></sup> Die Märkte preisen inzwischen nicht mehr ein, ob KI sich durchsetzen wird. Sie preisen ein, wem die Datacenter und GPUs gehören und wer den größten Profit aus der gigantischen Nachfrage ziehen kann.</p>
+<p>Die einfachste Schicht ist der Chip selbst. Jeder führende KI-Chip des Jahres 2026 wird auf demselben fortgeschrittenen Fertigungsknoten bei TSMC produziert, und KI-Chips dürften 2027 den Großteil der Kapazitäten dieses Knotens beanspruchen. Smartphones und gewöhnliche CPUs spielen kaum noch eine Rolle.<sup class="fn-ref"><a href="#fn-6" id="fn-ref-6">[6]</a></sup></p>
+<figure>
+        <img src="../images/fig_3_1_tsmc_n3.png" alt="TSMC-N3-Wafer-Allokation, KI gegen Smartphones gegen CPU gegen Übriges, 2024 bis 2027" loading="lazy">
+        <figcaption>N3-Wafer-Allokation nach Endanwendung, 2024 bis 2027. Die KI-Nachfrage wächst von einer Minderheitenposition zum dominanten Anteil auf den fortschrittlichsten Knoten.</figcaption>
+    </figure>
+<p>Bei Speicher und „Packaging&ldquo; zeigt sich dasselbe Muster in zugespitzter Form. Der spezielle Speicher, den jeder KI-Chip braucht, hat einen überproportionalen Anteil der gesamten DRAM-Kapazität verschlungen, und die koreanischen Exportpreise für Speicher sind beinahe senkrecht nach oben geschossen. Einzelne Kategorien kosten mittlerweile ein Mehrfaches des Vorjahrespreises.<sup class="fn-ref"><a href="#fn-7" id="fn-ref-7">[7]</a></sup> Das fortgeschrittene „Packaging&ldquo;, das quasi Logik und Speicher zu einem einzigen Chip verschmilzt, ist das größte Kapazitäts-Bottleneck im gesamten Stack. Und das geopolitische Bottleneck ist strukturell: Taiwan für die Chips, Korea für den Speicher.</p>
+<figure>
+        <img src="../images/memory_prices_korea.jpeg" alt="Koreanische Exportpreise pro Einheit für DRAM, Flash und SSDs, Mai 2020 bis Mai 2026" loading="lazy">
+        <figcaption>Trends der koreanischen Speicher-Exportpreise pro Einheit (USD/kg), sechsjährige Monatsreihe. Quelle: Korea International Trade Association (KITA), aufbereitet aus den Exportdaten der koreanischen Zollbehörde. Der beinahe senkrechte Anstieg im Frühjahr 2026 ist die KI-Speicher-Knappheit in einem einzigen Chart-Panel.</figcaption>
+    </figure>
+<p>2026 hat sich eine neue Story aufgetan: Agenten brauchen ihren eigenen Computer. Jeder autonome Agent-Loop ist faktisch ein kleiner Server, der die Orchestrierung um verschiedene Modellaufrufe und „Tool-Calls&ldquo; herum erledigt. Und der CPU-Teil der Lieferkette ist in den Fokus der Nachfrage und der Investoren gerückt. AMD steht seit Jahresbeginn mit 343 Prozent im Plus, Intel mit 483 Prozent. Die Wall Street ist von „Nvidia oder nichts&ldquo; auf „jeden mit Kapazität&ldquo; rotiert.<sup class="fn-ref"><a href="#fn-8" id="fn-ref-8">[8]</a></sup></p>
+<p>Im April 2026 wollten zwei große AWS-Kunden die <em>gesamte</em> AWS-Kapazität an Graviton-CPUs für 2026 erwerben. AWS lehnte ab. Trainium, die hauseigene AWS-Chipfamilie für KI-Training und -Inferenz und die Alternative zur Anmietung von NVIDIA-GPUs, zeigt dasselbe Bild: Trainium2 ist weitgehend ausverkauft, Trainium3 fast vollständig vergeben, und für Trainium4, das erst in 18 Monaten kommt, liegen bereits substanzielle Vorbestellungen vor. Microsoft-Finanzchefin Amy Hood erklärte auf der Q1-2026-Bilanztelefonkonferenz, die Kapazitätsengpässe würden das gesamte Geschäftsjahr überdauern.<sup class="fn-ref"><a href="#fn-9" id="fn-ref-9">[9]</a></sup></p>
+<p>Wenn Intelligenz im Überfluss verfügbar wird, profitieren Akteure auf jeder Schicht, die nicht linear skalieren kann aber notwendig für das Gesamtsystem ist. Die öffentlichen Aktienmärkte haben das schneller eingepreist als die öffentliche Debatte. Und die größten Bottlenecks und Kursgewinner liegen in der Supply Chain weiter unterhalb der offensichtlichen KI-Chip-Giganten wie NVIDIA, TSMC und ASML.</p>
+<figure class="fig-narrow">
+        <img src="../images/fig_3_3_valuations.png" alt="Bewertungen der Scarcity Rents, Gesamtrendite Mai 2025 bis Mai 2026" loading="lazy">
+        <figcaption>Quelle: Interactive Brokers, tägliche Schlusskurse vom 8. Mai 2025 bis 8. Mai 2026. Ankerwerte (NVDA/AVGO/TSM/ASML) in Grau; Scarcity Rents in Bernstein. Illustrative Auswahl, keine Anlageempfehlung.</figcaption>
+    </figure>
+<p>Und die Bottlenecks sind nicht statisch, sondern verlagern sich mit der Zeit. Das größte physische Bottleneck von gestern war Strom, der von heute sind Chips und Packaging, das von morgen wird vermutlich etwas ganz anderes sein. Wirtschaftliche Chancen wandern mit dem Bottleneck, und wer die Entwicklung als erstes antizipiert, macht enorme Profite.</p>
+<figure>
+        <img src="../images/fig_3_4_rotation.png" alt="Engpass-Rotation im KI-Infrastruktur-Stack, 2023 bis 2027" loading="lazy">
+        <figcaption>Bottleneck nach Jahr, 2023 bis 2027: zuerst Strom, dann Logik, dann Packaging, dann Optik, Speicher und Kühlung. Das Bottleneck wandert, sobald jede Schicht ausgebaut wird, und die größten Profite wandern mit ihm. Visualisierung des Autors, synthetisiert aus Analysen von SemiAnalysis und eigenem Supply Chain Research.</figcaption>
+    </figure>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="interface-tax">
+<div class="article">
+<h2>4. Die „Interface Tax&ldquo;</h2>
+<p>Chips werden auf einem öffentlichen Markt gehandelt. Die zweite Schicht, die Kosten von Bottlenecks in Prozessen, die menschliche Verifikation benötigen, wird indirekt eingepreist: über Warteschlangen, Review-Stunden und Unterschriften. Nicht weniger real, nur schwerer in einem Chart darstellbar.</p>
+<p>Die sauberste Formalisierung liefert ein aktuelles Paper von Christian Catalini und Mitautoren am MIT: <a href="https://arxiv.org/abs/2602.20946" target="_blank" rel="noopener"><em>Some Simple Economics of AGI</em></a> (Februar 2026). Das Argument passt auf eine Briefmarke: Zwei Kostenkurven zählen: die Kosten, eine Aufgabe zu automatisieren (cA), die mit jeder Modellgeneration grob exponentiell fallen, und die Kosten, das Ergebnis zu verifizieren (cH), die durch menschliche Zeit, Aufmerksamkeit und physische Aspekte gedeckelt sind. cA stürzt ab; cH bewegt sich kaum. Die sich vergrößernde Kluft zwischen beiden nennt Catalini den <strong>Measurability Gap</strong>, und seine Konsequenz ist die These dieses Abschnitts: <em>„Das größte Wachstumshindernis wird bald nicht länger Intelligenz sein, sondern die menschliche Verifikationsgeschwindigkeit.&ldquo;</em></p>
+<figure class="fig-narrow">
+        <img src="../images/fig_4_1_measurability_gap.png" alt="Automatisierungskosten gegen Verifikationskosten, mit dem sich weitenden Gap" loading="lazy">
+        <figcaption>Quelle: Catalini, Hui &amp; Wu, „Some Simple Economics of AGI&ldquo;, arXiv:2602.20946, Februar 2026.</figcaption>
+    </figure>
+<p>Eine der am wenigsten beachteten Zahlen des Jahres 2026 steht in der GDPval-Studie von OpenAI: Naiv betrachtet erledigt GPT-5 die komplexen Aufgaben des Benchmarks rund 90-mal schneller als ein menschlicher Experte. Rechnet man die menschliche Zeit ein, die nach wie vor für die Verifikation des Ergebnisses nötig ist (das Modell „einmal laufen lassen, dann nachbessern&ldquo;), bleibt GPT-5 am Ende nur noch etwa 1,18-mal schneller als der Mensch allein. Der Verifikationsschritt kostet fast den gesamten Geschwindigkeitsvorteil.<sup class="fn-ref"><a href="#fn-10" id="fn-ref-10">[10]</a></sup></p>
+<figure class="fig-narrow">
+        <img src="../images/fig_4_2_gdpval.png" alt="Speedup von GPT-5 vor und nach menschlichem Review (GDPval)" loading="lazy">
+        <figcaption>Quelle: GDPval-Studie von OpenAI, Oktober 2025.</figcaption>
+    </figure>
+<p>Es ist dasselbe Muster wie beim ellamind-Code-Review-Beispiel aus Abschnitt 1. Code-Review ist ein Verifikationstor, das nicht automatisch mitskaliert, wenn die KI-Seite skaliert. Das Modell schreibt schneller Code; die Geschwindigkeit der Reviewer kann nicht in gleichem Maße skalieren. Wer das Muster einmal sieht, erkennt es überall dort, wo KI-Beschleunigung auf menschliche Verifikation trifft.</p>
+<figure>
+        <img src="../images/fig_4_3_verification_queue.png" alt="Ein einzelner Prüfer an einem bernsteinfarben beleuchteten Schreibtisch, klein neben Türmen ungelesener Akten, während rechts ein schnelles Förderband mit Dokumenten hereinströmt" loading="lazy">
+        <figcaption>Die Interface Tax in einem Bild: billig zu produzieren, langsam zu verifizieren.</figcaption>
+    </figure>
+<p>Im Bankwesen schreibt das Vier-Augen-Prinzip zwei zugelassene Personen für jede kritische Handlung vor; vergleichbare Regeln binden die Pharmaproduktion, den Energiehandel, die öffentliche Beschaffung und Teile der hoheitlichen Entscheidungsfindung in den meisten Industriestaaten. Pharma führt Chargendokumentation, Laborbücher und die Source-Data-Verifikation klinischer Studien über menschliche Unterschriften nach FDA Part 11 und EU GMP. Ob Kreditentscheidung, klinische Chargenfreigabe, Vorstandsbeschluss, Vertragsprüfung, Patentverfahren oder das Release eines neuen Modells: Das Bottleneck ist immer dasselbe: Die Unterschrift einer Person, die persönlich haftet. Viele Kunden von ellamind sind genau von diesen Bottlenecks betroffen, und ein großer Teil unserer Arbeit besteht vereinfacht gesagt darin, die Geschwindigkeit auf der Verifikationsseite zu erhöhen.</p>
+<p>Catalini gibt dem Phänomen einen passenden Namen: die <strong>Trojan-Horse-Externalität</strong>. Unverifizierter KI-Output verbraucht stromabwärts reale Ressourcen: Verfahrensgebühren, Gerichtszeit, Aufmerksamkeit der Prüfer, Fehler, die sich zu echtem Schaden auswachsen. Das Sozialgerichts-Beispiel aus Abschnitt 1 ist der simpelste Fall: billig zu erzeugen, teuer zu absorbieren. Die Kosten der Produktion liegen beim Produzenten; die Kosten der Verifikation durch Richter, Aufsichtsbehörden und Reviewer werden sozialisiert. Innerhalb eines Software-Unternehmens zeigen sich diese Kosten noch relativ harmlos als Review-Warteschlange; eine Stufe weiter entscheidet dieselbe Dynamik darüber, ob ganze Institutionen mit der Technologie, die uns bevorsteht, noch Schritt halten können.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="institutional-clocks">
+<div class="article">
+<h2>5. Die institutionellen Uhren</h2>
+<p>Betrachten wir die Arzneimittelentwicklung als einfaches Beispiel. Hierzu hat Anthropic ein Paper veröffentlicht: Steigert KI die Rate pharmazeutischer Ideen um den Faktor zehn, wird die relevante Restriktion die Geschwindigkeit der Arzneimittel-Zulassung, nicht die Geschwindigkeit der Wirkstoff-Entdeckung. Die FDA-Kapazität kann sich nicht in vier Monaten verdoppeln; von Phase I bis zur Zulassung verstreicht noch immer etwa ein Jahrzehnt. Der größte Teil der neuen Medikamente, die KI-beschleunigtes Research findet, wird erstmal in einer endlosen Verifikations-Warteschlange landen. Die langsamste Uhr gibt den Takt des Systems vor.</p>
+<p>Die deutsche Sozialgerichts-Geschichte aus Abschnitt 1 ist keine regionale Kuriosität, sondern ein erstes Indiz der neuen Normalität. KI drückt die Grenzkosten der Produktion juristischer Texte, von Klageschriften, Schriftsätzen, Berufungen, gegen null. Gerichte skalieren nicht: Richter, Anhörungsbeamte und Geschäftsstellen sind an menschliche Bandbreite gebunden, und zusätzliche Kapazität verlangt Gesetzgebung, Ausbildung und physische Räume – über lange Jahre hinweg. Das Ergebnis ist eine Verfahrensdauer, die immer weiter ansteigt, und sie ist eine eigene Form des Scheiterns. „Justice delayed is justice denied&ldquo; – verzögertes Recht ist verweigertes Recht. Und noch einmal: Agenten, die in einer einzigen Sitzung Dutzende Klagen vorbereiten können, gibt es schon jetzt – aber sie sind in der Breite noch gar nicht angekommen. Sobald jeder diese Tools nutzt, wird das eine weitere Vervielfachung der Eingaben zur Folge haben. Bei immer noch derselben Zahl von Richtern.</p>
+<figure>
+        <img src="../images/fig_5_2_court_national.png" alt="Anstieg der Fallzahlen an deutschen Sozialgerichten, 2022 bis 2026, bundesweite Sicht" loading="lazy">
+        <figcaption>Die sich öffnende Schere zwischen Eingang und Erledigung.</figcaption>
+    </figure>
+<p>Regulierungs- und Standardisierungsinstanzen stehen vor demselben Problem. Die Durchsetzung des EU AI Act ist über 2025 bis 2027 gestaffelt; die BaFin, Deutschlands Finanzaufsicht, betreibt Konsultationen in Jahreszyklen; FDA und SEC operieren auf vergleichbaren legislativen Zeitskalen. Der langsame Zyklus ist das, <em>wozu</em> diese Institutionen da sind; sie sind auf sorgfältige und behutsame Arbeit angelegt. Doch bei einer Fähigkeits-Verdopplung im Vier-Monats-Takt ist dieser Modus Operandi von völliger Abwesenheit nicht mehr groß zu unterscheiden. Die Geschwindigkeit der Veränderung erzeugt einen dauerhaften regulatorischen Rückstand, der unsichere Alternativen (wie z.B. private Arbitration statt gerichtliche Klärung) oder sogar eine Umgehung der Regeln und Gesetze fördert.</p>
+<p>Kurz gesagt: Institutionen sind auf das langsamste, bedächtigste menschliche Tempo zugeschnitten. Die KI-Entwicklung wird sich nicht verlangsamen, um Institutionen die Chance zu geben, mitzuhalten. Betroffenen Institutionen bleibt nur die Option, ebenfalls schneller zu werden, bevor sie entweder umgangen werden, oder unter dem Druck eines stetig wachsenden Backlogs zusammenbrechen.<sup class="fn-ref"><a href="#fn-11" id="fn-ref-11">[11]</a></sup></p>
+<p>Keine der letzten beiden Optionen verlangt, dass eine Institution formal den Betrieb einstellt. Stellen Sie sich vor, die Wartezeit am Sozialgericht steigt auf drei Jahre (ein realistisches Szenario, wenn die Eingänge weiter mit 55 Prozent jährlich wachsen). Wenn die Wartezeit auf Rechtsprechung unerträglich wird, existiert die Institution nur noch auf dem Papier. Anderswo gilt dasselbe: Eine FDA, deren Zulassungsprozess ein Jahrzehnt dauert, nimmt bei einem explosionsartigen Anstieg von vielversprechenden Medikamenten de facto viele vermeidbare Tode in Kauf; eine Aufsichtsbehörde, deren Konsultationszyklen der Technologie zwei Jahre hinterherlaufen, ist gemessen in KI-Geschwindigkeit faktisch abwesend. Die Wahl zwischen dem „schneller werden&ldquo;, „umgangen werden&ldquo; oder „zusammenbrechen&ldquo; wird zu einer politischen Frage; und der Preis einer Fehlentscheidung ist, dass die Institution aufhört das zu leisten, was Bürger, Patienten oder Märkte von ihr brauchen.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="what-this-means">
+<div class="article">
+<h2>6. Was das bedeutet</h2>
+<p>Drei Beispiele, ein Muster. Was folgt aus dem Fokus auf Bottlenecks?</p>
+<h3>6.1 Disruption ist asymmetrisch</h3>
+<p>Die Standard-Story „KI nimmt Jobs&ldquo; sagt Disruption innerhalb KI-nativer Arbeitsabläufe voraus. Bottleneck-Denken sagt Disruption an den <em>Schnittstellen</em> zwischen KI-beschleunigten und klassischen Arbeitsabläufen voraus. Der Arzt, der die Radiologie-KI-Befunde abzeichnet. Der Richter, der KI-generierte Klagen liest. Der Compliance-Verantwortliche, der KI-entworfene Verträge prüft. Der Manager, der KI-geschriebene Leistungsbeurteilungen bewertet. Der Code-Reviewer, der KI-geschriebenen Code-Beiträgen vertrauen soll. Diese Rollen intensivieren sich, sie verschwinden nicht; die Menschen darin fühlen sich – zumindest temporär – eher überlastet als überflüssig.</p>
+<p>Ethan Mollick argumentiert in eine ähnliche Richtung. In <a href="https://www.oneusefulthing.org/p/the-shape-of-ai-jaggedness-bottlenecks" target="_blank" rel="noopener"><em>The Shape of AI: Jaggedness, Bottlenecks and Salients</em></a> (Dezember 2025) schreibt er, KI-Fähigkeiten rückten entlang einer „Jagged Frontier&ldquo; voran. Die sichtbare Veränderung ist gerade deshalb so ungleichmäßig, weil das Bottleneck-Prinzip am Werk ist. Die notwendige Intelligenz ist in vielen Fällen längst vorhanden. Entscheidend sind Restriktion und Verifikation.</p>
+<h3>6.2 Was das für Politik und Nicht-Tech-Berufe bedeutet</h3>
+<p>Drei konkrete Thesen, formuliert für Leser, die nicht aus der Tech-Branche kommen:</p>
+<p>Erstens: Regulatorische Geschwindigkeit und Anpassungsfähigkeit werden zu einem strategischen nationalen Asset. Ein Land mit schnellen Gerichten, kompetenten und reaktionsschnellen Aufsichtsbehörden, reichlich Chip-Kapazität und einem belastbaren Stromnetz <em>kann</em> vom KI-Mehrwert besser profitieren als eines, das diese Stärken nicht hat. Das stellt jahrzehntelange politische Intuition auf den Kopf. Investitionen in administrative Anpassungsfähigkeit, Justizkapazitäten, Reformen der Genehmigungsverfahren und Netzausbau sind heute KI-Wirtschaftspolitik, auch wenn niemand dieses Etikett darauf klebt. Aus diesem Licht betrachtet ist das Sozialgerichts-Beispiel aus Abschnitt 1 ein industriepolitischer Weckruf.</p>
+<p>Eine wichtige Folge daraus: Institutionen müssen selbst KI einsetzen, wenn sie ihre eigenen Bottlenecks und Warteschlangen überleben wollen. Der Ausweg aus dem Sozialgerichts-Rückstau ist nicht nur, mehr Personal einzustellen. Er besteht darin, geringfügige, hochvolumige Fälle von KI zu triagieren und vorentscheiden zu lassen und menschliche Richter auf die schwierigen Fälle zu konzentrieren. Im Bezug auf Code Reviews, wo die Implikationen natürlich deutlich harmloser sind, tun wir bereits etwas Analoges bei ellamind: Kleinere, risikoarme Pull Requests werden end-to-end von einem automatisierten KI-Reviewer geprüft und durchgewunken; Menschen kommen erst bei größeren oder sicherheitsrelevanten Änderungen ins Spiel, wenn die Folgen eines Fehlers gravierender wären. Die Leitplanken sind dabei extrem wichtig, das Design muss „fail safe&ldquo; sein und sorgfältig getestet werden. Doch die Alternative, die Verifikation vollständig menschlich zu halten, während die Produzentenseite 100-fach skaliert, ist keine gangbare Alternative.</p>
+<p>Zweitens: Politische Kämpfe könnten sich zunehmend zur Frage „Wer bekommt den Slot?&ldquo; verschieben. Wer die Bottlenecks kontrolliert, kann enorme Profite erzielen. Durchsatz von FDA-Zulassungen, Gerichtszeit, TSMC-N3-Waferkapazität, Stromgenehmigungen, Bauarbeiter. Einige der politischen Fronten des kommenden Jahrzehnts könnten heißen: Reform der Genehmigungsverfahren, Justizbudgets, Personalstärke der Aufsichtsbehörden, Wartelisten beim Netzanschluss. Das sind technisch klingende und wenig populäre Investitionen und Eingriffe; jedoch mit gewaltigen verteilungspolitischen Folgen. Die AWS-ausverkauft-Geschichte aus Abschnitt 3 ist das, wonach diese Bottleneck-Fronten aussehen, bevor sie die breite Öffentlichkeit erreichen.</p>
+<p>Drittens, und an Nicht-Tech-Berufe gerichtet: Die Frage lautet nicht unbedingt „Kann die KI meinen Job ersetzen?&ldquo;, sondern „Bin ich der Verifizierer in meinem Workflow?&ldquo;. Lautet die Antwort ja (Arzt, Richter, Manager, Reviewer, Compliance-Verantwortlicher, bestimmte Lehr- und Operations-Rollen), dann erwartet Sie <em>mehr</em> Arbeit, nicht weniger. Die Rolle verschiebt sich zu Urteil und Verantwortung, wie in Abschnitt 4 gezeigt. Für die Produzenten von Text, Code, Designs oder Analysen, bei denen am Ende jedoch jemand anderes unterschreibt und die Verantwortung übernimmt, ist Kommodifizierung jedoch eine valide Befürchtung. Der Wert fließt zu dem, der die Verantwortung für das Ergebnis übernimmt. Die in der aktuellen Berichterstattung am stärksten unterschätzten Berufsgruppen sind das mittlere Management und Operations. Diese Berufsbilder existieren gerade deshalb, weil sie die Verifikationsschicht für alle unter ihnen sind. Sie sind im Begriff, deutlich wichtiger zu werden.</p>
+<figure class="fig-narrow">
+        <img src="../images/fig_6_1_quadrants.png" alt="Wo werden Sie es zuerst spüren? Rollen als Produzent und Verifizierer, gruppiert nach KI-Exposition" loading="lazy">
+        <figcaption>Eine 2×2-Matrix. Verifizierer-Rollen in KI-exponierten Feldern bilden den Quadranten der Intensivierung.</figcaption>
+    </figure>
+<h3>6.3 Werkzeuge für eine Bottleneck-Analyse</h3>
+<p><strong>Werkzeug 1: Der Drei-Fragen-Test.</strong> Fragen Sie bei jedem Workflow, Prozess oder Sektor, der Sie interessiert:</p>
+<ol class="numbered-list">
+    <li>Was beschleunigt KI hier um den Faktor zehn?</li>
+    <li>Welcher Schritt wird <em>nicht</em> um den Faktor zehn beschleunigt?</li>
+    <li>Ist dieser nicht-beschleunigte Schritt ein Mensch, eine Institution oder eine physische Ressource?</li>
+</ol>
+<p>Die Antwort auf Frage (3) sagt Ihnen, ob Sie es mit einem Schnittstellen-, einem institutionellen oder einem physischen Bottleneck zu tun haben. Und das sagt Ihnen, wie sich die Disruption anfühlen wird oder wo Profite anfallen werden. Für ein Krankenhaus oder eine Chipfabrik wird man zu sehr unterschiedlichen Antworten kommen; beide sind diagnostisch wertvoll.</p>
+<p><strong>Werkzeug 2: Die Karte der Bottleneck-Rotation.</strong> Bottlenecks wandern. Gestern war es der Strom, heute sind es TSMC N3 und CoWoS, morgen vielleicht der Netzanschluss, heute die Anzahl der Richter und morgen der Gerichtsterminkalender und die Raumverfügbarkeit. Der Fehler besteht darin, Engpässe als statisch wahrzunehmen und die Rotation zu übersehen. Praktische Heuristik: Wenn ein Bottleneck zum Konsens wird, ist die bindende Restriktion meist schon eine Schicht weiter Prozess-abwärts gewandert. Das gilt für physische Engpässe und ebenso für institutionelle.</p>
+<p><strong>Werkzeug 3: Persönliche Positionierung.</strong> Investitionen in <em>Verifikations</em>-Fähigkeiten (Urteil, Geschmack, Verantwortung, Fachexpertise) sind wertvoller als in <em>Produktions</em>-Fähigkeiten (Schreiben, Programmieren, Gestalten, grundlegende Analyse). Die erste Fähigkeiten-Gruppe bestimmt die Gesamtgeschwindigkeit und gewinnt an Wert. Die zweite ist die Seite, die von der KI komprimiert wird. Das ist eine generelle Tendenz und betrifft nicht jeden Bereich identisch; die konkreten Fähigkeiten hängen von der Domäne ab. Aber die Richtung ist eindeutig.</p>
+<h3>Schluss</h3>
+<p>Ich bin inzwischen seit Jahren in der KI-Szene unterwegs. Ich erlebe hautnah, was KI-Modelle und -Agenten Tag für Tag leisten, und ich bin immer noch überrascht von der Geschwindigkeit, mit der die Modelle und mit ihnen die „Produktions-Fähigkeiten&ldquo; besser werden. Hält die Kurve, wie Anthropic und OpenAI inzwischen offen wetten, und kommt die automatisierte KI-Forschung in rund zwei Jahren an, dann verschiebt sich die dominante Frage der späten 2020er Jahre. Sie lautet nicht mehr, <em>ob</em> die Genies im Rechenzentrum eintreffen, sondern wie gut wir die Bottlenecks handhaben, die sich bei ihrem Eintreffen auftun werden.</p>
+<p>Die langsamste Uhr ist selten der Ort, der im Fokus der Aufmerksamkeit steht. Sie ist der Ort der geduldigen, langwierigen und konzentrierten Arbeit. Dort werden in den kommenden zehn Jahren die leisesten Vermögen verdient. Und die entscheidenden gesellschaftlichen und wirtschaftlichen Fragen entschieden.</p>
+</div>
+</section>
+</main>
+
+<!-- ===== AUTHOR BIO ===== -->
+<aside class="author-bio-block">
+    <div class="article">
+        <p class="author-bio">JP Harries ist CEO und Mitgründer von ellamind GmbH, einem Startup für die Entwicklung und Evaluation von KI-Agenten mit Sitz in Bremen.</p>
+    </div>
+</aside>
+
+<hr class="section-divider">
+<section class="acknowledgements-section">
+    <div class="article">
+        <p>Ich freue mich jederzeit über Feedback und Austausch zu diesem Thema. Sie finden mich auf <a href="https://www.linkedin.com/in/jphme/" target="_blank" rel="noopener">LinkedIn</a> und <a href="https://x.com/jphme" target="_blank" rel="noopener">X (Twitter)</a>.</p>
+        <h2>Danksagungen</h2>
+        <p>Vielen Dank an Christoph Pott für das Feedback auf einen ersten Entwurf dieses Essays.</p>
+    </div>
+</section>
+
+<!-- ===== FOOTNOTES ===== -->
+<section class="footnotes-section">
+<div class="article">
+    <h2>Anmerkungen</h2>
+    <ol class="footnotes-list">
+    <li id="fn-1" class="footnote-item"><span class="fn-number">[1]</span> <a href="https://www.lto.de/recht/justiz/j/lsg-nrw-jahres-pressekonferenz-2026-ki-klagen-ueberlastung-sozialgerichte" target="_blank" rel="noopener">Legal Tribune Online, 24. April 2026</a>: Jahrespressekonferenz des Landessozialgerichts Nordrhein-Westfalen. <a href="#fn-ref-1" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-2" class="footnote-item"><span class="fn-number">[2]</span> Die Wahrscheinlichkeit eines schnelleren Takeoffs ist in den vergangenen Monaten deutlich gestiegen. OpenAI-Chef Sam Altman hat sich im Oktober 2025 öffentlich auf „einen automatisierten KI-Forschungs-Praktikanten bis September 2026&ldquo; und „einen echten automatisierten KI-Forscher bis März 2028&ldquo; festgelegt (<a href="https://x.com/sama/status/1983584366547829073" target="_blank" rel="noopener">X, 28. Oktober 2025</a>); die Anthropic-Spitze hat ähnliche Zeitlinien für die hauseigene automatisierte Forschung formuliert. Sollten diese Ziele innerhalb eines Jahres ihres Zielkorridors einschlagen, verschwindet der „mit der Zeit&ldquo;-Puffer aus <em>Machines of Loving Grace</em> effektiv. <a href="#fn-ref-2" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-3" class="footnote-item"><span class="fn-number">[3]</span> Dario Amodei im Gespräch mit Dwarkesh Patel, <a href="https://www.dwarkesh.com/p/dario-amodei-2" target="_blank" rel="noopener">Dwarkesh Podcast, Februar 2026</a>. <a href="#fn-ref-3" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-4" class="footnote-item"><span class="fn-number">[4]</span> <a href="https://www.darioamodei.com/essay/machines-of-loving-grace" target="_blank" rel="noopener"><em>Machines of Loving Grace</em></a> ordnet diese in fünf Kategorien komplementärer Restriktionen: serielle Abhängigkeiten (klinische Studien), Datenverfügbarkeit, Infrastruktur und physische Grenzen (Umspannwerke, Schaltanlagen, Fab-Lithografie), menschliche und regulatorische Schranken sowie physikalische Gesetze. Die Abschnitte 3, 4 und 5 dieses Essays decken grob die dritte, vierte und fünfte dieser Kategorien ab. <a href="#fn-ref-4" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-5" class="footnote-item"><span class="fn-number">[5]</span> Derek Thompson, <a href="https://www.derekthompson.org/p/the-ai-vibe-shift-is-here" target="_blank" rel="noopener"><em>The AI Vibe Shift Is Here</em>, 16. April 2026</a>. <a href="#fn-ref-5" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-6" class="footnote-item"><span class="fn-number">[6]</span> Zu TSMC N3: Jede große KI-Beschleunigerfamilie des Jahres 2026 (NVIDIA Rubin, Google TPUv7-v8, AWS Trainium3, AMD MI350X) landet auf diesem Knoten. Die KI-Nachfrage dürfte 2026 rund 60 Prozent der N3-Ausbringung verbrauchen, 2027 86 Prozent; die Auslastung wird in H2 2026 voraussichtlich über 100 Prozent liegen. Zu HBM: Der Anteil an der gesamten DRAM-Waferkapazität ist von unter 5 Prozent im Jahr 2022 auf voraussichtlich 35 Prozent bis Ende 2027 gestiegen; Korea (SK Hynix und Samsung zusammen) kontrolliert rund 90 Prozent des HBM4-Angebots der nächsten Generation. Zum CoWoS-Advanced-Packaging: Für 2026 stehen einer Nachfrage von rund 240.000 Wafern pro Monat ein Angebot von rund 75.000 Wafern gegenüber. Strom, der bindende Engpass von 2024, ist auf den vierten Rang abgerutscht. Nicht, weil das Netz gewachsen wäre, sondern weil die Fabs zurückgefallen sind. Bauarbeiter und EPC-Kosten sind die nächste Uhr darunter: Elektriker in Nord-Virginia kosten 80 bis 130 Dollar pro Stunde, und die EPC-Investitionskosten für Gaskraftwerke sind von 750 Dollar pro kW im Jahr 2018 auf über 2.000 Dollar pro kW im Jahr 2026 gestiegen. <a href="#fn-ref-6" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-7" class="footnote-item"><span class="fn-number">[7]</span> In den vier Wochen bis zum 10. Mai 2026 sind die durchschnittlichen Exportpreise nach Gewicht um 18 Prozent für DRAM-Module, 35 Prozent für rohes DRAM, 47 Prozent für NAND-Flash und 140 Prozent für SSDs gestiegen. Das sind tatsächlich verschiffte Güter, keine Spot-Notierungen. Quelle: <a href="https://www.kita.org/kStat/byCount_AllCount.do" target="_blank" rel="noopener">Koreanische Zollbehörde / KITA-Exporttrend-Datensatz, 11. Mai 2026</a>. <a href="#fn-ref-7" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-8" class="footnote-item"><span class="fn-number">[8]</span> <a href="https://www.cnbc.com/2026/05/08/wall-street-ai-chip-love-moves-from-nvidia-to-intel-amd-and-micron.html" target="_blank" rel="noopener">CNBC, 8. Mai 2026</a>: Wall Street rotiert von Nvidia hin zu Intel, AMD und Micron. <a href="#fn-ref-8" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-9" class="footnote-item"><span class="fn-number">[9]</span> <a href="https://www.networkworld.com/article/4157477/ai-demand-is-so-high-aws-customers-are-trying-to-buy-out-its-entire-capacity.html" target="_blank" rel="noopener">NetworkWorld, April 2026</a>: Die KI-Nachfrage ist so hoch, dass AWS-Kunden versuchen, die gesamte Kapazität aufzukaufen. <a href="#fn-ref-9" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-10" class="footnote-item"><span class="fn-number">[10]</span> <a href="https://openai.com/index/gdpval/" target="_blank" rel="noopener">GDPval-Studie von OpenAI, Oktober 2025</a>. <a href="#fn-ref-10" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-11" class="footnote-item"><span class="fn-number">[11]</span> Ein weiteres strukturelles Bottleneck baut sich auf lange Sicht auf: Routinemäßige Einstiegsarbeit war historisch die Ausbildungspipeline, die aus Junior-Beschäftigten künftige Senior-Verifizierer formte. Anthropics <a href="https://www.anthropic.com/research/labor-market-impacts" target="_blank" rel="noopener">Labor Market Impacts of AI</a> (März 2026) zeigt einen Rückgang der Job-Finding-Rate um 14 Prozent in KI-exponierten Berufen gegenüber einer weniger exponierten Kontrollgruppe; zitiert wird Brynjolfsson, Chandar &amp; Chen 2025 mit einer Schätzung von 6 bis 16 Prozent weniger Beschäftigung bei den 22- bis 25-Jährigen in diesen Berufen. Die Pipeline, die die Verifizierer von morgen produziert, wird durch dieselbe Dynamik ausgedünnt, die die Verifizierer von heute wertvoller macht. Wie groß das Problem ist (über eine absehbar gefährliche Benachteiligung einer ganzen Generation von jungen Berufsanfängern hinaus), hängt vom Tempo des Takeoffs ab: Ein schnellerer Takeoff potenziert das Problem, bevor Arbeitsmarkt oder Ausbildungssysteme eine Chance haben, sich anzupassen. <a href="#fn-ref-11" class="fn-back" title="Zurück zum Text">↩</a></li>
+    </ol>
+</div>
+</section>
+
+<script>
+(function() {
+    var progressBar = document.getElementById('progressBar');
+    function updateProgress() {
+        var scrollTop = window.scrollY;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = progress + '%';
+    }
+
+    var sections = document.querySelectorAll('.essay-section');
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+    }, { threshold: 0.05, rootMargin: '0px 0px -50px 0px' });
+    sections.forEach(function(section) { observer.observe(section); });
+
+    var tocNav = document.getElementById('toc');
+    var heroEl = document.querySelector('.hero');
+    function updateTOCVisibility() {
+        if (!heroEl || !tocNav) return;
+        var heroBottom = heroEl.getBoundingClientRect().bottom;
+        if (heroBottom <= 0) {
+            tocNav.classList.add('scrolled');
+        } else {
+            tocNav.classList.remove('scrolled');
+        }
+    }
+
+    var tocLinks = document.querySelectorAll('.toc a, .toc-mobile a');
+    var sectionElements = document.querySelectorAll('section.essay-section[id]');
+    var sectionIds = Array.from(sectionElements).map(function(el) { return el.id; });
+
+    function updateTOC() {
+        var current = '';
+        for (var i = sectionIds.length - 1; i >= 0; i--) {
+            var el = document.getElementById(sectionIds[i]);
+            if (el && el.getBoundingClientRect().top <= 200) { current = sectionIds[i]; break; }
+        }
+        tocLinks.forEach(function(link) {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+        });
+    }
+
+    var tocToggle = document.getElementById('tocToggle');
+    var tocMobile = document.getElementById('tocMobile');
+    tocToggle.addEventListener('click', function() { tocMobile.classList.toggle('open'); });
+    tocMobile.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() { tocMobile.classList.remove('open'); });
+    });
+
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                updateProgress();
+                updateTOC();
+                updateTOCVisibility();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+    updateProgress();
+    updateTOC();
+    updateTOCVisibility();
+
+    var scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+        window.addEventListener('scroll', function hideIndicator() {
+            if (window.scrollY > 100) {
+                scrollIndicator.style.opacity = '0';
+                scrollIndicator.style.transition = 'opacity 0.5s';
+                window.removeEventListener('scroll', hideIndicator);
+            }
+        });
+    }
+})();
+</script>
+
+</body>
+</html>
