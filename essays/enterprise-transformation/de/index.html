@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontext statt Modell: Wie Sie Ihr Unternehmen zukunftssicher für KI-Agenten vorbereiten - JP Harries</title>
+    <meta name="description" content="Die KI-Belegschaft können Sie nicht planen: Alle paar Monate kommt ein fähigeres Modell. Den Arbeitsplatz können Sie bauen: den Schreibtisch, den Ausweis, das Handbuch und die Leistungsbeurteilung.">
+    <meta name="author" content="JP Harries">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Kontext statt Modell: Wie Sie Ihr Unternehmen zukunftssicher für KI-Agenten vorbereiten: Interfaces, Berechtigungen, Kontext und Verifikation als Grundpfeiler der Enterprise-KI-Transformation">
+    <meta property="og:description" content="Die KI-Belegschaft können Sie nicht planen: Alle paar Monate kommt ein fähigeres Modell. Den Arbeitsplatz können Sie bauen: den Schreibtisch, den Ausweis, das Handbuch und die Leistungsbeurteilung.">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="de_DE">
+    <meta property="og:image" content="https://jph.me/essays/enterprise-transformation/images/hero_workplace.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Kontext statt Modell: Wie Sie Ihr Unternehmen zukunftssicher für KI-Agenten vorbereiten: Interfaces, Berechtigungen, Kontext und Verifikation als Grundpfeiler der Enterprise-KI-Transformation">
+    <meta name="twitter:description" content="Die KI-Belegschaft können Sie nicht planen: Alle paar Monate kommt ein fähigeres Modell. Den Arbeitsplatz können Sie bauen: den Schreibtisch, den Ausweis, das Handbuch und die Leistungsbeurteilung.">
+
+    <link rel="canonical" href="https://jph.me/essays/enterprise-transformation/de/">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --parchment: #F7F4EE;
+            --linen: #EBEDF2;
+            --ink: #1C1917;
+            --graphite: #5E6673;
+            --chalk: #CDD2DA;
+            --amber: #B45309;
+            --amber-light: #D97706;
+            --dusk: #1E3A5F;
+            --horizon: #7B8FAB;
+            --deep-navy: #0F172A;
+            --warm-glow: #FCD34D;
+            --fog: #94A3B8;
+            --cool-white: #F1F5F9;
+            --rose: #BE123C;
+            --slate: #475569;
+            --teal: #0F766E;
+
+            --font-display: 'Instrument Serif', Georgia, serif;
+            --font-body: 'Source Serif 4', Georgia, serif;
+            --font-ui: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+
+            --content-width: 680px;
+            --wide-width: 1100px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+        body {
+            font-family: var(--font-body);
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--ink);
+            background-color: var(--parchment);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .progress-bar {
+            position: fixed; top: 0; left: 0;
+            width: 0%; height: 3px;
+            background: linear-gradient(90deg, var(--amber), var(--amber-light));
+            z-index: 1000;
+            transition: width 0.1s linear;
+        }
+
+        .toc {
+            position: fixed;
+            top: 50%;
+            left: max(1rem, calc((100vw - var(--wide-width)) / 2 - 12rem));
+            transform: translateY(-50%);
+            z-index: 100;
+            list-style: none;
+            font-family: var(--font-ui);
+            font-size: 12px;
+            letter-spacing: 0.02em;
+            max-width: 160px;
+        }
+        .toc li { margin-bottom: 0.75rem; }
+        .toc a {
+            color: var(--chalk);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: block;
+            line-height: 1.4;
+        }
+        .toc a:hover, .toc a.active { color: var(--amber); }
+        .toc a.active { font-weight: 500; }
+        .toc.scrolled a { color: var(--slate); }
+        .toc.scrolled a:hover, .toc.scrolled a.active { color: var(--amber); }
+        @media (max-width: 1400px) { .toc { display: none; } }
+
+        .toc-mobile-toggle {
+            display: none;
+            position: fixed; bottom: 1.5rem; right: 1.5rem;
+            z-index: 200;
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: var(--dusk);
+            color: var(--cool-white);
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-ui);
+            font-size: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+        }
+        .toc-mobile-toggle:hover { transform: scale(1.05); }
+        .toc-mobile {
+            display: none;
+            position: fixed; bottom: 5rem; right: 1.5rem;
+            z-index: 199;
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+            list-style: none;
+            font-family: var(--font-ui);
+            font-size: 14px;
+            max-width: 280px;
+        }
+        .toc-mobile.open { display: block; }
+        .toc-mobile li { margin-bottom: 0.75rem; }
+        .toc-mobile li:last-child { margin-bottom: 0; }
+        .toc-mobile a {
+            color: var(--graphite);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .toc-mobile a:hover, .toc-mobile a.active { color: var(--amber); }
+        @media (max-width: 1400px) {
+            .toc-mobile-toggle { display: flex; align-items: center; justify-content: center; }
+        }
+
+        .hero {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 21 / 9;
+            max-height: 78vh;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            overflow: hidden;
+            background-color: var(--deep-navy);
+        }
+        .hero-image {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(15, 23, 42, 0.1) 0%,
+                rgba(15, 23, 42, 0.4) 50%,
+                rgba(15, 23, 42, 0.85) 80%,
+                rgba(15, 23, 42, 0.95) 100%
+            );
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: var(--content-width);
+            padding: 0 2rem 3rem;
+            text-align: left;
+            width: 100%;
+        }
+        .hero h1 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--cool-white);
+            margin-bottom: 1rem;
+        }
+        .hero .subtitle {
+            font-family: var(--font-body);
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            line-height: 1.5;
+            color: var(--fog);
+            margin-bottom: 1.5rem;
+            max-width: 540px;
+        }
+        .hero .byline {
+            font-family: var(--font-ui);
+            font-size: 14px;
+            color: var(--horizon);
+            letter-spacing: 0.03em;
+        }
+        .hero .dateline {
+            font-family: var(--font-ui);
+            font-size: 13px;
+            color: var(--horizon);
+            letter-spacing: 0.03em;
+            margin-top: 0.25rem;
+        }
+        .scroll-indicator {
+            position: absolute; bottom: 2rem;
+            left: 50%; transform: translateX(-50%);
+            z-index: 2;
+            animation: bob 2s ease-in-out infinite;
+            color: var(--fog);
+            opacity: 0.6;
+        }
+        @keyframes bob {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        .article {
+            max-width: var(--content-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .essay-section {
+            padding-top: 1.5rem;
+            padding-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .essay-section.visible { opacity: 1; transform: translateY(0); }
+        .section-divider {
+            width: 40px; height: 1px;
+            background: var(--chalk);
+            margin: 2rem auto;
+            display: block;
+            border: none;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-size: 2rem;
+            line-height: 1.2;
+            letter-spacing: -0.015em;
+            color: var(--ink);
+            margin-bottom: 1.5rem;
+        }
+        h3 {
+            font-family: var(--font-ui);
+            font-weight: 600;
+            font-size: 1.375rem;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        p { margin-bottom: 1.5em; }
+        strong { font-weight: 600; }
+        em { font-style: italic; }
+
+        ol.numbered-list {
+            list-style: decimal;
+            padding-left: 1.5em;
+            margin: 0 0 1.5em;
+        }
+        ol.numbered-list li {
+            margin-bottom: 0.5em;
+            padding-left: 0.25em;
+            line-height: 1.6;
+        }
+        ul.essay-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0 0 1.5em;
+        }
+        ul.essay-list li {
+            margin-bottom: 1.1em;
+            padding-left: 1.4em;
+            position: relative;
+            line-height: 1.65;
+        }
+        ul.essay-list li::before {
+            content: "";
+            position: absolute;
+            left: 0.2em;
+            top: 0.62em;
+            width: 0.45em;
+            height: 0.45em;
+            border-radius: 50%;
+            background: var(--amber);
+            opacity: 0.75;
+        }
+        a {
+            color: var(--amber);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s ease, color 0.2s ease;
+        }
+        a:hover { border-bottom-color: var(--amber); }
+
+        .lead-in { padding-top: 3rem; padding-bottom: 0.5rem; }
+        .lead-in h2 + p { font-size: 1.15rem; line-height: 1.75; }
+
+        blockquote.pull-quote {
+            border-left: 3px solid var(--amber);
+            padding: 0.5rem 0 0.5rem 1.5rem;
+            margin: 2.5rem 0;
+            font-family: var(--font-body);
+            font-style: italic;
+            font-size: 1.15rem;
+            line-height: 1.5;
+            color: var(--ink);
+        }
+
+        figure {
+            margin: 2.5rem 0;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        figure img {
+            max-width: var(--wide-width);
+            width: 90%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+        }
+        figure.fig-narrow img {
+            max-width: 760px;
+            width: 78%;
+        }
+        figcaption {
+            font-family: var(--font-ui);
+            font-size: 0.875rem;
+            color: var(--graphite);
+            line-height: 1.5;
+            letter-spacing: 0.01em;
+            max-width: var(--content-width);
+            width: 90%;
+            margin-top: 0.75rem;
+            padding: 0 1rem;
+            text-align: center;
+        }
+
+        .fn-ref {
+            font-family: var(--font-ui);
+            font-size: 0.7em;
+            line-height: 1;
+            vertical-align: super;
+        }
+        .fn-ref a {
+            color: var(--amber);
+            text-decoration: none;
+            border-bottom: none;
+            padding: 0 1px;
+        }
+        .fn-ref a:hover { color: var(--amber-light); }
+
+        .footnotes-section {
+            border-top: 1px solid var(--chalk);
+            margin-top: 3rem;
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+        }
+        .footnotes-section h2 { font-size: 1.5rem; margin-bottom: 1.5rem; }
+        .footnotes-list {
+            list-style: none;
+            counter-reset: none;
+            padding: 0;
+        }
+        .footnote-item {
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--graphite);
+            margin-bottom: 1rem;
+            padding-left: 0;
+            scroll-margin-top: 2rem;
+        }
+        .footnote-item:target {
+            background-color: rgba(180, 83, 9, 0.08);
+            border-radius: 4px;
+            padding: 0.5rem;
+            margin-left: -0.5rem;
+        }
+        .fn-number {
+            font-weight: 600;
+            color: var(--ink);
+            margin-right: 0.25rem;
+        }
+        .fn-back {
+            font-size: 0.85em;
+            text-decoration: none;
+            color: var(--amber);
+            margin-left: 0.25rem;
+            border-bottom: none !important;
+        }
+        .fn-back:hover { color: var(--amber-light); }
+
+        .author-bio-block {
+            padding: 1.5rem 0 1rem;
+        }
+        .author-bio {
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--horizon);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            body { font-size: 17px; line-height: 1.65; }
+            .hero { aspect-ratio: auto; min-height: 60vh; }
+            .hero-image { object-position: center 30%; }
+            .hero-content { padding: 0 1.5rem 2.5rem; }
+            .article { padding: 0 1.25rem; }
+            .author-bio-block { padding: 1rem 0 0.5rem; }
+            h2 { font-size: 1.65rem; }
+            blockquote.pull-quote { font-size: 1.05rem; }
+            figure img { width: 95%; border-radius: 2px; }
+            figure.fig-narrow img { width: 95%; max-width: 100%; }
+            figcaption { font-size: 0.8rem; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2rem; }
+            .hero .subtitle { font-size: 0.95rem; }
+            h2 { font-size: 1.5rem; }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px; height: 1px;
+            padding: 0; margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            border: 0;
+        }
+        .site-nav a:hover { color: var(--amber) !important; }
+    </style>
+</head>
+<body>
+
+<nav class="site-nav" style="position: fixed; top: 12px; left: max(1rem, calc((100vw - var(--wide-width)) / 2)); z-index: 101; font-family: var(--font-ui); font-size: 13px; letter-spacing: 0.02em;">
+    <a href="/" style="color: var(--horizon); text-decoration: none; border-bottom: none; transition: color 0.2s;">&#8592; jph.me</a>
+</nav>
+
+<!-- Reading Progress Bar -->
+<div class="progress-bar" id="progressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+<!-- Desktop TOC -->
+<nav aria-label="Inhaltsverzeichnis">
+    <ul class="toc" id="toc">
+        <li><a href="#new-employee">Der neue Mitarbeiter</a></li>
+        <li><a href="#geniuses-in-the-parking-lot">Genies auf dem Parkplatz</a></li>
+        <li><a href="#the-workplace">Die vier Ebenen</a></li>
+        <li><a href="#budget-cycle">Der nächste Budgetzyklus</a></li>
+    </ul>
+</nav>
+
+<!-- Mobile TOC -->
+<button class="toc-mobile-toggle" id="tocToggle" aria-label="Inhaltsverzeichnis">&#9776;</button>
+<ul class="toc-mobile" id="tocMobile">
+        <li><a href="#new-employee">Der neue Mitarbeiter</a></li>
+        <li><a href="#geniuses-in-the-parking-lot">Genies auf dem Parkplatz</a></li>
+        <li><a href="#the-workplace">Die vier Ebenen</a></li>
+        <li><a href="#budget-cycle">Der nächste Budgetzyklus</a></li>
+</ul>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+    <img src="../images/hero_workplace.jpg" alt="Eine Bürohalle von Kathedralen-Ausmaß im Morgenlicht: Im Vordergrund wartet ein einzelner, warm beleuchteter Schreibtisch mit Bildschirm und Zugangsausweis, während vor dem monumentalen Glasportal leuchtende goldene Gestalten im kühlen blauen Licht stehen." class="hero-image" loading="eager">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>Kontext statt Modell: Wie Sie Ihr Unternehmen zukunftssicher für KI-Agenten vorbereiten</h1>
+        <p class="subtitle">Interfaces, Berechtigungen, Kontext und Verifikation als Grundpfeiler der Enterprise-KI-Transformation</p>
+        <p class="byline">Von JP Harries</p>
+        <p class="dateline">3. August 2026</p>
+    </div>
+    <div class="scroll-indicator" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+</header>
+
+<main>
+<div class="article" style="padding-top: 2.5rem;">
+<p style="font-style: italic; color: var(--graphite); font-size: 0.95rem; margin: 0;">Übersetzt aus dem <a href="/essays/enterprise-transformation/">englischen Original</a>.</p>
+</div>
+<section class="essay-section" id="new-employee">
+<div class="article lead-in">
+<h2>Der neue Mitarbeiter</h2>
+<p>Stellen Sie sich vor, dass alle paar Monate ein bemerkenswerter neuer Mitarbeiter in Ihrem Unternehmen anfängt: in vielen Bereichen leistungsfähiger als alle aktuellen Mitarbeiter, zu einem Bruchteil der Kosten und mit Fähigkeiten, die niemand sonst hat. Sie haben ihn nicht eingestellt. Niemand hat eine Stellenbeschreibung verfasst, kein Headhunter eine Shortlist geschickt. Trotzdem ist er sofort startbereit - und in der Lobby wartet schon ein noch besserer.</p>
+<p>Das ist die beste Analogie, die mir eingefallen ist, um zu beschreiben, welchen Effekt KI-Agenten auf Unternehmen haben werden. Den Fortschritt können Sie nur begrenzt planen: Sie entscheiden nicht, wann diese neuen Mitarbeiter kommen, worin sie gut sein werden und was sie kosten. Sie können aber den Arbeitsplatz vorbereiten, den sie vorfinden: Den Computer und die Tools, mit denen sie arbeiten. Das Berechtigungsprofil, das festlegt, worauf sie zugreifen dürfen. Das Onboarding und die Prozess-Handbücher, die ihnen beibringen, wie Ihr Geschäft tatsächlich funktioniert. Und das Performance-Review, das entscheidet, welchen Teilen ihrer Arbeit Sie vertrauen.</p>
+<p>Ich schreibe diesen Artikel, weil sich dasselbe Gespräch ständig wiederholt. Im vergangenen Jahr sind in Gesprächen mit CEOs und CTOs etablierter Unternehmen immer wieder dieselben Bausteine aufgetaucht, meist nach dem zweiten gescheiterten Pilotprojekt oder vielen verwirrenden Pitches von Techkonzernen und Startups, die Ihnen alle das beste "Multi-Agent-Multi-Model-Super-Duper-KI-System" verkaufen wollen. 
+Zwei Dinge vorweg. Erstens verkaufe ich hier nichts: ellamind ist ein Tech-Startup, keine Beratung, und dieser Text beschreibt schlicht, wie ich aus CEO/CTO-Sicht in einem etablierten Unternehmen selbst in KI bzw. die KI-Transformation investieren würde. Zweitens bin ich trotzdem nicht neutral: Unternehmen, die diese Bausteine umgesetzt haben, sind genau die Unternehmen, mit denen ein Startup wie unseres am liebsten arbeitet, weil sie die "KI-Geschwindigkeit" mitgehen können und die Wahrscheinlichkeit von unerwarteten Blockern oder geringem RoI deutlich geringer ist.</p>
+<p>KI verhält sich nicht so wie andere Technologien, mit denen Ihre IT-Organisation viel Erfahrung hat. Bei der Auswahl eines ERP-Systems haben Sie die Wahl zwischen einer Handvoll ausgereifter Produkte: Im Rahmen eines strukturierten Beschaffungsprozesses können diese verglichen werden, bevor Sie in Verhandlungen einsteigen und einen Enterprise-Contract mit einer jahrelangen Laufzeit abschließen. Daher folgen auch die Fragen zu KI in Management-Briefings und Entscheidungsgremien oft noch immer diesem Muster: "Tool X von Anbieter A oder Tool Y von Anbieter B?", "Modell A oder Modell B?". Sinnvolle Fragen, aber abgeleitet aus einer Welt, die es so nicht mehr gibt: Das beste KI-Modell (laut LM Arena, einer der meistbeachteten Ranglisten der Branche) hat sich in nur drei Jahren rund zwanzigmal geändert.<sup class="fn-ref"><a href="#fn-1" id="fn-ref-1">[1]</a></sup> Das Team hinter der besten öffentlichen KI-Fortschritts-Prognose ist sich intern um Jahre uneins, wann Systeme in welchem Bereich menschliche Experten einholen.<sup class="fn-ref"><a href="#fn-2" id="fn-ref-2">[2]</a></sup> Und im Juni wurde der Zugang zu KI-Modellen selbst kurzzeitig zur politischen Frage: Das Handelsministerium in Washington zwang Anthropic, den Zugang zu deren neuestem Frontier-Modell Claude Fable abzuschalten.<sup class="fn-ref"><a href="#fn-3" id="fn-ref-3">[3]</a></sup> Neue Modelle, neue Tools und damit neue Entscheidungsgrundlagen halten sich nicht an Ihren Beschaffungs-, Budget- oder Planungszyklus, sondern kommen rasant und chaotisch. Sie wissen nicht, welches Modell, welche Agenten und welche Tools Ihr Unternehmen in zwei Jahren einsetzen wird. Und wer etwas anderes behauptet, ist entweder ahnungslos oder lügt, um Ihnen etwas zu verkaufen.</p>
+<p>Die Belegschaft können Sie also nicht planen. Aber Sie können den Arbeitsplatz vorbereiten.</p>
+<p>Der Rest dieses Textes beschreibt diesen Arbeitsplatz im Detail: was die vier Ebenen sind, was jede einzelne konkret von Ihnen verlangt und was ich mit dem nächsten Budgetzyklus tun würde. Vorher aber ein kurzer Blick darauf, warum das jetzt Ihre Aufmerksamkeit verdient. Denn die Belege dafür, was KI-Erfolg von KI-Misserfolg trennt, sind ungewöhnlich eindeutig.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="geniuses-in-the-parking-lot">
+<div class="article">
+<h2>Genies am Seiteneingang</h2>
+<p>Fast jedes Großunternehmen setzt inzwischen irgendwo KI ein; kaum eines kann den RoI belegen. Umfrage um Umfrage bestätigt dasselbe Muster, auch wenn die genauen Details variieren.<sup class="fn-ref"><a href="#fn-4" id="fn-ref-4">[4]</a></sup> Warum diese große Diskrepanz zwischen Aufwand und Ertrag? Die beste Evidenz dazu liefert eine Stanford-Studie vom April 2026, die 51 erfolgreiche KI-Einführungen in Unternehmen untersucht hat, und vor allem die gescheiterten Versuche davor:<sup class="fn-ref"><a href="#fn-5" id="fn-ref-5">[5]</a></sup></p>
+<figure class="fig-narrow">
+        <img src="../images/fig_3_failure_taxonomy_de.png" alt="Ursachen gescheiterter KI-Einführungen in Unternehmen" loading="lazy">
+        <figcaption>Ursachen der gescheiterten KI-Einführungen (Mehrfachnennungen je Fall möglich). Quelle: Stanford Digital Economy Lab, April 2026.</figcaption>
+    </figure>
+<p>Nur in 16 Prozent der Fälle wurden Fehlschläge durch die Technologie selbst verursacht. Alle Ursachen mit größeren Balken sind organisatorisch: Die Organisation war nicht bereit für die Einführung (35 Prozent), das Wissen, das die KI benötigt hätte, war nirgends festgehalten (27 Prozent), oder rechtliche und Compliance-Bedenken verhinderten den Go-Live (18 Prozent). Projekte scheitern nicht daran, dass die Modelle zu schlecht oder zu dumm sind. Sie scheitern daran, dass die Modelle in ein Unternehmen kommen, das nicht bereit war. Die Autoren der Studie verdichten 116 Seiten auf einen Satz: "Die Technologie funktioniert. Die Herausforderung ist alles andere."</p>
+<p>Ihre Mitarbeiter warten unterdessen nicht mehr. Die Hälfte aller Wissensarbeiter nutzt bereits KI-Tools, die ihr Arbeitgeber nie freigegeben hat, und rund ein Drittel der ChatGPT-Nutzung am Arbeitsplatz läuft über private Accounts, unsichtbar für die IT-Abteilung.<sup class="fn-ref"><a href="#fn-6" id="fn-ref-6">[6]</a></sup> Die neuen Mitarbeiter sind längst im Haus; teilweise sind sie durch den Seiteneingang reingelassen worden, ohne Ausweis und ohne Aufsicht.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="the-workplace">
+<div class="article">
+<h2>Arbeitsplatz, Berechtigungen, Handbuch und Beurteilung</h2>
+<p>Neben den vier Ebenen, zu denen wir gleich im Detail kommen, eine Unterscheidung, von der alles Weitere abhängt: Die meisten Unternehmen kennen KI bisher in erster Linie aus dem Chat-Fenster: Ein Mensch tippt, die KI antwortet, der Mensch kopiert den brauchbaren Teil zurück in ein anderes System. Das war die erste Ausbaustufe, und sie ist ein guter Weg für Sie und Ihre Mitarbeiter, sich mit der Technologie vertraut zu machen. Echter, messbarer Mehrwert entsteht aber meist erst mit der zweiten: mit Agenten, also KI-Systemen, die selbst Tools bedienen und langfristige Arbeit über Systemgrenzen hinweg erledigen können. Sie lesen z.B. ein Ticket, fragen Daten aus einem ERP-System ab und entwerfen die Antwort und verschicken sie an den Kunden. McKinsey formuliert den ökonomischen Unterschied unmissverständlich: Die erste Welle von Chat-Assistenten machte Einzelne "geringfügig schneller", ohne die Leistung des Unternehmens zu verändern. Im Agentenzeitalter konzentrieren sich die Erträge dort, wo Arbeit um Agenten herum neu gestaltet wird.<sup class="fn-ref"><a href="#fn-7" id="fn-ref-7">[7]</a></sup> Die Softwareentwicklung, die Disziplin, in der diese Entwicklung am weitesten fortgeschritten ist, verdeutlicht die Folgen: Binnen eines Jahres sind Agenten von hilfreichen "Auto-Complete"-Tools zu Autoren eines signifikanten Teils alles weltweit geschriebenen Codes geworden. Der Arbeitsalltag von Programmierern besteht heute vor allem darin, Agenten anzuleiten und ihre Ergebnisse zu prüfen.<sup class="fn-ref"><a href="#fn-8" id="fn-ref-8">[8]</a></sup> Ein Junior-Entwickler kann heute an einem Nachmittag Projekte und Features umsetzen, für die vor einem Jahr ein Team aus 4 erfahrenen Programmierern noch eine Woche benötigt hätte.</p>
+<p>Damit Ihre Organisation Agenten "richtig" nutzen kann, muss deren Arbeitsplatz aus mindestens vier Ebenen bestehen. Keine davon ist ein Modell:</p>
+<figure>
+        <img src="../images/fig_2_workplace_de.png" alt="Der Arbeitsplatz: was bleibt, während die Modelle wechseln" loading="lazy">
+        <figcaption>Die Modelle wechseln im Quartalstakt. Die vier Ebenen darunter gehören Ihnen, und sie gewinnen an Wert, je besser die Modelle werden.</figcaption>
+    </figure>
+<h3>Der Computer und die Tools: Schnittstellen</h3>
+<p>Ein Mitarbeiter ist nur dann produktiv, wenn er Zugriff auf die relevanten Systeme hat: das ERP-System, das Dokumentenarchiv oder das Ticketsystem. Für Agenten gilt dasselbe, und die praktische Empfehlung ist hier erfreulich einfach geworden. Wo Ihre Software das Model Context Protocol (MCP) unterstützt, ist es die naheliegende Wahl: MCP hat sich als offener Branchenstandard für die Verbindung von KI-Systemen und Anwendungen etabliert und wird von OpenAI, Google, Microsoft und Amazon gleichermaßen getragen.<sup class="fn-ref"><a href="#fn-9" id="fn-ref-9">[9]</a></sup> Wo es nicht unterstützt wird, nehmen Sie das, was da ist: Gewöhnliche APIs und Zugriff über ein CLI funktionieren für Agenten heute problemlos. Und für die Legacy-Anwendung ganz ohne Schnittstelle, die es in jedem Unternehmen gibt, werden Computer-Use-Agenten zu einer brauchbaren Brücke: KI-Systeme, die dieselben UIs nutzen wie Ihre Mitarbeiter. Die Regel lautet Pragmatismus: Überall dort, wo ein Mitarbeiter Zugriff hat, kann zunehmend auch ein Agent arbeiten. Geben Sie ihm die am stärksten standardisierte Schnittstelle, die verfügbar ist, und warten Sie nicht auf die perfekte Lösung.</p>
+<p>Eine Warnung kommt von den Erstellern der Modelle und Agenten selbst: Die Entwickler von Anthropic beschreiben, wie sie aufwendige Workarounds, die sie für eine Modellgeneration gebaut hatten, wieder löschen mussten, weil die nächste Generation sie zu "dead weight" machte.<sup class="fn-ref"><a href="#fn-10" id="fn-ref-10">[10]</a></sup> Prompts, Tools oder Skills, die die Schwächen des heutigen Modells ausgleichen, verlieren binnen Monaten an Wert. Die Schnittstellen, über die ein beliebiges Modell an Ihre Systeme kommt, behalten ihren Wert hingegen. Die Stanford-Forscher kommen von außen zum selben Schluss: Die leistungsstärksten Implementierungen "behandeln Modelle als austauschbare Komponenten innerhalb von Plattformen, die sie selbst kontrollieren".<sup class="fn-ref"><a href="#fn-5" id="fn-ref-5">[5]</a></sup> Bauen Sie die Anschlüsse, nicht die Workarounds.</p>
+<h3>Der Ausweis: Berechtigungen</h3>
+<p>Niemand drückt einem neuen Mitarbeiter am ersten Tag den Generalschlüssel in die Hand. Bei KI machen viele Unternehmen aber ziemlich genau das. Im durchschnittlichen Unternehmen kommen auf eine menschliche Identität bereits mehr als 80 Maschinenidentitäten, 42 Prozent davon mit privilegiertem Zugriff - und gleichzeitig verstehen 88 Prozent der Organisationen unter einem "privilegierten Nutzer" nach wie vor ausschließlich einen Menschen.<sup class="fn-ref"><a href="#fn-11" id="fn-ref-11">[11]</a></sup> Das Risiko ist nicht hypothetisch. Sicherheitsforscher nennen das Grundmuster die "lethal trifecta", die tödliche Dreierkombination: Eine KI, die Zugriff auf vertrauliche Daten hat, Inhalte von Dritten verarbeitet und über einen Kanal nach draußen verfügt, wird früher oder später zum Sicherheitsrisiko. Ein jüngst veröffentlichter Proof of Concept zeigte einen Assistenten mit Datenbankrechten, der brav Zugangstokens preisgab, weil jemand entsprechende Anweisungen in ein ganz normales Support-Ticket geschrieben hatte.<sup class="fn-ref"><a href="#fn-12" id="fn-ref-12">[12]</a></sup> Im Juli beschrieb Hugging Face den mehrstufigen Einbruch eines KI-Agenten in deren stark gesicherte Produktions-Systeme in rasanter Geschwindigkeit; allein um die mehr als 17.000 Aktionen des Angreifers forensisch nachzuvollziehen, war wiederum KI nötig.<sup class="fn-ref"><a href="#fn-13" id="fn-ref-13">[13]</a></sup> Im Cybersecurity-Bereich laufen inzwischen sowohl Angriff als auch Verteidigung über KI-Agenten.</p>
+<p>Die Lösung ist dasselbe Berechtigungsmanagement, das Sie für menschliche Mitarbeiter längst nutzen. Am Anfang steht eine grundlegende Entscheidung, die die meisten Organisationen nach meiner Erfahrung noch nicht bewusst getroffen haben: <strong>Welche Agenten arbeiten unter der Identität eines Mitarbeiters, und welche brauchen eine eigene?</strong></p>
+<figure>
+        <img src="../images/fig_4_agent_identity_de.png" alt="Zwei Arten von Agenten, zwei Arten von Ausweis" loading="lazy">
+        <figcaption>Ein Assistent, der unter den Augen eines Menschen arbeitet, leiht sich dessen Identität. Ein Teamkollege, der unbeaufsichtigt arbeitet, braucht eine eigene.</figcaption>
+    </figure>
+<p>Ein Assistent, der synchron und unter Aufsicht eines Mitarbeiters arbeitet, kann unter der Identität und mit den Berechtigungen dieses Mitarbeiters handeln: mit delegiertem, zeitlich befristetem Zugriff. Verantwortlich für das Ergebnis bleibt der Mensch, genau wie bei der Arbeit mit jedem anderen Tool. Ein Agent, der asynchron und unbeaufsichtigt arbeitet, der z.B. die Vorarbeit für ein ganzes Team leistet oder über Nacht eine Warteschlange abarbeitet, ist dagegen etwas anderes: Er braucht ein eigenes Konto, eigene, eng gefasste Berechtigungen und einen eigenen Audit-Trail, genau wie ein menschlicher Mitarbeiter. Die Anbieter von Identitätslösungen ziehen inzwischen dieselbe Grenze: Microsofts Verzeichnisdienst Entra unterscheidet zwischen Agenten, die mit dem Token eines Nutzers handeln, und autonomen Agenten mit eigener Identität. Und die Forscher von Okta bringen ein Problem auf den Punkt: Erbt ein Agent den Login eines Menschen, verlieren Sie Teile des Audit-Trails, was Kontrolle und auch Erfolgsmessung auf Unternehmensebene schwieriger machen kann.<sup class="fn-ref"><a href="#fn-14" id="fn-ref-14">[14]</a></sup></p>
+<p>Diese Unterscheidung ist keine Theorie mehr. Claude Tag von Anthropic, im Juni veröffentlicht, ist ein KI-Teamkollege, der im Slack-Chat lebt: ein gemeinsamer Agent mit Gedächtnis, mit dem das ganze Team spricht und der zwischen den Anfragen aus eigener Initiative Arbeit übernimmt.<sup class="fn-ref"><a href="#fn-15" id="fn-ref-15">[15]</a></sup> Solche Produkte sollten nie über den geliehenen API-Key irgendeines Mitarbeiters laufen, sondern von Anfang an eine eigene Identität bekommen. Ihre IT-Abteilung muss darauf vorbereitet sein, Agenten genau wie Mitarbeiter zu onboarden - inkl. eigener E-Mail-Adresse, eigenen Laufwerken und Zugriff auf die jeweils benötigten Kernsysteme.</p>
+<h3>Das Onboarding und das Handbuch: Kontext</h3>
+<p>Die dritte Ebene entscheidet darüber, ob Sie die Arbeit Ihres Neuzugangs tatsächlich gewinnbringend nutzen können. Ein brillanter Generalist ohne Kontext, der Ihre Preislogik, Ihre Eskalationsregeln und Ihre Definition einer guten Antwort nie gesehen hat, produziert brillanten, aber nutzlosen Output. Die ermutigende Nachricht aus der oben zitierten Stanford-Studie: Der Kontext muss nicht unbedingt aufwendig vorbereitet werden. Fast niemand hatte aufgeräumte Daten (6 Prozent); 91 Prozent der erfolgreichen KI-Rollouts nutzten unaufbereitete, unstrukturierte Dokumente. Zugang schlägt Ordnung.<sup class="fn-ref"><a href="#fn-5" id="fn-ref-5">[5]</a></sup> Die schlechte Nachricht: In 27 Prozent der gescheiterten KI-Rollouts war der Kontext, den die KI gebraucht hätte, nie irgendwo aufgeschrieben worden, sondern existierte als implizites Wissen nur in den Köpfen der Mitarbeiter. Das Handbuch existierte schlicht nicht - weder für den Agenten noch für sonst jemanden.</p>
+<p>Also: Schreiben Sie Ihr implizites Prozesswissen auf. Und zwar so, wie Sie auch einen Menschen einarbeiten würden, wenn er den Job nur mit Hilfe der Onboarding-Dokumente erledigen müsste (aber dafür unendlich viel Zeit und Geduld hätte, sich "Wissenschnipsel" aus verschiedensten Quellen zusammenzusuchen).</p>
+<figure class="fig-narrow">
+        <img src="../images/fig_5_context_pyramid_de.png" alt="Die Kontextpyramide" loading="lazy">
+        <figcaption>Kontext ist so gegliedert wie das Onboarding: ein wenig über das Unternehmen, ein Handbuch für die Aufgabe.</figcaption>
+    </figure>
+<p>Ein neuer Mitarbeiter bekommt eine Seite über das Unternehmen und einen dicken Ordner über seinen Job. Gliedern Sie Ihren Kontext genauso, von oben nach unten: auf Unternehmensebene eine kurze, gepflegte Übersicht über Prioritäten, rote Linien und Hausregeln, die jeder Agent einhalten muss; darunter je Abteilung die geltenden Richtlinien, Systeme und Begriffe; darunter je Team die Workflows, Übergaben und Entscheidungsbefugnisse; und ganz unten, je Funktion oder Aufgabe, das vollständige Arbeitswissen, inklusive ausgearbeiteter Beispiele und einer Beschreibung dessen, was ein gutes Ergebnis ausmacht. Eine Dimension der Pyramide wird dabei gern vergessen: Kontext betrifft nicht nur Ziele und Ergebnisse, sondern auch Schnittstellen und Datenquellen. Ein Agent muss wissen, dass Vertragsnachträge im DMS liegen und nicht in E-Mail-Anhängen, welches der drei Felder namens "Kundennummer" das maßgebliche ist und an wen er eskalieren soll. Zu dokumentieren, wo etwas liegt, ist genauso wertvoll wie zu dokumentieren, wie etwas gemacht wird.</p>
+<p>Für die Pflege all dieses Wissens gibt es inzwischen einen naheliegenden Mechanismus: Skills. Ende 2025 von Anthropic eingeführt und im Prinzip schnell von der ganzen Branche kopiert, sind Skills schlicht Ordner mit Anweisungen im Klartext, die ein Agent lädt, wenn eine Aufgabe sie erfordert.<sup class="fn-ref"><a href="#fn-16" id="fn-ref-16">[16]</a></sup> Das Format klingt banal, interessant sind die Folgen für die Governance: Weil Skills gewöhnliche Textdateien sind, können Fachexperten sie ohne Programmierkenntnisse schreiben, Administratoren sie zentral verwalten und Revisoren jedes Wort nachlesen, das der Agent zu sehen bekommt. Und wer eine Vorgehensweise für alle Agenten im Unternehmen aktualisieren will, bearbeitet ein einziges Dokument. Das Wissen Ihrer Schadenabteilung, wie eine strittige Rechnung zu behandeln ist, wird so zu einem Asset mit Versionshistorie.</p>
+<p>Der strategische Kern, der in jede Vorstandsvorlage gehört: Kontext ist die Ebene, in der der eigentliche Wert Ihres Unternehmens liegt. Modelle und Applikationen sind keine Alleinstellungsmerkmale. Aber niemand sonst hat Ihre Prozesse, Ihre Definitionen, Ihr über Jahre gewachsenes Verständnis davon, was ein gutes Ergebnis in Ihrem Kerngeschäft ausmacht. In der Stanford-Studie nannten drei Viertel der erfolgreichen Anwender die eigenen Daten einen strategischen Schlüsselfaktor.<sup class="fn-ref"><a href="#fn-5" id="fn-ref-5">[5]</a></sup> Satya Nadella hat in einem Beitrag vom Juli die unangenehme Kehrseite beschrieben: Um KI nützlich zu machen, "bezahlen Sie im Grunde zweimal für Intelligenz, einmal mit Geld und ein zweites Mal mit etwas noch Wertvollerem: mit dem proprietären Wissen, das Sie preisgeben müssen, damit diese Intelligenz nützlich wird".<sup class="fn-ref"><a href="#fn-17" id="fn-ref-17">[17]</a></sup> Genau deshalb muss dieses Wissen in Formaten und Systemen bleiben, die Ihnen gehören. Wenn Ihre Organisation nur eine dieser vier Ebenen ernsthaft intern aufbauen kann, dann diese: Eine gut gepflegte Kontextebene lässt sich auf jedes Modell und jeden Agenten übertragen, den Sie je einsetzen werden, und sie macht jeden brillanten Neuzugang vom ersten Tag an in Ihrem Geschäft produktiv.</p>
+<h3>Die Leistungsbeurteilung: Verifikation</h3>
+<p>Die Arbeit eines neuen Mitarbeiters wird in der Regel geprüft, bevor man sich auf sie verlässt. Oft schaut ein erfahrener Kollege einmal über die Daten, bevor sie ins ERP-System eingegeben werden. Niemand lässt den Neuzugang vom ersten Tag an eigenständig Überweisungen freigeben; Vertrauen wächst mit jedem Ergebnis, das ohne Beanstandung durchläuft. Dasselbe Prinzip erklärt die vierte Ebene des Arbeitsplatzes und ist bei Agenten noch entscheidender als bei menschlichen Mitarbeitern: Wenn ein Entwurf praktisch nichts mehr kostet und sofort vorliegt, wird die Verifikation zur entscheidenden und knappen Ressource in Ihrer Organisation - die Fähigkeit, maschinellen Output zu prüfen und die Verantwortung dafür zu übernehmen. Das Arbeitspapier "Some Simple Economics of AGI" des MIT-Ökonomen Christian Catalini macht genau das zur zentralen These: Der begrenzende Faktor für Wachstum verschiebt sich von der Intelligenz zur "human verification bandwidth", der menschlichen Prüfkapazität. Verifikation wird damit von einer Compliance-Funktion zu einer Produktionsfunktion.<sup class="fn-ref"><a href="#fn-18" id="fn-ref-18">[18]</a></sup> Im Klartext: Wer den Ergebnissen seiner Agenten schneller vertrauen kann, kann mehr Agenten einsetzen.</p>
+<p>Wie sieht die Investition in Verifikation praktisch aus? Drei Bausteine, aufsteigend nach Komplexität: Erstens explizite Abnahmekriterien. Eine schriftliche Definition je Workflow, was ein korrektes Ergebnis ausmacht - so formuliert, dass ein Prüfer sie anwenden kann, ohne jemanden fragen zu müssen. Die meisten Organisationen stellen dabei fest, dass sie eine solche Definition nie hatten, nicht einmal für Menschen. Zweitens Evaluation und "Golden Answers": kuratierte Sammlungen echter Fälle mit guten, kontrollierten Antworten, an denen jedes neue Modell, jeder neue Agent und jede Prompt-Änderung gemessen werden kann, bevor sie in Produktion gehen. Diese Evaluationen sind Ihr Qualitätsmaßstab in ausführbarer Form. Sie gehören Ihnen - genau wie Ihre Buchhaltung. Überlassen Sie es keinem externen Anbieter, für Sie zu definieren, was "gut" bedeutet. Dieses Thema kann auch nicht an Ihre IT-Abteilung delegiert werden - oft können nur die Fachexperten die Output-Qualität verlässlich einschätzen.<sup class="fn-ref"><a href="#fn-17" id="fn-ref-17">[17]</a></sup> Drittens Prüfung nach dem Ausnahmeprinzip: Setzen Sie Ihre erfahrenen Mitarbeiter als Prüfer für besonders schwierige oder unsichere Fälle ein, nicht als Freigabeinstanz für alles. In den Stanford-Daten erreichten Einführungen, bei denen die KI den Routineanteil übernimmt und bei Unsicherheit eskaliert, einen medianen Produktivitätsgewinn von 71 Prozent - gegenüber 30 Prozent dort, wo jedes Ergebnis geprüft wird.<sup class="fn-ref"><a href="#fn-19" id="fn-ref-19">[19]</a></sup> Die Formel der Ökonomen für den Zielzustand trifft den Anspruch genau: "rent the cognition, own the trust" - die Intelligenz mieten, das Vertrauen besitzen.<sup class="fn-ref"><a href="#fn-18" id="fn-ref-18">[18]</a></sup></p>
+<p>Aus unserer eigenen Evaluationsarbeit bei ellamind kenne ich keine schärfere Trennlinie zwischen Unternehmen, die KI-Nutzung skalieren, und solchen, die ewig im Pilotprojekt festhängen: Teams, die einheitlich definieren und quantifizieren können, was ein gutes Ergebnis ist, schaffen es häufig, die Fähigkeiten der Technologie schnell & produktiv zu nutzen. Teams, die das nicht können, kommen oft nie über die Demo hinaus.</p>
+</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="essay-section" id="budget-cycle">
+<div class="article">
+<h2>Was das nächste Budget finanzieren sollte</h2>
+<p>Bevor wir zur Liste kommen, eine Grundvoraussetzung: breiter, offiziell freigegebener Zugang zu einem Frontier-Modell - und zwar am besten gestern. Ihre Mitarbeiter nutzen KI ohnehin, und die heutigen Modelle können längst weit mehr, als die meisten Organisationen bisher für sich erschlossen haben; Ethan Mollick argumentiert, die Veränderung der Arbeitswelt in den nächsten fünf Jahren stehe selbst dann fest, wenn der KI-Fortschritt heute zum Stillstand käme (ich stimme ihm komplett zu).<sup class="fn-ref"><a href="#fn-20" id="fn-ref-20">[20]</a></sup> Seien Sie sich aber im Klaren darüber, was breiter KI-Zugang tatsächlich bringt: Erfahrung und Kompetenz - die Fähigkeit Ihrer Belegschaft, ein eigenes Urteil über diese Systeme zu entwickeln. Die Rendite kommt erst, wenn diese Kompetenz auf Agenten in neu gestalteten Workflows trifft, wie es die Softwareentwickler als Erste erlebt haben. Der Zugang ist das Eintrittsgeld, nicht die Transformation.</p>
+<p>Unsere Erfahrung zeigt, an welchen Stellen das Geld am besten investiert ist:</p>
+<ul class="essay-list">
+    <li><strong>Gestalten Sie einige wenige Workflows end-to-end um Agenten herum neu, statt überall Copilots zu verteilen.</strong> Unternehmen mit überdurchschnittlichem KI-RoI haben dreimal häufiger Workflows grundlegend neu gestaltet, statt Assistenten auf die alten Abläufe zu setzen. Legen Sie die Rolle des Menschen dabei wenn möglich von Anfang an als Prüfung nach dem Ausnahmeprinzip an.<sup class="fn-ref"><a href="#fn-19" id="fn-ref-19">[19]</a></sup></li>
+    <li><strong>Geben Sie Agenten noch dieses Jahr einen eigenen Ausweis.</strong> Entscheiden Sie für jede Einführung die Frage "Assistent oder Teamkollege" explizit und vorab, und erweitern Sie Ihr Berechtigungssystem um Agentenidentitäten.</li>
+    <li><strong>Finanzieren Sie das Handbuch.</strong> Bezahlen Sie Prozessdokumentation, die Kontextpyramide und Skills, die Ihre eigenen Fachexperten schreiben - und zwar bevor Sie irgendetwas skalieren. Das ist unglamouröses Budget mit Zinseszinseffekt: die eine Investition, die jedes künftige Modell und jede KI-Applikation vom ersten Tag an besser in Ihrem Geschäft macht.<sup class="fn-ref"><a href="#fn-5" id="fn-ref-5">[5]</a></sup></li>
+    <li><strong>Bauen Sie Verifikation als eigene Funktion auf.</strong> Abnahmekriterien je Workflow, Evaluationssets, die vor jeder Änderung laufen, erfahrene Mitarbeiter in der neuen Rolle als Prüfer von eskalierten Fällen. Finanzieren Sie den Aufbau der Verifikationsinfrastruktur wie eine Produktionsfunktion, denn genau das ist Verifikation inzwischen bzw. wird es bald sein.<sup class="fn-ref"><a href="#fn-18" id="fn-ref-18">[18]</a></sup></li>
+    <li><strong>Committen Sie sich auf einen (Modell-)Anbieter - aber halten Sie sich den Wechsel offen.</strong> Der alte Rat, überall modellagnostisch zu bleiben, ist schlecht gealtert: Modelle und das Tooling um sie herum (der "Harness", in dem der Agent läuft) werden zunehmend als ein gemeinsames Produkt entworfen, und eine Auswahl aus zehn Modellen hilft keinem Mitarbeiter. Sich auf den integrierten Stack eines Anbieters festzulegen, ist deshalb oft die richtige Entscheidung und alle Frontier-Anbieter haben Modelle für unterschiedliche Aufgaben- und Preiskategorien im Angebot. Was Sie sich erhalten müssen, ist die Möglichkeit zum Ausstieg. Denn die Kräfteverhältnisse verschieben sich schneller, als Verträge laufen: Google war im vergangenen Herbst bei den Modell-Benchmarks voll konkurrenzfähig; in diesem Frühjahr räumte der eigene CEO öffentlich ein, man sei bei agentischer KI "a bit behind", etwas im Rückstand - und genau dort konzentriert sich der Wert für Unternehmen. Die Marktanteile bei Coding-Agenten zeigen dasselbe Muster.<sup class="fn-ref"><a href="#fn-21" id="fn-ref-21">[21]</a></sup> Niemand kann Ihnen sagen, wer in zwei Jahren führt. An einen Anbieter gebunden zu sein, dessen Agenten hinter denen Ihrer Wettbewerber zurückfallen, ist eine offene strategische Flanke. Die Exportkontroll-Episode im Juni, als zwei Frontier-Modelle 19 Tage lang verschwanden und Unternehmen, die auf andere Modelle ausweichen konnten, einfach weiterarbeiteten, war die Generalprobe für genau diese Lektion.<sup class="fn-ref"><a href="#fn-3" id="fn-ref-3">[3]</a></sup> Im Moment gibt es für Organisationen ohne on-premise Anforderungen realistischerweise nur die Wahl zwischen OpenAI (Codex) oder Anthropic (Claude Code / Cowork) und beide sind inzwischen (über Azure/AWS) auch mit EU-Hosting und DSGVO-konform nutzbar.</li>
+</ul>
+<p>Und fünf Dinge, die ich nicht tun würde:</p>
+<ul class="essay-list">
+    <li><strong>Verbieten Sie keine Tools, ohne eine bessere freigegebene Alternative anzubieten.</strong> Die Hälfte Ihrer Belegschaft nutzt bereits KI, und knapp die Hälfte sagt, ein Verbot würde sie nicht aufhalten.<sup class="fn-ref"><a href="#fn-6" id="fn-ref-6">[6]</a></sup> Sie sollten dankbar über jeden Mitarbeiter sein, der für Workflows KI-Tools nutzen möchte. (Das gilt natürlich nur, wenn die Einhaltung rechtlicher & regulatorischer Vorschriften sichergestellt ist).</li>
+    <li><strong>Vertrauen Sie nicht widerspruchslos Ihren Anwälten oder anderen "Bremsern".</strong> Sie können inzwischen die meisten Modelle & Tools unter den richtigen Voraussetzungen problemlos mit Kundendaten oder anderen sensitiven Daten verwenden. Viele rechtliche oder regulatorische Bedenken basieren auf veralteten (oder extrem konservativen) Einschätzungen. Oft lassen sich zunächst unüberbrückbar erscheinende Blocker mit etwas Dokumentation (und 2-3 Fragen an die KI selbst) schnell aus dem Weg räumen.</li>
+    <li><strong>Machen Sie Produkt- und Modellvergleiche nicht zum Zentrum Ihrer Strategie.</strong> Solche Vergleiche sind die verlockendste Arbeit von allen - und zugleich die, die am schnellsten an Wert verliert: Was auch immer Ihren Vergleichstest heute gewinnt, ist in wenigen Monaten überholt. Wählen Sie einen guten Stack und stecken Sie die Aufmerksamkeit dann in die vier Ebenen. Die gehören Ihnen auch dann noch, wenn sich die Rangliste zweimal komplett gedreht hat.</li>
+    <li><strong>Akzeptieren Sie keine "Walled Gardens" um Ihre Kernsysteme (Systems of Record).</strong> Jeder Softwareanbieter liefert inzwischen einen eingebauten Agenten für die eigene Anwendung mit und bietet ihn als den bequemen Weg an. Sie wollen das Gegenteil: Ihre Agenten erreichen das System über eine offene Schnittstelle, per MCP oder gewöhnlicher API. Eine kritische Funktion würden Sie auch nicht ausschließlich mit dem Personal Ihres Lieferanten besetzen. Sie wollen nicht 28 verschiedene Anwendungen, die Ihnen alle ihre eigenen, off-the-shelf KI-Funktionen und -Agenten verkaufen. Sie wollen Ihre eigenen Agenten, die genau so auf die 28 Anwendungen zugreifen, wie Sie es benötigen.</li>
+    <li><strong>Lassen Sie nicht zu, dass der Arbeitsplatz selbst zum Asset eines anderen wird.</strong> Microsoft verkauft Ihnen den kompletten Stack: Geschäftskontext, Agenten-Governance und Identität, verzahnt mit dem eigenen Verzeichnisdienst. Frontier von OpenAI und AgentCore von Amazon zeichnen fast identische Architekturdiagramme.<sup class="fn-ref"><a href="#fn-22" id="fn-ref-22">[22]</a></sup> Diese Konvergenz bestätigt, wo der Wert liegt - und sie ist zugleich die Warnung: Der Lock-in ist im Stack nach oben gewandert, von "welche Cloud" über "welches Modell" zu "wessen Arbeitsplatz". Teile davon zu mieten, kann vernünftig sein. Aber Ihr Kontext, Ihr Berechtigungsmodell und Ihre Evaluationen müssen exportierbar bleiben, in Formaten, die Ihnen gehören. Sonst bedeutet ein Anbieterwechsel eines Tages, das Gedächtnis Ihres Unternehmens von Grund auf neu aufbauen zu müssen.</li>
+</ul>
+<p>Ein Einwand verdient eine klare Antwort, weil er von einigen der klügsten Köpfe der Branche kommt. Die KI-Forschung kennt die berühmte "Bitter Lesson", die bittere Lektion: Allgemeine Leistungsfähigkeit macht, genügend Rechenleistung vorausgesetzt, am Ende jede clevere Spezialkonstruktion überflüssig, die Menschen um sie herum bauen.<sup class="fn-ref"><a href="#fn-23" id="fn-ref-23">[23]</a></sup> Warum also etwas aufbauen, das das nächste Modell obsolet machen könnte? Der Einwand ist richtig, zielt aber auf die falsche Ebene. Prompt-Tricks, aufwendige Pipelines, modellspezifisches Tuning: All das kann mit jedem neuen Release überflüssig werden, und Unternehmen, die dort ihren Burggraben gebaut haben, merken es jedes Quartal aufs Neue. Schnittstellen, Berechtigungen, Kontext und Verifikation gleichen dagegen keine Modellschwäche aus. Sie sind die Infrastruktur, an die jede neue Modellgeneration andockt. Auch ein klügeres Modell kann die Freigaberegel nicht kennen, die nie jemand aufgeschrieben hat; es sollte nicht selbst über die eigenen Zugriffsrechte entscheiden; und es kann nicht belegen, dass sein Ergebnis Kriterien erfüllt, die Sie nie definiert haben. Jeder etwas intelligentere Neuzugang holt aus demselben gut vorbereiteten Arbeitsplatz mehr heraus. Investieren Sie in die Dinge, die an Wert gewinnen.</p>
+<p>In drei Jahren wird Ihr Unternehmen mit Modellen arbeiten, die es heute noch nicht gibt, unter Regeln, die noch niemand geschrieben hat. Ich weiß nicht, welche Genies als Nächstes anklopfen - und glauben Sie niemandem, der Ihnen mit Gewissheit verspricht, er wüsste es. Die Belegschaft können Sie nicht planen. Aber Sie können den Arbeitsplatz vorbereiten: so, dass jeder Neuzugang einen Computer, einen Ausweis, ein Handbuch vorfindet und gutes, wertvolles Feedback bekommt. Die Alternative ist das, was die meisten Unternehmen heute haben: Genies am Seiteneingang und ein Pilotprojekt, das nie endet.</p>
+</div>
+</section>
+</main>
+
+<!-- ===== AUTHOR BIO ===== -->
+<aside class="author-bio-block">
+    <div class="article">
+        <p class="author-bio">JP Harries ist CEO und Mitgründer der ellamind GmbH, einem Startup aus Bremen, das KI-Agenten entwickelt &amp; evaluiert.</p>
+    </div>
+</aside>
+
+<hr class="section-divider">
+<section class="acknowledgements-section">
+    <div class="article">
+        <p>Über Austausch und Feedback zu diesem Artikel freue ich mich jederzeit. Sie erreichen mich auf <a href="https://www.linkedin.com/in/jphme/" target="_blank" rel="noopener">LinkedIn</a> und <a href="https://x.com/jphme" target="_blank" rel="noopener">X (Twitter)</a>.</p>
+        <h2>Danksagung</h2>
+        <p>Vielen Dank an Saskia Pl&uuml;ster für ihr Feedback zu einer früheren Fassung dieses Artikels.</p>
+    </div>
+</section>
+
+<!-- ===== FOOTNOTES ===== -->
+<section class="footnotes-section">
+<div class="article">
+    <h2>Anmerkungen</h2>
+    <ol class="footnotes-list">
+    <li id="fn-1" class="footnote-item"><span class="fn-number">[1]</span> Aggregierte Ranglisten-Historie (LMArena-Spitzenposition seit Mai 2023, rund 21 Führungswechsel): <a href="https://benchlm.ai/llm-leaderboard-history" target="_blank" rel="noopener">benchlm.ai/llm-leaderboard-history</a>. <a href="#fn-ref-1" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-2" class="footnote-item"><span class="fn-number">[2]</span> AI Futures Project (das Team hinter dem Szenario AI 2027), <a href="https://blog.aifutures.org/p/q1-2026-timelines-update" target="_blank" rel="noopener">Q1 2026 timelines update</a>: Die Medianprognosen der beiden Hauptautoren für "superhuman coders" liegen bei Mitte 2028 und Mitte 2030; dafür, dass KI menschliche Experten in den meisten Feldern erreicht, bei 2029 und 2033. <a href="#fn-ref-2" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-3" class="footnote-item"><span class="fn-number">[3]</span> US-Exportkontrollentscheidungen vom 12. Juni 2026 <a href="https://www.nextgov.com/artificial-intelligence/2026/06/anthropic-suspends-top-ai-models-after-us-export-control-order/414173/" target="_blank" rel="noopener">setzten den Zugang zu den beiden neuesten Frontier-Modellen aus</a>; die Beschränkungen wurden <a href="https://www.cnbc.com/2026/06/30/anthropic-says-trump-admin-has-lifted-export-controls-on-claude-fable-5-and-mythos-5.html" target="_blank" rel="noopener">bis zum 30. Juni 2026 wieder aufgehoben</a>. <a href="#fn-ref-3" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-4" class="footnote-item"><span class="fn-number">[4]</span> Die Konvergenz: MIT NANDA, <a href="https://mlq.ai/media/quarterly_decks/v0.1_State_of_AI_in_Business_2025_Report.pdf" target="_blank" rel="noopener">"The GenAI Divide"</a> (Juli 2025) fand, dass 95 Prozent der Organisationen mit Pilotprojekten zu generativer KI keine messbare Wirkung in der Gewinn- und Verlustrechnung sahen; die Studie bezeichnet sich selbst als vorläufig, und ihre Erfolgsdefinition wurde <a href="https://www.marketingaiinstitute.com/blog/mit-study-ai-pilots" target="_blank" rel="noopener">als zu eng kritisiert</a>. BCG, <a href="https://media-publications.bcg.com/The-Widening-AI-Value-Gap-Sept-2025.pdf" target="_blank" rel="noopener">"The Widening AI Value Gap"</a> (September 2025, mehr als 1.250 Unternehmen): 5 Prozent erzielen KI-Wert in der Breite. McKinsey, <a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai" target="_blank" rel="noopener">"The State of AI"</a> (November 2025, 1.993 Befragte): 88 Prozent setzen irgendwo KI ein, 39 Prozent sehen überhaupt eine Wirkung auf das Unternehmensergebnis. <a href="#fn-ref-4" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-5" class="footnote-item"><span class="fn-number">[5]</span> Elisa Pereira, Alvin Wang Graylin, Erik Brynjolfsson, <a href="https://digitaleconomy.stanford.edu/app/uploads/2026/03/EnterpriseAIPlaybook_PereiraGraylinBrynjolfsson.pdf" target="_blank" rel="noopener">"The Enterprise AI Playbook: Lessons from 51 Successful Deployments"</a>, Stanford Digital Economy Lab, April 2026. In diesem Text mehrfach zitiert: Fehler-Taxonomie und der Anteil nie festgehaltenen Wissens S. 111, Schlusssatz S. 105, Befunde zu Datenreife und proprietären Daten S. 79-83, Schlussfolgerung zu Modellen als austauschbaren Komponenten Kap. 11 (S. 96-104). Es ist eine Untersuchung von Gewinnern und kein kontrollierter Vergleich, aber die detaillierteste verfügbare Evidenz. <a href="#fn-ref-5" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-6" class="footnote-item"><span class="fn-number">[6]</span> Umfrage der Software AG unter 6.000 Wissensarbeitern (2024): 50 Prozent nutzen nicht freigegebene KI-Tools, 46 Prozent würden auch nach einem Verbot weitermachen (<a href="https://www.securityweek.com/the-shadow-ai-surge-study-finds-50-of-workers-use-unapproved-ai-tools/" target="_blank" rel="noopener">SecurityWeek-Zusammenfassung</a>). Cyberhaven-Telemetrie über rund 7 Millionen Beschäftigte (Februar 2026): 32,3 Prozent der ChatGPT-Nutzung am Arbeitsplatz laufen über private Accounts (<a href="https://www.cyberhaven.com/press-releases/cyberhaven-2026-ai-adoption-risk-report" target="_blank" rel="noopener">Cyberhaven 2026 AI Adoption & Risk Report</a>). <a href="#fn-ref-6" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-7" class="footnote-item"><span class="fn-number">[7]</span> McKinsey zu agentischer KI (2026): Copilots der ersten Welle machten Einzelne "geringfügig schneller", ohne die Unternehmensleistung zu verändern; rund zwei Drittel der Unternehmen haben mit Agenten experimentiert, unter 10 Prozent haben sie bis zum Wertbeitrag skaliert (<a href="https://www.forbes.com/sites/josipamajic/2026/03/22/10-of-enterprise-functions-use-ai-agents-mckinsey-finds/" target="_blank" rel="noopener">Forbes-Zusammenfassung, März 2026</a>). <a href="#fn-ref-7" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-8" class="footnote-item"><span class="fn-number">[8]</span> Allein Claude Code stieg laut SemiAnalysis von 4 Prozent der öffentlichen GitHub-Commits im Februar 2026 auf über 7 Prozent bis zum 8. Juli 2026; OpenAI berichtet, die wöchentlichen Codex-Nutzer hätten sich seit Anfang 2026 verdreifacht, und über 85 Prozent der eigenen Mitarbeiter nutzten Codex wöchentlich (Februar 2026). Beide Zahlen stammen von den Anbietern selbst oder aus deren Umfeld; sie zeigen eine Richtung, keine Präzision. Ausführliche, laufend aktualisierte Zahlen: <a href="https://github.com/jphme/github-coding-agent-tracker" target="_blank" rel="noopener">github.com/jphme/github-coding-agent-tracker</a>. <a href="#fn-ref-8" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-9" class="footnote-item"><span class="fn-number">[9]</span> Anthropic, <a href="https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation" target="_blank" rel="noopener">"Donating the Model Context Protocol and establishing the Agentic AI Foundation"</a> (9. Dezember 2025): mehr als 10.000 aktive öffentliche MCP-Server; die Foundation wird von OpenAI, Google, Microsoft, AWS, Block, Cloudflare und Bloomberg getragen. <a href="#fn-ref-9" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-10" class="footnote-item"><span class="fn-number">[10]</span> Anthropic Engineering: <a href="https://www.anthropic.com/engineering/managed-agents" target="_blank" rel="noopener">"Scaling Managed Agents"</a> (April 2026) und <a href="https://www.anthropic.com/engineering/harness-design-long-running-apps" target="_blank" rel="noopener">"Harness design for long-running application development"</a> (März 2026): Annahmen über den Harness "go stale as models improve"; ein Workaround, der für eine Modellgeneration gebaut wurde, sei bei der nächsten zu "dead weight" geworden. <a href="#fn-ref-10" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-11" class="footnote-item"><span class="fn-number">[11]</span> CyberArk, <a href="https://www.cyberark.com/press/machine-identities-outnumber-humans-by-more-than-80-to-1-new-report-exposes-the-exponential-threats-of-fragmented-identity-security/" target="_blank" rel="noopener">2025 Identity Security Landscape</a> (April 2025; 2.600 befragte Sicherheitsentscheider). <a href="#fn-ref-11" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-12" class="footnote-item"><span class="fn-number">[12]</span> Simon Willison, <a href="https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/" target="_blank" rel="noopener">"The Lethal Trifecta"</a> (Juni 2025). Die Demonstration mit dem Datenbank-Token war ein <a href="https://simonwillison.net/2025/Jul/6/supabase-mcp-lethal-trifecta/" target="_blank" rel="noopener">veröffentlichter Proof of Concept von Sicherheitsforschern</a> (Juli 2025) an einer realen Produktkonfiguration; einen Einbruch im Produktivbetrieb gab es nicht. <a href="#fn-ref-12" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-13" class="footnote-item"><span class="fn-number">[13]</span> Hugging Face, <a href="https://huggingface.co/blog/security-incident-july-2026" target="_blank" rel="noopener">Offenlegung eines Sicherheitsvorfalls</a> (16. Juli 2026): ein autonomer, mehrstufiger Einbruch über einen bösartigen Datensatz, rekonstruiert mit LLM-Analyseagenten über mehr als 17.000 aufgezeichnete Angreiferaktionen. <a href="#fn-ref-13" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-14" class="footnote-item"><span class="fn-number">[14]</span> Die Dokumentation zu Microsoft Entra Agent ID unterscheidet <a href="https://learn.microsoft.com/en-us/entra/agent-id/agent-identities" target="_blank" rel="noopener">interaktive Agenten, die auf dem Token eines Nutzers handeln, von autonomen Agenten mit eigener Identität</a>, einschließlich eines eigenen <a href="https://learn.microsoft.com/en-us/entra/agent-id/agent-users" target="_blank" rel="noopener">"agent user account"</a> für Agenten, die als feste Teammitglieder auftreten (2026). Okta: <a href="https://www.okta.com/identity-101/what-is-ai-agent-identity/" target="_blank" rel="noopener">What is AI agent identity?</a> und die Warnung zum Audit-Trail aus dem Enterprise AI Index von Okta (Juli 2026). <a href="#fn-ref-14" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-15" class="footnote-item"><span class="fn-number">[15]</span> Anthropic, <a href="https://www.anthropic.com/news/introducing-claude-tag" target="_blank" rel="noopener">"Introducing Claude Tag"</a> (23. Juni 2026): ein dauerhafter, in Slack beheimateter Teamkollege mit Kanal-Gedächtnis, der von sich aus handeln kann und über Ausgabenkontrollen auf Organisationsebene gesteuert wird. <a href="#fn-ref-15" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-16" class="footnote-item"><span class="fn-number">[16]</span> Anthropic, <a href="https://claude.com/blog/skills" target="_blank" rel="noopener">"Introducing Agent Skills"</a> (16. Oktober 2025; zentrale Verwaltung für die gesamte Organisation seit Dezember 2025): "Skills sind Ordner mit Anweisungen, Skripten und Ressourcen, die Claude bei Bedarf laden kann." <a href="#fn-ref-16" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-17" class="footnote-item"><span class="fn-number">[17]</span> Satya Nadella, <a href="https://snscratchpad.com/posts/reverse-information-paradox/" target="_blank" rel="noopener">"The Reverse Information Paradox"</a> (12. Juli 2026). Zu Nadellas empfohlenen Gegenmaßnahmen zählt, die eigenen Evaluationen zu besitzen und die Orchestrierungsebene modellagnostisch zu halten. <a href="#fn-ref-17" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-18" class="footnote-item"><span class="fn-number">[18]</span> Christian Catalini, Xiang Hui, Jane Wu, <a href="https://arxiv.org/abs/2602.20946" target="_blank" rel="noopener">"Some Simple Economics of AGI"</a> (Arbeitspapier, Februar 2026): "the binding constraint on growth is no longer intelligence. It is human verification bandwidth"; Verifikation als "a primary production technology"; die empfohlene Strategie, "rent cognition... while owning trust". <a href="#fn-ref-18" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-19" class="footnote-item"><span class="fn-number">[19]</span> Workflow-Redesign (55 Prozent der Spitzenreiter gegenüber 20 Prozent der übrigen, McKinsey, zitiert im Enterprise AI Playbook, S. 20). Menschliche Prüfung nach Eskalation (medianer Produktivitätsgewinn von 71 gegenüber 30 Prozent): Enterprise AI Playbook, S. 30. <a href="#fn-ref-19" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-20" class="footnote-item"><span class="fn-number">[20]</span> Ethan Mollick, <a href="https://x.com/emollick/status/2069978495690707147" target="_blank" rel="noopener">X-Post vom 25. Juni 2026</a>. <a href="#fn-ref-20" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-21" class="footnote-item"><span class="fn-number">[21]</span> Sundar Pichai im Hard-Fork-Podcast der New York Times (Mai 2026): zu agentischem Coding, Tool-Nutzung und langlaufenden Aufgaben, "I think we are a bit behind at this moment" (<a href="https://www.searchenginejournal.com/pichai-says-google-is-a-bit-behind-on-agentic-coding/575781/" target="_blank" rel="noopener">Berichterstattung</a>). Die Umfrage von Menlo Ventures zu den LLM-Ausgaben von Unternehmen (Dezember 2025) sah Anthropic bei 40 Prozent, OpenAI bei 27 Prozent und Google bei 21 Prozent der Unternehmensausgaben für APIs, Anthropic im Coding-Segment bei 54 Prozent. Zur Einordnung: Googles Anteil im Unternehmensgeschäft insgesamt hat sich 2025 verdreifacht; der Rückstand betrifft speziell den agentischen Einsatz, nicht KI insgesamt. <a href="#fn-ref-21" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-22" class="footnote-item"><span class="fn-number">[22]</span> Microsoft: Jay Parikh, <a href="https://blogs.microsoft.com/blog/2026/06/02/ai-alone-wont-change-your-business-the-system-running-it-will/" target="_blank" rel="noopener">"AI alone won't change your business. The system running it will."</a> (2. Juni 2026). OpenAI: <a href="https://openai.com/index/introducing-openai-frontier/" target="_blank" rel="noopener">"Introducing OpenAI Frontier"</a> (Februar 2026). AWS: <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html" target="_blank" rel="noopener">Dokumentation zu Amazon Bedrock AgentCore</a>. <a href="#fn-ref-22" class="fn-back" title="Zurück zum Text">↩</a></li>
+    <li id="fn-23" class="footnote-item"><span class="fn-number">[23]</span> Rich Sutton, <a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html" target="_blank" rel="noopener">"The Bitter Lesson"</a> (2019). <a href="#fn-ref-23" class="fn-back" title="Zurück zum Text">↩</a></li>
+    </ol>
+</div>
+</section>
+
+<script>
+(function() {
+    var progressBar = document.getElementById('progressBar');
+    function updateProgress() {
+        var scrollTop = window.scrollY;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = progress + '%';
+    }
+
+    var sections = document.querySelectorAll('.essay-section');
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+    }, { threshold: 0.05, rootMargin: '0px 0px -50px 0px' });
+    sections.forEach(function(section) { observer.observe(section); });
+
+    var tocNav = document.getElementById('toc');
+    var heroEl = document.querySelector('.hero');
+    function updateTOCVisibility() {
+        if (!heroEl || !tocNav) return;
+        var heroBottom = heroEl.getBoundingClientRect().bottom;
+        if (heroBottom <= 0) {
+            tocNav.classList.add('scrolled');
+        } else {
+            tocNav.classList.remove('scrolled');
+        }
+    }
+
+    var tocLinks = document.querySelectorAll('.toc a, .toc-mobile a');
+    var sectionElements = document.querySelectorAll('section.essay-section[id]');
+    var sectionIds = Array.from(sectionElements).map(function(el) { return el.id; });
+
+    function updateTOC() {
+        var current = '';
+        for (var i = sectionIds.length - 1; i >= 0; i--) {
+            var el = document.getElementById(sectionIds[i]);
+            if (el && el.getBoundingClientRect().top <= 200) { current = sectionIds[i]; break; }
+        }
+        tocLinks.forEach(function(link) {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+        });
+    }
+
+    var tocToggle = document.getElementById('tocToggle');
+    var tocMobile = document.getElementById('tocMobile');
+    tocToggle.addEventListener('click', function() { tocMobile.classList.toggle('open'); });
+    tocMobile.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() { tocMobile.classList.remove('open'); });
+    });
+
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                updateProgress();
+                updateTOC();
+                updateTOCVisibility();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+    updateProgress();
+    updateTOC();
+    updateTOCVisibility();
+
+    var scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+        window.addEventListener('scroll', function hideIndicator() {
+            if (window.scrollY > 100) {
+                scrollIndicator.style.opacity = '0';
+                scrollIndicator.style.transition = 'opacity 0.5s';
+                window.removeEventListener('scroll', hideIndicator);
+            }
+        });
+    }
+})();
+</script>
+
+</body>
+</html>
